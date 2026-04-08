@@ -23,9 +23,19 @@
   - my courses at `/app`
   - course learning shell at `/app/courses/[slug]`
   - lesson shell at `/app/courses/[slug]/lessons/[lessonId]`
+- Admin routes now include:
+  - overview at `/admin`
+  - courses list at `/admin/courses`
+  - course workspace at `/admin/courses/[courseId]`
+  - users list at `/admin/users`
+  - user detail at `/admin/users/[userId]`
+  - enrollments overview at `/admin/enrollments`
+  - orders overview at `/admin/orders`
+  - order detail at `/admin/orders/[orderId]`
 - Pages should stay thin and defer session, guard, and navigation concerns to layouts and modules.
 - Route protection belongs to layout boundaries plus `src/modules/auth/*`, not to page-level conditionals.
 - Learner screens should consume access and progress data from `src/modules/learning`.
 - Future LMS builder screens should consume a course -> module -> lesson tree from `src/modules/courses`.
 - Catalog and course pages must clearly distinguish free and paid access.
 - Paid purchase actions belong to `src/modules/billing`, not to page files.
+- Admin pages should stay operational and low-noise: tables, clear actions, and direct links into the course workspace.

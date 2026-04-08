@@ -20,6 +20,8 @@ Non-negotiable rules:
 - Learner flow belongs in `src/modules/learning` and must own access checks, course trees, lesson navigation, and progress actions.
 - Public course pages may preview curriculum, but learner pages must still require access before exposing lesson content.
 - Progress updates must stay in the module layer; page files only compose UI and route boundaries.
+- Admin pages must stay operational, server-protected, and low-noise.
+- Admin course management opens the course workspace instead of drifting into a generic CRUD form.
 - Any payment webhook must validate signature before changing order state.
 - `ResultURL` handlers must be idempotent.
 - Free courses should enroll on first learner access when it helps progress tracking.
