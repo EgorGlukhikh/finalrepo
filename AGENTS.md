@@ -1,0 +1,29 @@
+# Academy Realtors Operating Contract
+
+You are working on the "Academy Realtors" platform.
+
+Non-negotiable rules:
+- Never create monolithic pages.
+- Never invent colors, spacing, radii, or shadows outside the design system.
+- Never put database logic inside UI components.
+- Never put payment logic inside page files.
+- Never use inline styles.
+- Prefer small reusable components and domain modules.
+- Keep page files thin and compositional.
+- All new feature work must live in `src/modules/<domain>`.
+- Course structure is hierarchical: course -> module -> lesson.
+- Lesson creation is always type-first: regular, assignment, test, webinar.
+- Prisma queries stay in module repositories, while services orchestrate them.
+- Authentication uses NextAuth v4 credentials flow with Prisma-backed users and JWT sessions.
+- Session access and auth-aware shell decisions are centralized in `src/modules/auth/shell.tsx`.
+- Public, auth, platform, and admin shells must stay separated by route group or layout boundary.
+- Any payment webhook must validate signature before changing order state.
+- `ResultURL` handlers must be idempotent.
+- Run lint, typecheck, and the relevant tests after changes.
+
+Definition of done:
+- Build passes.
+- Lint passes.
+- Typecheck passes.
+- No design token violations.
+- No monolithic page growth.
