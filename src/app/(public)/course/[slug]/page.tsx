@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
+import { BookOpenIcon, IconChip } from '@/components/branding';
+import { ActionLink, Section, Stack } from '@/components/layout';
 import { Badge, Button, Card } from '@/components/ui';
 import { getAuthSession } from '@/modules/auth/session';
 import { isRobokassaConfigured, purchasePaidCourseAction } from '@/modules/billing';
@@ -71,39 +72,35 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   return (
     <Section padding="lg">
-      <Stack gap="lg">
-        <SectionHeader
-          eyebrow="Курс"
-          title={course.title}
-          description={course.shortDescription ?? course.description ?? 'Подробности курса и программа показаны ниже.'}
-          actions={
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
-              <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
-            </div>
-          }
-        />
-
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
+      <Stack gap="xl">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_22rem] xl:items-start">
           <Stack gap="lg">
-            <Card padding="lg">
+            <Card padding="lg" tone="highlight">
               <Stack gap="lg">
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
-                    <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
+                      <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
+                      <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Курс</div>
+                      <h1 className="text-display font-semibold tracking-[-0.06em] text-foreground">{course.title}</h1>
+                      <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                        {course.description ?? course.shortDescription ?? 'Подробности курса и программа показаны ниже.'}
+                      </p>
+                    </div>
                   </div>
-                  <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                    {course.description ?? course.shortDescription ?? 'Краткое описание курса появится здесь.'}
-                  </p>
+                  <IconChip icon={<BookOpenIcon size={18} />} tone="primary" className="hidden sm:inline-flex" />
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Card padding="sm">
+                <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                  <Card padding="sm" tone="muted">
                     <div className="text-sm text-muted-foreground">Формат доступа</div>
                     <div className="mt-2 text-sm font-medium text-foreground">{accessLabel(course.accessType)}</div>
                   </Card>
-                  <Card padding="sm">
+                  <Card padding="sm" tone="muted">
                     <div className="text-sm text-muted-foreground">Стоимость</div>
                     <div className="mt-2 text-sm font-medium text-foreground">{moneyLabel(course.priceAmount)}</div>
                   </Card>
@@ -157,31 +154,42 @@ export default async function CoursePage({ params }: CoursePageProps) {
             />
           </Stack>
 
-          <Card padding="md" className="space-y-4">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Сводка</p>
-              <p className="text-sm text-muted-foreground">Короткая карточка курса для быстрого просмотра перед стартом.</p>
-            </div>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-muted-foreground">Модулей</span>
-                <span className="text-sm font-medium text-foreground">{tree.modules.length}</span>
+          <Stack gap="md">
+            <Card padding="md" tone="muted" className="space-y-4">
+              <div className="space-y-1">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Сводка</p>
+                <p className="text-sm leading-7 text-muted-foreground">Короткий ориентир перед стартом или покупкой курса.</p>
               </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-muted-foreground">Уроков</span>
-                <span className="text-sm font-medium text-foreground">{tree.totalLessonsCount}</span>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-muted-foreground">Модулей</span>
+                  <span className="text-sm font-medium text-foreground">{tree.modules.length}</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-muted-foreground">Уроков</span>
+                  <span className="text-sm font-medium text-foreground">{tree.totalLessonsCount}</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-muted-foreground">Статус</span>
+                  <span className="text-sm font-medium text-foreground">
+                    {course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm text-muted-foreground">Статус</span>
-                <span className="text-sm font-medium text-foreground">
-                  {course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'}
-                </span>
-              </div>
-            </div>
-            <ActionLink href={buildCatalogPath()} variant="outline" className="w-full">
-              Вернуться в каталог
-            </ActionLink>
-          </Card>
+              <ActionLink href={buildCatalogPath()} variant="outline" className="w-full">
+                Вернуться в каталог
+              </ActionLink>
+            </Card>
+
+            <Card padding="md">
+              <Stack gap="sm">
+                <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Что дальше</div>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после подтвержденной оплаты.
+                </p>
+              </Stack>
+            </Card>
+          </Stack>
         </div>
       </Stack>
     </Section>
