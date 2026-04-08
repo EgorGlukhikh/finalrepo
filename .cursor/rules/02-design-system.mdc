@@ -1,0 +1,15 @@
+---
+description: Visual system rules for Academy Realtors.
+globs:
+  - src/styles/**/*
+  - src/components/**/*
+  - src/app/**/*
+---
+
+Keep the visual system stable:
+- Use shared tokens instead of ad-hoc values.
+- Keep container widths and spacing scales consistent.
+- Reuse primitives before creating new UI variants.
+- Avoid random colors, radii, shadows, and motion.
+- Keep layout, component, and product surfaces on the same semantic token set.
+- Make page composition feel deliberate and restrained.
