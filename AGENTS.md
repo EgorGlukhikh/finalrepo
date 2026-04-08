@@ -22,6 +22,8 @@ Non-negotiable rules:
 - Progress updates must stay in the module layer; page files only compose UI and route boundaries.
 - Any payment webhook must validate signature before changing order state.
 - `ResultURL` handlers must be idempotent.
+- Free courses should enroll on first learner access when it helps progress tracking.
+- Paid courses must never create orders until a purchase intent is explicit.
 - Run lint, typecheck, and the relevant tests after changes.
 
 Definition of done:

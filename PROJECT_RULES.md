@@ -14,9 +14,12 @@
 - `src/lib` owns infrastructure helpers and integrations.
 - `src/styles` owns global styling and tokens.
 - LMS domain modules are split by concern:
-  - `auth`, `users`, `courses`, `enrollments`, `progress`.
+  - `auth`, `users`, `courses`, `enrollments`, `progress`, `billing`.
 - Course structure is hierarchical:
   - course -> module -> lesson.
+- Course access is binary at the product level:
+  - `FREE` courses are immediately accessible and keep `priceAmount = null`.
+  - `PAID` courses require `priceAmount` and later Robokassa confirmation.
 - Lesson creation is type-first:
   - `regular`, `assignment`, `test`, `webinar`.
 - Route groups are:
@@ -30,6 +33,8 @@
 - Authentication is controlled by `src/modules/auth` and `src/app/api/auth/*`.
 - Session access for shells is centralized in `src/modules/auth/shell.tsx`.
 - Course access checks are centralized in domain services, not inline in page components.
+- Billing is isolated in `src/modules/billing`; only paid courses can create orders.
+- Robokassa callbacks must be idempotent and signature-checked before any state change.
 - Prisma queries stay inside module repositories and service layers.
 - Read-only helpers can live in `queries.ts`; mutation helpers stay in `repository.ts`.
 

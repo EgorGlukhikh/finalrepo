@@ -9,12 +9,19 @@ This repository keeps the LMS model intentionally small and explicit.
 - `Lesson` for ordered units with a required `lessonType`.
 - `Enrollment` for access grants and purchase state.
 - `LessonProgress` for per-user progress tracking.
+- `Order` for paid-course purchase state.
+- `PaymentEvent` for Robokassa callback logging and idempotency.
 
 ## Modeling rules
 - The hierarchy is course -> module -> lesson.
+- Course access is modeled with `accessType` and `priceAmount`.
+- Free courses must keep `priceAmount` null.
+- Paid courses must keep `priceAmount` set.
 - Lesson creation starts with type selection, so `lessonType` is required.
 - Module and lesson order fields support future tree-based builders.
 - Progress is separate from enrollment because access and completion are different concerns.
+- Orders are only created for paid courses.
+- Robokassa `ResultURL` handlers must verify signature before changing order state.
 
 ## Service boundaries
 - Prisma access lives in module repositories.
@@ -24,5 +31,5 @@ This repository keeps the LMS model intentionally small and explicit.
 
 ## Future additions
 - lesson content blocks
-- billing/order tables
+- richer billing reporting
 - richer progress analytics

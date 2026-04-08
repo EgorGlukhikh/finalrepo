@@ -27,3 +27,5 @@
 - Route protection belongs to layout boundaries plus `src/modules/auth/*`, not to page-level conditionals.
 - Learner screens should consume access and progress data from `src/modules/learning`.
 - Future LMS builder screens should consume a course -> module -> lesson tree from `src/modules/courses`.
+- Catalog and course pages must clearly distinguish free and paid access.
+- Paid purchase actions belong to `src/modules/billing`, not to page files.
