@@ -1,30 +1,28 @@
-import { ActionLink } from '@/components/layout';
-import { Card } from '@/components/ui';
-import { Section, SectionHeader, Stack } from '@/components/layout';
+import type { Metadata } from 'next';
 
-export default function PublicHomePage() {
+import { getAuthSession } from '@/modules/auth/session';
+import { listPublishedCourses } from '@/modules/courses';
+import { buildCatalogPath } from '@/modules/courses/paths';
+import { LandingPage } from '@/modules/marketing/components/landing-page';
+
+export const metadata: Metadata = {
+  title: 'Главная',
+  description:
+    'Академия риэлторов — образовательная платформа с каталогом курсов, личным кабинетом, прогрессом обучения и прозрачной логикой бесплатного и платного доступа.',
+};
+
+export default async function PublicHomePage() {
+  const [session, courses] = await Promise.all([getAuthSession(), listPublishedCourses()]);
+
+  const primaryCtaHref = session?.user ? '/app' : '/sign-up';
+  const primaryCtaLabel = session?.user ? 'Продолжить обучение' : 'Начать обучение';
+
   return (
-    <Section padding="lg">
-      <Stack gap="lg" className="max-w-3xl">
-        <SectionHeader
-          eyebrow="Публичная зона"
-          title="Академия риэлторов"
-          description="Спокойная точка входа в каталог курсов, личный кабинет и будущие рабочие разделы платформы."
-        />
-        <Card padding="lg">
-          <Stack gap="md">
-            <p className="max-w-prose text-sm leading-7 text-muted-foreground">
-              В этой версии уже можно посмотреть каталог курсов, перейти на публичную страницу курса и открыть личный кабинет после входа.
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <ActionLink href="/courses">Открыть каталог</ActionLink>
-              <ActionLink href="/sign-in" variant="secondary">
-                Войти в кабинет
-              </ActionLink>
-            </div>
-          </Stack>
-        </Card>
-      </Stack>
-    </Section>
+    <LandingPage
+      courses={courses}
+      primaryCtaHref={primaryCtaHref}
+      primaryCtaLabel={primaryCtaLabel}
+      secondaryCtaHref={buildCatalogPath()}
+    />
   );
 }
