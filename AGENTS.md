@@ -17,6 +17,9 @@ Non-negotiable rules:
 - Authentication uses NextAuth v4 credentials flow with Prisma-backed users and JWT sessions.
 - Session access and auth-aware shell decisions are centralized in `src/modules/auth/shell.tsx`.
 - Public, auth, platform, and admin shells must stay separated by route group or layout boundary.
+- Learner flow belongs in `src/modules/learning` and must own access checks, course trees, lesson navigation, and progress actions.
+- Public course pages may preview curriculum, but learner pages must still require access before exposing lesson content.
+- Progress updates must stay in the module layer; page files only compose UI and route boundaries.
 - Any payment webhook must validate signature before changing order state.
 - `ResultURL` handlers must be idempotent.
 - Run lint, typecheck, and the relevant tests after changes.

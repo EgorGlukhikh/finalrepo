@@ -24,8 +24,12 @@
   - `(auth)` for sign-in, sign-up, and auth stubs.
   - `(platform)` for authenticated user shell.
   - `admin` for administrator shell.
+- Public course browsing lives at `/courses` and `/courses/[slug]`.
+- Learner flow lives at `/app`, `/app/courses/[slug]`, and `/app/courses/[slug]/lessons/[lessonId]`.
+- Learner access, progress, navigation, and completion are coordinated through `src/modules/learning`.
 - Authentication is controlled by `src/modules/auth` and `src/app/api/auth/*`.
 - Session access for shells is centralized in `src/modules/auth/shell.tsx`.
+- Course access checks are centralized in domain services, not inline in page components.
 - Prisma queries stay inside module repositories and service layers.
 - Read-only helpers can live in `queries.ts`; mutation helpers stay in `repository.ts`.
 
