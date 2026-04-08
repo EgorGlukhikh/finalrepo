@@ -15,6 +15,7 @@ import {
   duplicateCourseTreeRecord,
   createLessonRecord,
   createModuleRecord,
+  deleteLessonRecord,
   listCourseRows,
   listPublishedCourseRows,
   nextLessonSortOrder,
@@ -44,6 +45,7 @@ import {
   updateModuleSchema,
 } from './schemas';
 import { resolveSlugInput } from './slug';
+import { lessonDraftTitles } from './lesson-meta';
 
 export async function listPublishedCourses(): Promise<CourseListItem[]> {
   const rows = await listPublishedCourseRows();
@@ -402,6 +404,47 @@ export async function createLesson(input: CreateLessonInput): Promise<CourseStru
   return structure;
 }
 
+export async function createLessonDraft(input: { moduleId: string; lessonType: CreateLessonInput['lessonType'] }) {
+  const sortOrder = await nextLessonSortOrder(input.moduleId);
+  const baseTitle = lessonDraftTitles[input.lessonType];
+  const title = `${baseTitle} ${sortOrder + 1}`;
+  const slug = `${resolveSlugInput({ fallback: baseTitle })}-${sortOrder + 1}`;
+
+  const created = await createLessonRecord({
+    module: {
+      connect: {
+        id: input.moduleId,
+      },
+    },
+    slug,
+    title,
+    sortOrder,
+    lessonType: input.lessonType,
+    status: 'DRAFT',
+    preview: false,
+    summary: null,
+    content: Prisma.JsonNull,
+    publishedAt: null,
+  });
+
+  const courseId = await getModuleCourseIdByModuleId(input.moduleId);
+
+  if (!courseId) {
+    throw new Error('LESSON_CREATE_FAILED');
+  }
+
+  const course = await getCourseStructureById(courseId);
+
+  if (!course) {
+    throw new Error('LESSON_CREATE_FAILED');
+  }
+
+  return {
+    course,
+    lessonId: created.id,
+  };
+}
+
 export async function updateLesson(input: UpdateLessonInput): Promise<CourseStructure> {
   const parsed = updateLessonSchema.parse({
     ...input,
@@ -456,6 +499,24 @@ export async function updateLesson(input: UpdateLessonInput): Promise<CourseStru
   }
 
   return structure;
+}
+
+export async function deleteLesson(lessonId: string): Promise<CourseStructure> {
+  const courseId = await getLessonCourseIdByLessonId(lessonId);
+
+  if (!courseId) {
+    throw new Error('LESSON_NOT_FOUND');
+  }
+
+  await deleteLessonRecord(lessonId);
+
+  const course = await getCourseStructureById(courseId);
+
+  if (!course) {
+    throw new Error('LESSON_DELETE_FAILED');
+  }
+
+  return course;
 }
 
 export async function getCourseAccessForUser(userId: string, courseId: string): Promise<CourseAccessSummary> {

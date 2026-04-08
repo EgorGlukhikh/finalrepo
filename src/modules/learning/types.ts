@@ -8,58 +8,8 @@ import type {
   LessonType,
   UserRole,
 } from '@prisma/client';
-
-export type LessonBlock =
-  | {
-      id?: string;
-      type: 'text';
-      text: string;
-      tone?: 'default' | 'muted';
-    }
-  | {
-      id?: string;
-      type: 'video';
-      url: string;
-      title?: string;
-      caption?: string;
-    }
-  | {
-      id?: string;
-      type: 'file';
-      url: string;
-      title: string;
-      description?: string;
-    }
-  | {
-      id?: string;
-      type: 'image';
-      url: string;
-      alt: string;
-      caption?: string;
-    }
-  | {
-      id?: string;
-      type: 'embed';
-      url: string;
-      title?: string;
-      description?: string;
-    }
-  | {
-      id?: string;
-      type: 'callout';
-      text: string;
-      title?: string;
-      tone?: 'info' | 'success' | 'warning';
-    }
-  | {
-      id?: string;
-      type: 'checklist';
-      items: Array<{
-        id?: string;
-        label: string;
-        checked?: boolean;
-      }>;
-    };
+import type { LessonBlock } from '@/modules/courses/lesson-blocks';
+export type { LessonBlock } from '@/modules/courses/lesson-blocks';
 
 export type LearningCourseView = {
   id: string;

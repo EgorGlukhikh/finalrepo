@@ -424,3 +424,14 @@ export async function updateLessonRecord(lessonId: string, data: Prisma.LessonUp
     },
   });
 }
+
+export async function deleteLessonRecord(lessonId: string) {
+  return db.lesson.delete({
+    where: {
+      id: lessonId,
+    },
+    select: {
+      id: true,
+    },
+  });
+}

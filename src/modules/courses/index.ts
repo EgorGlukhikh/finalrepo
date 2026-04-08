@@ -1,6 +1,8 @@
 export {
   createCourse,
+  createLessonDraft,
   deleteCourse,
+  deleteLesson,
   duplicateCourse,
   createLesson,
   createModule,
@@ -18,6 +20,7 @@ export {
 } from './service';
 export type {
   CourseAccessSummary,
+  CourseLessonNode,
   CourseListItem,
   CourseModuleNode,
   CourseStructure,

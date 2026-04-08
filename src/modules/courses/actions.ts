@@ -5,7 +5,22 @@ import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/modules/auth/access';
 
-import { createCourse, createLesson, createModule, deleteCourse, duplicateCourse, setCourseStatus } from './service';
+import {
+  createCourse,
+  createLessonDraft,
+  createModule,
+  deleteCourse,
+  deleteLesson,
+  duplicateCourse,
+  setCourseStatus,
+  updateCourse,
+  updateLesson,
+} from './service';
+import { getFallbackBuilderLessonId } from './builder';
+
+const courseStatusValues = ['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const;
+const lessonStatusValues = ['DRAFT', 'PUBLISHED'] as const;
+const lessonTypeValues = ['REGULAR', 'ASSIGNMENT', 'TEST', 'WEBINAR'] as const;
 
 function readFormString(formData: FormData, key: string) {
   return String(formData.get(key) ?? '').trim();
@@ -30,6 +45,32 @@ function readOptionalNumber(formData: FormData, key: string) {
 function readFreeFlag(formData: FormData) {
   const raw = formData.get('isFree');
   return raw === 'on' || raw === 'true' || raw === '1';
+}
+
+function isCourseStatus(value: string): value is (typeof courseStatusValues)[number] {
+  return courseStatusValues.includes(value as (typeof courseStatusValues)[number]);
+}
+
+function isLessonStatus(value: string): value is (typeof lessonStatusValues)[number] {
+  return lessonStatusValues.includes(value as (typeof lessonStatusValues)[number]);
+}
+
+function isLessonType(value: string): value is (typeof lessonTypeValues)[number] {
+  return lessonTypeValues.includes(value as (typeof lessonTypeValues)[number]);
+}
+
+function readOptionalJson(formData: FormData, key: string) {
+  const raw = readFormString(formData, key);
+
+  if (!raw) {
+    return undefined;
+  }
+
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch {
+    throw new Error('COURSE_CONTENT_INVALID');
+  }
 }
 
 export async function createCourseAction(formData: FormData) {
@@ -126,32 +167,115 @@ export async function createModuleAction(formData: FormData) {
   redirect(`/admin/courses/${course.id}`);
 }
 
-export async function createLessonAction(formData: FormData) {
+export async function createLessonDraftAction(formData: FormData) {
   await requireAdmin('/admin/courses');
   const courseId = readFormString(formData, 'courseId');
   const moduleId = readFormString(formData, 'moduleId');
-  const title = readFormString(formData, 'title');
-  const slug = readFormString(formData, 'slug');
   const lessonType = readFormString(formData, 'lessonType');
 
-  if (
-    !courseId ||
-    !moduleId ||
-    !title ||
-    !slug ||
-    (lessonType !== 'REGULAR' && lessonType !== 'ASSIGNMENT' && lessonType !== 'TEST' && lessonType !== 'WEBINAR')
-  ) {
+  if (!courseId || !moduleId || !isLessonType(lessonType)) {
     throw new Error('LESSON_INPUT_INVALID');
   }
 
-  const course = await createLesson({
+  const created = await createLessonDraft({
     moduleId,
-    title,
-    slug,
     lessonType,
   });
 
   revalidatePath('/admin/courses');
+  revalidatePath(`/admin/courses/${created.course.id}`);
+  redirect(`/admin/courses/${created.course.id}?lessonId=${created.lessonId}`);
+}
+
+export async function updateLessonAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const lessonId = readFormString(formData, 'lessonId');
+  const returnPath = readFormString(formData, 'returnPath') || `/admin/courses/${courseId}?lessonId=${lessonId}`;
+  const status = readFormString(formData, 'status');
+  const lessonType = readFormString(formData, 'lessonType');
+
+  if (!courseId || !lessonId || !isLessonStatus(status) || !isLessonType(lessonType)) {
+    throw new Error('LESSON_INPUT_INVALID');
+  }
+
+  const course = await updateLesson({
+    lessonId,
+    title: readFormString(formData, 'title'),
+    summary: readFormString(formData, 'summary') || undefined,
+    status,
+    lessonType,
+    content: readOptionalJson(formData, 'content'),
+  });
+
+  revalidatePath('/admin/courses');
   revalidatePath(`/admin/courses/${course.id}`);
-  redirect(`/admin/courses/${course.id}`);
+  redirect(returnPath);
+}
+
+export async function setLessonStatusAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const lessonId = readFormString(formData, 'lessonId');
+  const status = readFormString(formData, 'status');
+
+  if (!courseId || !lessonId || !isLessonStatus(status)) {
+    throw new Error('LESSON_STATUS_INPUT_INVALID');
+  }
+
+  const course = await updateLesson({
+    lessonId,
+    status,
+  });
+
+  revalidatePath('/admin/courses');
+  revalidatePath(`/admin/courses/${course.id}`);
+  redirect(`/admin/courses/${course.id}?lessonId=${lessonId}`);
+}
+
+export async function deleteLessonAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const lessonId = readFormString(formData, 'lessonId');
+
+  if (!courseId || !lessonId) {
+    throw new Error('LESSON_INPUT_INVALID');
+  }
+
+  const course = await deleteLesson(lessonId);
+  const nextLessonId = getFallbackBuilderLessonId(course);
+
+  revalidatePath('/admin/courses');
+  revalidatePath(`/admin/courses/${course.id}`);
+  redirect(nextLessonId ? `/admin/courses/${course.id}?lessonId=${nextLessonId}` : `/admin/courses/${course.id}`);
+}
+
+export async function updateCourseSettingsAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const isFree = readFreeFlag(formData);
+  const status = readFormString(formData, 'status');
+
+  if (!courseId || !isCourseStatus(status)) {
+    throw new Error('COURSE_ID_REQUIRED');
+  }
+
+  const course = await updateCourse({
+    courseId,
+    title: readFormString(formData, 'title'),
+    slug: readFormString(formData, 'slug'),
+    shortDescription: readFormString(formData, 'shortDescription') || undefined,
+    description: readFormString(formData, 'description') || undefined,
+    coverImageUrl: readFormString(formData, 'coverImageUrl') || undefined,
+    status,
+    accessType: isFree ? 'FREE' : 'PAID',
+    priceAmount: isFree ? null : readOptionalNumber(formData, 'priceAmount'),
+  });
+
+  revalidatePath('/admin/courses');
+  revalidatePath(`/admin/courses/${course.id}`);
+  revalidatePath(`/admin/courses/${course.id}/settings`);
+  revalidatePath('/courses');
+  revalidatePath(`/courses/${course.slug}`);
+  redirect(`/admin/courses/${course.id}/settings`);
 }
