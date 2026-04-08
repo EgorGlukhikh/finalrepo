@@ -4,9 +4,10 @@ import { ActionLink } from '@/components/layout';
 import { Badge, Button, Card } from '@/components/ui';
 import { Section, SectionHeader, Stack } from '@/components/layout';
 import { getAuthSession } from '@/modules/auth/session';
-import { CourseCurriculum } from '@/modules/learning/components';
 import { enrollFreeCourseAction } from '@/modules/learning/actions';
 import { getCourseLearningTree } from '@/modules/learning';
+import { purchasePaidCourseAction } from '@/modules/billing';
+import { CourseCurriculum } from '@/modules/learning/components';
 
 type CoursePageProps = {
   params: Promise<{
@@ -28,7 +29,7 @@ function accessLabel(accessType: string) {
 }
 
 function moneyLabel(amount: number | null) {
-  return amount === null ? 'Доступен после зачисления' : `${amount} ₽`;
+  return amount === null ? 'Без оплаты' : `${amount} ₽`;
 }
 
 export default async function CoursePage({ params }: CoursePageProps) {
@@ -41,7 +42,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
   }
 
   const course = tree.course;
-  const hasAccess = Boolean(tree.canAccess);
+  const isEnrolled = tree.enrollmentStatus === 'ACTIVE';
   const signInHref = `/sign-in?callbackUrl=${encodeURIComponent(`/courses/${slug}`)}`;
 
   return (
@@ -53,7 +54,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
           description={course.shortDescription ?? course.description ?? 'Подробности курса и программа показаны ниже.'}
           actions={
             <div className="flex flex-wrap items-center gap-2">
-              <Badge tone="secondary">{accessLabel(course.accessType)}</Badge>
+              <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
               <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
             </div>
           }
@@ -65,7 +66,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
               <Stack gap="lg">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge tone="secondary">{accessLabel(course.accessType)}</Badge>
+                    <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
                     <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
                   </div>
                   <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
@@ -84,7 +85,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   </Card>
                 </div>
 
-                {hasAccess ? (
+                {isEnrolled ? (
                   <div className="flex flex-wrap items-center gap-3">
                     <ActionLink href={`/app/courses/${course.slug}`}>Продолжить обучение</ActionLink>
                     <span className="text-sm text-muted-foreground">У вас уже есть доступ к этому курсу.</span>
@@ -94,29 +95,31 @@ export default async function CoursePage({ params }: CoursePageProps) {
                     <form action={enrollFreeCourseAction} className="flex flex-wrap items-center gap-3">
                       <input type="hidden" name="courseId" value={course.id} />
                       <input type="hidden" name="courseSlug" value={course.slug} />
-                      <Button type="submit">Открыть доступ</Button>
-                      <span className="text-sm text-muted-foreground">Бесплатное зачисление откроет личный маршрут обучения.</span>
+                      <Button type="submit">Начать обучение</Button>
+                      <span className="text-sm text-muted-foreground">Бесплатный курс откроет личный маршрут обучения после зачисления.</span>
                     </form>
                   ) : (
-                    <div className="flex flex-wrap items-center gap-3">
-                      <Button variant="secondary" disabled>
-                        Оплата появится позже
-                      </Button>
-                      <span className="text-sm text-muted-foreground">Платный доступ будет подключен отдельным шагом.</span>
-                    </div>
+                    <form action={purchasePaidCourseAction} className="flex flex-wrap items-center gap-3">
+                      <input type="hidden" name="courseId" value={course.id} />
+                      <input type="hidden" name="courseSlug" value={course.slug} />
+                      <Button type="submit">Купить курс</Button>
+                      <span className="text-sm text-muted-foreground">После оплаты доступ откроется автоматически.</span>
+                    </form>
                   )
                 ) : (
                   <div className="flex flex-wrap items-center gap-3">
                     <ActionLink href={signInHref}>Войти и продолжить</ActionLink>
-                    <span className="text-sm text-muted-foreground">После входа вы сможете открыть бесплатный курс или продолжить обучение.</span>
+                    <span className="text-sm text-muted-foreground">
+                      После входа вы сможете начать бесплатный курс или перейти к оплате платного.
+                    </span>
                   </div>
                 )}
               </Stack>
             </Card>
 
             <CourseCurriculum
-              title="Превью программы"
-              description="На публичной странице видны модули и уроки, но содержимое защищенных уроков скрыто."
+              title="Программа курса"
+              description="На публичной странице видны модули и уроки, но содержимое защищённых уроков остаётся скрытым."
               modules={tree.modules}
               mode="preview"
             />

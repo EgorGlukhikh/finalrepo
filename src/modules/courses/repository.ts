@@ -148,6 +148,15 @@ export async function listPublishedCourseRows() {
   });
 }
 
+export async function listCourseRows() {
+  return db.course.findMany({
+    orderBy: {
+      updatedAt: 'desc',
+    },
+    select: courseListSelect,
+  });
+}
+
 export async function findCourseStructureRowBySlug(slug: string) {
   return db.course.findUnique({
     where: {
