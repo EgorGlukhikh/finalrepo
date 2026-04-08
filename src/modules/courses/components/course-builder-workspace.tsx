@@ -26,7 +26,7 @@ export function CourseBuilderWorkspace({
   const selection = getBuilderSelection(course, selectedLessonId);
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(18rem,34vw)_minmax(0,1fr)]">
+    <div className="grid gap-8 xl:grid-cols-[minmax(18rem,35%)_minmax(0,1fr)]">
       <BuilderStructurePanel
         course={course}
         selectedLessonId={selection?.lesson.id ?? null}
