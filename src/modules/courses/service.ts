@@ -43,6 +43,7 @@ import {
   updateLessonSchema,
   updateModuleSchema,
 } from './schemas';
+import { resolveSlugInput } from './slug';
 
 export async function listPublishedCourses(): Promise<CourseListItem[]> {
   const rows = await listPublishedCourseRows();
@@ -133,7 +134,13 @@ export async function getCourseStructureById(courseId: string): Promise<CourseSt
 }
 
 export async function createCourse(input: CreateCourseInput): Promise<CourseStructure> {
-  const parsed = createCourseSchema.parse(input);
+  const parsed = createCourseSchema.parse({
+    ...input,
+    slug: resolveSlugInput({
+      slug: input.slug,
+      fallback: input.title,
+    }),
+  });
   const billing = resolveCourseBilling(parsed.accessType, parsed.priceAmount);
   courseBillingSchema.parse({
     accessType: billing.accessType,
@@ -168,7 +175,16 @@ export async function createCourse(input: CreateCourseInput): Promise<CourseStru
 }
 
 export async function updateCourse(input: UpdateCourseInput): Promise<CourseStructure> {
-  const parsed = updateCourseSchema.parse(input);
+  const parsed = updateCourseSchema.parse({
+    ...input,
+    slug:
+      input.slug === undefined
+        ? undefined
+        : resolveSlugInput({
+            slug: input.slug,
+            fallback: input.title,
+          }),
+  });
   const existing = await getCourseStructureById(parsed.courseId);
 
   if (!existing) {
@@ -246,7 +262,12 @@ export async function duplicateCourse(courseId: string, ownerId?: string | null)
     throw new Error('COURSE_NOT_FOUND');
   }
 
-  const duplicateSlug = await buildAvailableDuplicateSlug(source.slug);
+  const duplicateSlug = await buildAvailableDuplicateSlug(
+    resolveSlugInput({
+      slug: source.slug,
+      fallback: source.title,
+    }),
+  );
   const created = await duplicateCourseTreeRecord(courseId, {
     slug: duplicateSlug,
     title: `${source.title} (копия)`,
@@ -340,7 +361,13 @@ export async function updateModule(input: UpdateModuleInput): Promise<CourseStru
 }
 
 export async function createLesson(input: CreateLessonInput): Promise<CourseStructure> {
-  const parsed = createLessonSchema.parse(input);
+  const parsed = createLessonSchema.parse({
+    ...input,
+    slug: resolveSlugInput({
+      slug: input.slug,
+      fallback: input.title,
+    }),
+  });
   const sortOrder = parsed.sortOrder ?? (await nextLessonSortOrder(parsed.moduleId));
 
   await createLessonRecord({
@@ -376,7 +403,16 @@ export async function createLesson(input: CreateLessonInput): Promise<CourseStru
 }
 
 export async function updateLesson(input: UpdateLessonInput): Promise<CourseStructure> {
-  const parsed = updateLessonSchema.parse(input);
+  const parsed = updateLessonSchema.parse({
+    ...input,
+    slug:
+      input.slug === undefined
+        ? undefined
+        : resolveSlugInput({
+            slug: input.slug,
+            fallback: input.title,
+          }),
+  });
   const existingCourseId = await getLessonCourseIdByLessonId(parsed.lessonId);
 
   if (!existingCourseId) {
