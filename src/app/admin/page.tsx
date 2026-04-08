@@ -1,16 +1,19 @@
 import { ActionLink, Grid, Section, SectionHeader, Stack } from '@/components/layout';
 import { Card } from '@/components/ui';
+import { getAdminDashboardAnalytics } from '@/modules/analytics';
+import { AdminAnalyticsOverview } from '@/modules/analytics/components';
 import { listOrders } from '@/modules/billing';
 import { listCoursesForAdmin } from '@/modules/courses';
 import { listEnrollments } from '@/modules/enrollments';
 import { listUsers } from '@/modules/users';
 
 export default async function AdminHomePage() {
-  const [courses, users, enrollments, orders] = await Promise.all([
+  const [courses, users, enrollments, orders, analytics] = await Promise.all([
     listCoursesForAdmin(),
     listUsers(),
     listEnrollments(),
     listOrders(),
+    getAdminDashboardAnalytics(),
   ]);
 
   return (
@@ -19,8 +22,10 @@ export default async function AdminHomePage() {
         <SectionHeader
           eyebrow="Админка"
           title="Операционная панель"
-          description="Рабочий контур для управления курсами, доступами, пользователями и оплатами. Без лишнего шума и декоративных дашбордов."
+          description="Рабочий контур для управления курсами, доступами, пользователями и оплатами. Аналитика остается легкой и не превращает админку в BI-систему."
         />
+
+        <AdminAnalyticsOverview analytics={analytics} />
 
         <Grid cols={2} gap="lg" className="xl:grid-cols-2">
           <OverviewCard

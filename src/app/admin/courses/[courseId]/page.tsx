@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 
 import { Section, Stack } from '@/components/layout';
+import { getCourseAnalytics } from '@/modules/analytics';
+import { CourseAnalyticsStrip } from '@/modules/analytics/components';
 import { getCourseStructureById } from '@/modules/courses';
 import {
   createLessonDraftAction,
@@ -23,7 +25,7 @@ type AdminCoursePageProps = {
 export default async function AdminCoursePage({ params, searchParams }: AdminCoursePageProps) {
   const { courseId } = await params;
   const { lessonId } = await searchParams;
-  const course = await getCourseStructureById(courseId);
+  const [course, analytics] = await Promise.all([getCourseStructureById(courseId), getCourseAnalytics(courseId)]);
 
   if (!course) {
     notFound();
@@ -31,7 +33,8 @@ export default async function AdminCoursePage({ params, searchParams }: AdminCou
 
   return (
     <Section padding="lg">
-      <Stack gap="lg">
+      <Stack gap="xl">
+        <CourseAnalyticsStrip analytics={analytics} />
         <CourseBuilderWorkspace
           course={course}
           selectedLessonId={lessonId ?? null}
@@ -40,6 +43,7 @@ export default async function AdminCoursePage({ params, searchParams }: AdminCou
           updateLessonAction={updateLessonAction}
           setLessonStatusAction={setLessonStatusAction}
           deleteLessonAction={deleteLessonAction}
+          lessonMetrics={analytics.lessonMetrics}
         />
       </Stack>
     </Section>

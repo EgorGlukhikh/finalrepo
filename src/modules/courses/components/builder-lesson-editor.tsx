@@ -2,6 +2,7 @@
 
 import { ActionLink } from '@/components/layout';
 import { Badge, Button, EmptyState, Input, Select, Textarea } from '@/components/ui';
+import type { LessonAnalytics } from '@/modules/analytics';
 import type { CourseLessonNode, CourseModuleNode } from '@/modules/courses';
 
 import { lessonTypeLabels } from '../lesson-meta';
@@ -12,6 +13,7 @@ type BuilderLessonEditorProps = {
   courseTitle: string;
   selectedLesson: CourseLessonNode | null;
   selectedModule: CourseModuleNode | null;
+  selectedLessonMetrics: LessonAnalytics | null;
   updateLessonAction: (formData: FormData) => void | Promise<void>;
   setLessonStatusAction: (formData: FormData) => void | Promise<void>;
   deleteLessonAction: (formData: FormData) => void | Promise<void>;
@@ -22,6 +24,7 @@ export function BuilderLessonEditor({
   courseTitle,
   selectedLesson,
   selectedModule,
+  selectedLessonMetrics,
   updateLessonAction,
   setLessonStatusAction,
   deleteLessonAction,
@@ -48,6 +51,9 @@ export function BuilderLessonEditor({
             <h1 className="text-page-title font-semibold tracking-tight text-foreground">{selectedLesson.title}</h1>
             <p className="text-sm text-muted-foreground">
               {courseTitle} / {selectedModule.title}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Начали {selectedLessonMetrics?.startsCount ?? 0} • Завершили {selectedLessonMetrics?.completionsCount ?? 0}
             </p>
           </div>
         </div>
@@ -96,7 +102,12 @@ export function BuilderLessonEditor({
 
             <label className="space-y-2">
               <span className="text-sm font-medium text-foreground">Краткое описание</span>
-              <Textarea name="summary" rows={4} defaultValue={selectedLesson.summary ?? ''} placeholder="Короткий контекст для автора и ученика" />
+              <Textarea
+                name="summary"
+                rows={4}
+                defaultValue={selectedLesson.summary ?? ''}
+                placeholder="Короткий контекст для автора и ученика"
+              />
             </label>
           </div>
 
