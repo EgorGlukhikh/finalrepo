@@ -27,6 +27,7 @@
 - Authentication is controlled by `src/modules/auth` and `src/app/api/auth/*`.
 - Session access for shells is centralized in `src/modules/auth/shell.tsx`.
 - Prisma queries stay inside module repositories and service layers.
+- Read-only helpers can live in `queries.ts`; mutation helpers stay in `repository.ts`.
 
 ## Discipline
 - Keep files small and obvious.

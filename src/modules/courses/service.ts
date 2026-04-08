@@ -12,11 +12,6 @@ import {
   createCourseRecord,
   createLessonRecord,
   createModuleRecord,
-  findCourseAccessRowById,
-  findCourseStructureRowById,
-  findCourseStructureRowBySlug,
-  findLessonCourseIdByLessonId,
-  findModuleCourseIdByModuleId,
   listPublishedCourseRows,
   nextLessonSortOrder,
   nextModuleSortOrder,
@@ -26,7 +21,14 @@ import {
 } from './repository';
 import { mapCourseListItem, mapCourseStructure } from './mappers';
 import type { CourseAccessSummary, CourseListItem, CourseModuleNode, CourseStructure } from './types';
-import { findEnrollmentRow } from '@/modules/enrollments/repository';
+import {
+  getCourseAccessRowById,
+  getCourseStructureRowById,
+  getCourseStructureRowBySlug,
+  getLessonCourseIdByLessonId,
+  getModuleCourseIdByModuleId,
+} from './queries';
+import { findEnrollmentRow } from '@/modules/enrollments/queries';
 import {
   createCourseSchema,
   createLessonSchema,
@@ -45,7 +47,7 @@ export async function getCourseBySlug(
   slug: string,
   options?: { publishedOnly?: boolean },
 ): Promise<CourseStructure | null> {
-  const row = await findCourseStructureRowBySlug(slug);
+  const row = await getCourseStructureRowBySlug(slug);
 
   if (!row) {
     return null;
@@ -68,7 +70,7 @@ export async function getCourseModules(
 }
 
 export async function getCourseStructureById(courseId: string): Promise<CourseStructure | null> {
-  const row = await findCourseStructureRowById(courseId);
+  const row = await getCourseStructureRowById(courseId);
   return row ? mapCourseStructure(row) : null;
 }
 
@@ -165,7 +167,7 @@ export async function createModule(input: CreateModuleInput): Promise<CourseStru
 
 export async function updateModule(input: UpdateModuleInput): Promise<CourseStructure> {
   const parsed = updateModuleSchema.parse(input);
-  const existingCourseId = await findModuleCourseIdByModuleId(parsed.moduleId);
+  const existingCourseId = await getModuleCourseIdByModuleId(parsed.moduleId);
 
   if (!existingCourseId) {
     throw new Error('MODULE_NOT_FOUND');
@@ -220,7 +222,7 @@ export async function createLesson(input: CreateLessonInput): Promise<CourseStru
     publishedAt: parsed.status === 'PUBLISHED' ? parsed.publishedAt ?? new Date() : parsed.publishedAt ?? null,
   });
 
-  const courseId = await findModuleCourseIdByModuleId(parsed.moduleId);
+  const courseId = await getModuleCourseIdByModuleId(parsed.moduleId);
 
   if (!courseId) {
     throw new Error('LESSON_CREATE_FAILED');
@@ -237,7 +239,7 @@ export async function createLesson(input: CreateLessonInput): Promise<CourseStru
 
 export async function updateLesson(input: UpdateLessonInput): Promise<CourseStructure> {
   const parsed = updateLessonSchema.parse(input);
-  const existingCourseId = await findLessonCourseIdByLessonId(parsed.lessonId);
+  const existingCourseId = await getLessonCourseIdByLessonId(parsed.lessonId);
 
   if (!existingCourseId) {
     throw new Error('LESSON_NOT_FOUND');
@@ -267,7 +269,7 @@ export async function updateLesson(input: UpdateLessonInput): Promise<CourseStru
           : parsed.publishedAt,
   });
 
-  const nextCourseId = parsed.moduleId ? await findModuleCourseIdByModuleId(parsed.moduleId) : existingCourseId;
+  const nextCourseId = parsed.moduleId ? await getModuleCourseIdByModuleId(parsed.moduleId) : existingCourseId;
 
   if (!nextCourseId) {
     throw new Error('LESSON_UPDATE_FAILED');
@@ -283,7 +285,7 @@ export async function updateLesson(input: UpdateLessonInput): Promise<CourseStru
 }
 
 export async function getCourseAccessForUser(userId: string, courseId: string): Promise<CourseAccessSummary> {
-  const course = await findCourseAccessRowById(courseId);
+  const course = await getCourseAccessRowById(courseId);
 
   if (!course) {
     throw new Error('COURSE_NOT_FOUND');

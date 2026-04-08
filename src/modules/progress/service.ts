@@ -1,13 +1,12 @@
 import { LessonProgressStatus } from '@prisma/client';
 
-import { findLessonAccessContextRowById } from '@/modules/courses/repository';
+import { getLessonAccessContextRowById } from '@/modules/courses/queries';
 
 import {
-  findLessonProgressRow,
-  listUserProgressRows,
   upsertLessonProgressRow,
   type LessonProgressRow,
 } from './repository';
+import { findLessonProgressRow as getLessonProgressRow, listUserProgressRows as listProgressRows } from './queries';
 import type { LessonProgressNode } from './types';
 
 function mapProgressRow(row: LessonProgressRow): LessonProgressNode {
@@ -42,19 +41,19 @@ function mapProgressRow(row: LessonProgressRow): LessonProgressNode {
 }
 
 export async function getUserLessonProgress(userId: string) {
-  const rows = await listUserProgressRows(userId);
+  const rows = await listProgressRows(userId);
   return rows.map(mapProgressRow);
 }
 
 export async function getLessonProgressForUser(userId: string, lessonId: string) {
-  const row = await findLessonProgressRow(userId, lessonId);
+  const row = await getLessonProgressRow(userId, lessonId);
   return row ? mapProgressRow(row) : null;
 }
 
 export async function markLessonStarted(userId: string, lessonId: string) {
   await ensureLessonExists(lessonId);
 
-  const existing = await findLessonProgressRow(userId, lessonId);
+  const existing = await getLessonProgressRow(userId, lessonId);
 
   if (existing?.status === LessonProgressStatus.COMPLETED) {
     return mapProgressRow(existing);
@@ -73,7 +72,7 @@ export async function markLessonStarted(userId: string, lessonId: string) {
 export async function markLessonCompleted(userId: string, lessonId: string) {
   await ensureLessonExists(lessonId);
 
-  const existing = await findLessonProgressRow(userId, lessonId);
+  const existing = await getLessonProgressRow(userId, lessonId);
   const completedAt = new Date();
 
   const row = await upsertLessonProgressRow(userId, lessonId, {
@@ -87,7 +86,7 @@ export async function markLessonCompleted(userId: string, lessonId: string) {
 }
 
 async function ensureLessonExists(lessonId: string) {
-  const lesson = await findLessonAccessContextRowById(lessonId);
+  const lesson = await getLessonAccessContextRowById(lessonId);
 
   if (!lesson) {
     throw new Error('LESSON_NOT_FOUND');

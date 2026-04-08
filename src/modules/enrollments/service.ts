@@ -1,13 +1,13 @@
 import { CourseAccessType } from '@prisma/client';
 
-import { findCourseAccessRowById } from '@/modules/courses/repository';
-
 import { grantFreeEnrollmentSchema, type GrantFreeEnrollmentInput } from './schemas';
-import { findEnrollmentRow, listUserEnrollmentRows, upsertFreeEnrollment, type EnrollmentSummaryRow } from './repository';
+import { getCourseAccessRowById } from '@/modules/courses/queries';
+import { findEnrollmentRow, listUserEnrollmentRows } from './queries';
+import { upsertFreeEnrollment, type EnrollmentSummaryRow } from './repository';
 import type { EnrollmentSummary } from './types';
 
 export async function enrollUserInFreeCourse(userId: string, courseId: string) {
-  const course = await findCourseAccessRowById(courseId);
+  const course = await getCourseAccessRowById(courseId);
 
   if (!course) {
     throw new Error('COURSE_NOT_FOUND');

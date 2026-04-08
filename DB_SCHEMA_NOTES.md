@@ -18,6 +18,7 @@ This repository keeps the LMS model intentionally small and explicit.
 
 ## Service boundaries
 - Prisma access lives in module repositories.
+- Read-only query helpers can sit in `queries.ts` for clearer boundaries.
 - Module services provide typed, UI-friendly data.
 - Pages should not query Prisma directly.
 
