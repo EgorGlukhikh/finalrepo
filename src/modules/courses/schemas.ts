@@ -20,6 +20,37 @@ const slugSchema = z
 
 const contentSchema = z.unknown().optional();
 
+export const courseBillingSchema = z
+  .object({
+    accessType: z.nativeEnum(CourseAccessType).default(CourseAccessType.PAID),
+    priceAmount: z.coerce.number().int().positive().nullable().optional(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.accessType === CourseAccessType.FREE && value.priceAmount !== null && value.priceAmount !== undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Free courses must not have a price',
+        path: ['priceAmount'],
+      });
+    }
+
+    if (value.accessType === CourseAccessType.PAID && value.priceAmount == null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Paid courses require a price',
+        path: ['priceAmount'],
+      });
+    }
+
+    if (value.accessType === CourseAccessType.PRIVATE && value.priceAmount != null) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Private courses should not have a price',
+        path: ['priceAmount'],
+      });
+    }
+  });
+
 export const createCourseSchema = z.object({
   title: z.string().trim().min(2).max(200),
   slug: slugSchema,
@@ -38,7 +69,7 @@ export const createCourseSchema = z.object({
   ),
   status: z.nativeEnum(CourseStatus).optional(),
   accessType: z.nativeEnum(CourseAccessType).optional(),
-  priceAmount: z.coerce.number().int().nonnegative().nullable().optional(),
+  priceAmount: z.coerce.number().int().positive().nullable().optional(),
   ownerId: z.string().cuid().optional(),
 });
 

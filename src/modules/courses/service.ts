@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { CourseAccessType, Prisma } from '@prisma/client';
 
 import type {
   CreateCourseInput,
@@ -12,6 +12,7 @@ import {
   createCourseRecord,
   createLessonRecord,
   createModuleRecord,
+  listCourseRows,
   listPublishedCourseRows,
   nextLessonSortOrder,
   nextModuleSortOrder,
@@ -34,6 +35,7 @@ import {
   createCourseSchema,
   createLessonSchema,
   createModuleSchema,
+  courseBillingSchema,
   updateCourseSchema,
   updateLessonSchema,
   updateModuleSchema,
@@ -42,6 +44,37 @@ import {
 export async function listPublishedCourses(): Promise<CourseListItem[]> {
   const rows = await listPublishedCourseRows();
   return rows.map(mapCourseListItem);
+}
+
+export async function listAdminCourses(): Promise<CourseListItem[]> {
+  const rows = await listCourseRows();
+  return rows.map(mapCourseListItem);
+}
+
+function resolveCourseBilling(
+  accessType: CourseAccessType | undefined,
+  priceAmount: number | null | undefined,
+  fallback?: { accessType: CourseAccessType; priceAmount: number | null },
+) {
+  const finalAccessType = accessType ?? fallback?.accessType ?? CourseAccessType.PAID;
+
+  if (finalAccessType === CourseAccessType.FREE || finalAccessType === CourseAccessType.PRIVATE) {
+    return {
+      accessType: finalAccessType,
+      priceAmount: null,
+    };
+  }
+
+  const finalPriceAmount = priceAmount ?? fallback?.priceAmount ?? null;
+
+  if (finalPriceAmount == null || finalPriceAmount <= 0) {
+    throw new Error('COURSE_PRICE_REQUIRED');
+  }
+
+  return {
+    accessType: finalAccessType,
+    priceAmount: finalPriceAmount,
+  };
 }
 
 export async function getCourseBySlug(
@@ -77,6 +110,11 @@ export async function getCourseStructureById(courseId: string): Promise<CourseSt
 
 export async function createCourse(input: CreateCourseInput): Promise<CourseStructure> {
   const parsed = createCourseSchema.parse(input);
+  const billing = resolveCourseBilling(parsed.accessType, parsed.priceAmount);
+  courseBillingSchema.parse({
+    accessType: billing.accessType,
+    priceAmount: billing.priceAmount,
+  });
   const created = await createCourseRecord({
     title: parsed.title,
     slug: parsed.slug,
@@ -84,8 +122,8 @@ export async function createCourse(input: CreateCourseInput): Promise<CourseStru
     description: parsed.description,
     coverImageUrl: parsed.coverImageUrl,
     status: parsed.status ?? 'DRAFT',
-    accessType: parsed.accessType ?? 'PAID',
-    priceAmount: parsed.priceAmount ?? null,
+    accessType: billing.accessType,
+    priceAmount: billing.priceAmount,
     publishedAt: parsed.status === 'PUBLISHED' ? new Date() : null,
     owner: parsed.ownerId
       ? {
@@ -107,6 +145,21 @@ export async function createCourse(input: CreateCourseInput): Promise<CourseStru
 
 export async function updateCourse(input: UpdateCourseInput): Promise<CourseStructure> {
   const parsed = updateCourseSchema.parse(input);
+  const existing = await getCourseStructureById(parsed.courseId);
+
+  if (!existing) {
+    throw new Error('COURSE_NOT_FOUND');
+  }
+
+  const billing = resolveCourseBilling(parsed.accessType, parsed.priceAmount, {
+    accessType: existing.accessType,
+    priceAmount: existing.priceAmount,
+  });
+
+  courseBillingSchema.parse({
+    accessType: billing.accessType,
+    priceAmount: billing.priceAmount,
+  });
 
   await updateCourseRecord(parsed.courseId, {
     title: parsed.title,
@@ -115,8 +168,8 @@ export async function updateCourse(input: UpdateCourseInput): Promise<CourseStru
     description: parsed.description,
     coverImageUrl: parsed.coverImageUrl,
     status: parsed.status,
-    accessType: parsed.accessType,
-    priceAmount: parsed.priceAmount ?? null,
+    accessType: billing.accessType,
+    priceAmount: billing.priceAmount,
     publishedAt:
       parsed.status === 'PUBLISHED'
         ? parsed.publishedAt ?? new Date()

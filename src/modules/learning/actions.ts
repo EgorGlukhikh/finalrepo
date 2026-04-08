@@ -20,6 +20,7 @@ export async function enrollFreeCourseAction(formData: FormData) {
   const enrollment = await enrollUserInFreeCourse(session.user.id, courseId);
 
   revalidatePath('/app');
+  revalidatePath('/courses');
   revalidatePath(`/courses/${enrollment.course.slug}`);
   revalidatePath(`/app/courses/${enrollment.course.slug}`);
 

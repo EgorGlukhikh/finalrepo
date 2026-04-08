@@ -3,7 +3,11 @@ import { CourseAccessType } from '@prisma/client';
 import { grantFreeEnrollmentSchema, type GrantFreeEnrollmentInput } from './schemas';
 import { getCourseAccessRowById } from '@/modules/courses/queries';
 import { findEnrollmentRow, listUserEnrollmentRows } from './queries';
-import { upsertFreeEnrollment, type EnrollmentSummaryRow } from './repository';
+import {
+  type EnrollmentSummaryRow,
+  upsertFreeEnrollment,
+  upsertPurchaseEnrollment,
+} from './repository';
 import type { EnrollmentSummary } from './types';
 
 export async function enrollUserInFreeCourse(userId: string, courseId: string) {
@@ -18,6 +22,20 @@ export async function enrollUserInFreeCourse(userId: string, courseId: string) {
   }
 
   return upsertFreeEnrollment(userId, courseId);
+}
+
+export async function enrollUserInPaidCourse(userId: string, courseId: string) {
+  const course = await getCourseAccessRowById(courseId);
+
+  if (!course) {
+    throw new Error('COURSE_NOT_FOUND');
+  }
+
+  if (course.status !== 'PUBLISHED' || course.accessType !== CourseAccessType.PAID) {
+    throw new Error('COURSE_NOT_PAID');
+  }
+
+  return upsertPurchaseEnrollment(userId, courseId);
 }
 
 export async function getUserEnrollments(userId: string): Promise<EnrollmentSummary[]> {

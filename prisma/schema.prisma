@@ -48,6 +48,19 @@ enum EnrollmentAccessSource {
   MANUAL
 }
 
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+}
+
+enum PaymentEventType {
+  RESULT
+  SUCCESS
+  FAIL
+}
+
 enum LessonProgressStatus {
   NOT_STARTED
   IN_PROGRESS
@@ -64,6 +77,7 @@ model User {
   role          UserRole   @default(USER)
   ownedCourses  Course[]   @relation("CourseOwner")
   enrollments   Enrollment[]
+  orders        Order[]
   progress      LessonProgress[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -83,6 +97,7 @@ model Course {
   owner             User?          @relation("CourseOwner", fields: [ownerId], references: [id], onDelete: SetNull)
   modules           CourseModule[]
   enrollments       Enrollment[]
+  orders            Order[]
   publishedAt       DateTime?
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
@@ -90,6 +105,40 @@ model Course {
   @@index([status])
   @@index([accessType])
   @@index([ownerId])
+}
+
+model Order {
+  id        Int           @id @default(autoincrement())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId  String
+  course    Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  status    OrderStatus   @default(PENDING)
+  amount    Int
+  currency  String        @default("RUB")
+  paidAt    DateTime?
+  events    PaymentEvent[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([userId, courseId, status])
+  @@index([userId, status])
+  @@index([courseId, status])
+}
+
+model PaymentEvent {
+  id             String            @id @default(cuid())
+  orderId        Int
+  order          Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  eventType      PaymentEventType
+  signatureValue  String
+  payload        Json
+  verified       Boolean           @default(false)
+  receivedAt     DateTime          @default(now())
+  processedAt    DateTime?
+
+  @@unique([orderId, eventType, signatureValue])
+  @@index([orderId, eventType])
 }
 
 model CourseModule {

@@ -57,7 +57,11 @@ export async function findEnrollmentRow(userId: string, courseId: string) {
   });
 }
 
-export async function upsertFreeEnrollment(userId: string, courseId: string) {
+export async function upsertEnrollmentRow(
+  userId: string,
+  courseId: string,
+  accessSource: 'FREE' | 'PURCHASE' | 'MANUAL',
+) {
   return db.enrollment.upsert({
     where: {
       userId_courseId: {
@@ -67,7 +71,7 @@ export async function upsertFreeEnrollment(userId: string, courseId: string) {
     },
     update: {
       status: 'ACTIVE',
-      accessSource: 'FREE',
+      accessSource,
     },
     create: {
       user: {
@@ -81,7 +85,7 @@ export async function upsertFreeEnrollment(userId: string, courseId: string) {
         },
       },
       status: 'ACTIVE',
-      accessSource: 'FREE',
+      accessSource,
     },
     select: {
       id: true,
@@ -104,4 +108,12 @@ export async function upsertFreeEnrollment(userId: string, courseId: string) {
       },
     },
   });
+}
+
+export async function upsertFreeEnrollment(userId: string, courseId: string) {
+  return upsertEnrollmentRow(userId, courseId, 'FREE');
+}
+
+export async function upsertPurchaseEnrollment(userId: string, courseId: string) {
+  return upsertEnrollmentRow(userId, courseId, 'PURCHASE');
 }

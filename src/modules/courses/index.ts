@@ -6,6 +6,7 @@ export {
   getCourseBySlug,
   getCourseModules,
   getCourseStructureById,
+  listAdminCourses,
   listPublishedCourses,
   updateCourse,
   updateLesson,

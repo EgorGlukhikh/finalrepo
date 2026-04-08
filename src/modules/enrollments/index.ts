@@ -1,5 +1,6 @@
 export {
   enrollUserInFreeCourse,
+  enrollUserInPaidCourse,
   grantFreeEnrollment,
   getEnrollmentForUser,
   getUserEnrollments,

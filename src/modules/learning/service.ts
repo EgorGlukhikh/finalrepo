@@ -2,7 +2,7 @@ import { UserRole } from '@prisma/client';
 
 import { getCourseAccessForUser, getCourseBySlug, getCourseStructureById } from '@/modules/courses';
 import { getLessonAccessContextRowById } from '@/modules/courses/queries';
-import { getUserEnrollments } from '@/modules/enrollments';
+import { enrollUserInFreeCourse, getEnrollmentForUser, getUserEnrollments } from '@/modules/enrollments';
 import { getUserLessonProgress, markLessonCompleted, markLessonStarted } from '@/modules/progress';
 import { getUserById } from '@/modules/users';
 
@@ -79,6 +79,13 @@ export async function getCourseLearningTree(
   const progressRows = viewerId ? await getUserLessonProgress(viewerId) : [];
   const progressLookup = buildProgressLookup(progressRows);
   const accessSummary = viewerId ? await getCourseAccessForUser(viewerId, course.id) : null;
+  let enrollmentSummary = viewerId ? await getEnrollmentForUser(viewerId, course.id) : null;
+
+  if (viewerId && options.view !== 'public' && course.accessType === 'FREE' && accessSummary?.hasAccess && !enrollmentSummary) {
+    await enrollUserInFreeCourse(viewerId, course.id);
+    enrollmentSummary = await getEnrollmentForUser(viewerId, course.id);
+  }
+
   const hasAccess = accessSummary?.hasAccess ?? false;
   const visibleAdminDrafts = viewer?.role === UserRole.ADMIN && options.view !== 'public';
 
@@ -95,8 +102,8 @@ export async function getCourseLearningTree(
     baseTree,
     accessSummary
       ? {
-          status: accessSummary.enrollmentStatus,
-          accessSource: accessSummary.enrollmentAccessSource,
+          status: enrollmentSummary?.status ?? accessSummary.enrollmentStatus,
+          accessSource: enrollmentSummary?.accessSource ?? accessSummary.enrollmentAccessSource,
         }
       : null,
   );
