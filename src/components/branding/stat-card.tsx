@@ -10,6 +10,7 @@ type StatCardProps = {
   description?: string;
   tone?: 'default' | 'primary' | 'success' | 'warning' | 'danger';
   className?: string;
+  eyebrow?: string;
 };
 
 const toneClasses = {
@@ -20,12 +21,15 @@ const toneClasses = {
   danger: 'text-danger',
 } as const;
 
-export function StatCard({ label, value, description, tone = 'default', className }: StatCardProps) {
+export function StatCard({ label, value, description, tone = 'default', className, eyebrow }: StatCardProps) {
   return (
-    <Card className={cn('space-y-2', className)}>
-      <div className="text-sm text-muted-foreground">{label}</div>
-      <div className={cn('text-2xl font-semibold tracking-tight', toneClasses[tone])}>{value}</div>
-      {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
+    <Card tone="muted" className={cn('space-y-3', className)}>
+      <div className="space-y-1">
+        {eyebrow ? <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{eyebrow}</div> : null}
+        <div className="text-sm text-muted-foreground">{label}</div>
+      </div>
+      <div className={cn('text-3xl font-semibold tracking-[-0.05em]', toneClasses[tone])}>{value}</div>
+      {description ? <p className="text-sm leading-7 text-muted-foreground">{description}</p> : null}
     </Card>
   );
 }

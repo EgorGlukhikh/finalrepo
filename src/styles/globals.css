@@ -11,10 +11,13 @@
   body {
     min-height: 100dvh;
     margin: 0;
-    background: var(--color-background);
+    background:
+      radial-gradient(circle at top left, color-mix(in oklab, var(--color-background-accent) 70%, transparent) 0, transparent 32%),
+      linear-gradient(180deg, color-mix(in oklab, var(--color-background) 92%, white) 0%, var(--color-background) 100%);
     color: var(--color-foreground);
     line-height: var(--text-body--line-height);
     text-rendering: optimizeLegibility;
+    background-attachment: fixed;
   }
 
   *,
@@ -45,7 +48,8 @@
     text-decoration: none;
     transition:
       color var(--duration-normal) var(--ease-standard),
-      opacity var(--duration-normal) var(--ease-standard);
+      opacity var(--duration-normal) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
   }
 
   :where(button, a, input, textarea, select, summary, [role='button']):focus-visible {
@@ -55,5 +59,19 @@
   ::selection {
     background: color-mix(in oklab, var(--color-primary) 18%, white);
     color: var(--color-foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+    }
   }
 }

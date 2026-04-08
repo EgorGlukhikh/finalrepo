@@ -9,13 +9,13 @@ type SectionPadding = 'sm' | 'md' | 'lg';
 
 const toneClasses: Record<SectionTone, string> = {
   default: 'bg-transparent',
-  muted: 'bg-surface-muted/55',
+  muted: 'bg-surface-muted/45',
 };
 
 const paddingClasses: Record<SectionPadding, string> = {
-  sm: 'py-8 sm:py-10',
-  md: 'py-12 sm:py-16',
-  lg: 'py-16 sm:py-20',
+  sm: 'py-10 sm:py-12',
+  md: 'py-14 sm:py-18',
+  lg: 'py-18 sm:py-24',
 };
 
 type SectionProps<T extends ElementType = 'section'> = {

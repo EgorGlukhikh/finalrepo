@@ -15,7 +15,7 @@ export function PublicShell({ children, headerActions }: PublicShellProps) {
   return (
     <div className="min-h-dvh bg-background">
       <AppHeader brand={<BrandMark />} navigation={<PublicNav />} actions={headerActions} />
-      <main>{children}</main>
+      <main className="relative">{children}</main>
       <PublicFooter />
     </div>
   );
