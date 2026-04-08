@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 
 import { Section, SectionHeader, Stack } from '@/components/layout';
 import { requireUser } from '@/modules/auth/access';
+import { buildPublicCoursePath } from '@/modules/courses/paths';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
 import { ProgressPill } from '@/components/branding';
@@ -24,7 +25,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
   if (!tree.canAccess) {
-    redirect(`/courses/${slug}`);
+    redirect(buildPublicCoursePath(slug));
   }
 
   const lessonView = await getLessonForUser(tree.course.id, lessonId, session.user.id);

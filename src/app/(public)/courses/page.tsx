@@ -1,10 +1,18 @@
-import { ActionLink } from '@/components/layout';
+import type { Metadata } from 'next';
+
 import { CourseCard } from '@/components/branding';
+import { ActionLink, Grid, Section, SectionHeader, Stack } from '@/components/layout';
 import { EmptyState } from '@/components/ui';
-import { Grid, Section, SectionHeader, Stack } from '@/components/layout';
 import { getAuthSession } from '@/modules/auth/session';
-import { getUserEnrollments } from '@/modules/enrollments';
 import { listPublishedCourses } from '@/modules/courses';
+import { buildAppCoursePath, buildPublicCoursePath } from '@/modules/courses/paths';
+import { getUserEnrollments } from '@/modules/enrollments';
+
+export const metadata: Metadata = {
+  title: 'Каталог курсов',
+  description:
+    'Каталог Академии риэлторов: бесплатные и платные курсы с понятной структурой, описанием и прямым входом в обучение.',
+};
 
 function accessLabel(accessType: string) {
   switch (accessType) {
@@ -23,22 +31,24 @@ export default async function CoursesCatalogPage() {
   const session = await getAuthSession();
   const courses = await listPublishedCourses();
   const enrollments = session?.user ? await getUserEnrollments(session.user.id) : [];
-  const enrolledCourseIds = new Set(enrollments.filter((enrollment) => enrollment.status === 'ACTIVE').map((enrollment) => enrollment.course.id));
+  const enrolledCourseIds = new Set(
+    enrollments.filter((enrollment) => enrollment.status === 'ACTIVE').map((enrollment) => enrollment.course.id),
+  );
 
   return (
     <Section padding="lg">
       <Stack gap="lg">
         <SectionHeader
           eyebrow="Каталог"
-          title="Курсы"
-          description="Публичный список доступных программ. Бесплатные курсы можно начать сразу, а платные открываются после оплаты."
+          title="Курсы для риэлторов"
+          description="Публичный каталог доступных программ. Бесплатные курсы можно начать сразу, а платные открываются после подтвержденной оплаты."
         />
 
         {courses.length === 0 ? (
           <Stack gap="md">
             <EmptyState
               title="Пока нет опубликованных курсов"
-              description="Когда появятся курсы, они отобразятся здесь в спокойном и структурированном виде."
+              description="Когда курсы появятся, они отобразятся здесь в спокойном и структурированном виде."
             />
             <div className="flex justify-center">
               <ActionLink href="/">Вернуться на главную</ActionLink>
@@ -49,14 +59,18 @@ export default async function CoursesCatalogPage() {
             {courses.map((course) => {
               const isEnrolled = enrolledCourseIds.has(course.id);
               const isFree = course.accessType === 'FREE';
-              const ctaHref = isEnrolled ? `/app/courses/${course.slug}` : isFree && session?.user ? `/app/courses/${course.slug}` : `/courses/${course.slug}`;
+              const ctaHref = isEnrolled
+                ? buildAppCoursePath(course.slug)
+                : isFree && session?.user
+                  ? buildAppCoursePath(course.slug)
+                  : buildPublicCoursePath(course.slug);
               const ctaLabel = isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс';
 
               return (
                 <CourseCard
                   key={course.id}
                   title={course.title}
-                  description={course.shortDescription ?? 'Подробности курса появятся на странице курса.'}
+                  description={course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
                   status={accessLabel(course.accessType)}
                   meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
                   footer={

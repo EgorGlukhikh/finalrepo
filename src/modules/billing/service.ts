@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 
 import { env } from '@/lib/env';
 import { getCourseAccessRowById } from '@/modules/courses/queries';
+import { buildCatalogPath, buildPublicCoursePath } from '@/modules/courses/paths';
 import { enrollUserInPaidCourse } from '@/modules/enrollments';
 import { findEnrollmentRow } from '@/modules/enrollments/queries';
 
@@ -211,8 +212,8 @@ export async function handleRobokassaResult(input: RobokassaResultInput | Roboka
   }
 
   await enrollUserInPaidCourse(order.user.id, order.course.id);
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${order.course.slug}`);
+  revalidatePath(buildCatalogPath());
+  revalidatePath(buildPublicCoursePath(order.course.slug));
   revalidatePath('/app');
   revalidatePath(`/app/courses/${order.course.slug}`);
 

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { requireUser } from '@/modules/auth/access';
+import { buildPublicCoursePath } from '@/modules/courses/paths';
 
 import { createPaidCoursePurchaseIntent } from './service';
 
@@ -15,9 +16,9 @@ export async function purchasePaidCourseAction(formData: FormData) {
     throw new Error('COURSE_PURCHASE_INPUT_INVALID');
   }
 
-  const session = await requireUser(`/courses/${courseSlug}`);
+  const session = await requireUser(buildPublicCoursePath(courseSlug));
   const intent = await createPaidCoursePurchaseIntent(session.user.id, courseId);
 
-  revalidatePath(`/courses/${courseSlug}`);
+  revalidatePath(buildPublicCoursePath(courseSlug));
   redirect(intent.checkoutUrl);
 }

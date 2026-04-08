@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/modules/auth/access';
+import { buildCatalogPath, buildPublicCoursePath } from '@/modules/courses/paths';
 
 import {
   createCourse,
@@ -89,8 +90,8 @@ export async function createCourseAction(formData: FormData) {
   });
 
   revalidatePath('/admin/courses');
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${course.slug}`);
+  revalidatePath(buildCatalogPath());
+  revalidatePath(buildPublicCoursePath(course.slug));
   redirect(`/admin/courses/${course.id}`);
 }
 
@@ -109,8 +110,8 @@ export async function setCourseStatusAction(formData: FormData) {
   revalidatePath('/admin');
   revalidatePath('/admin/courses');
   revalidatePath(revalidationTarget);
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${course.slug}`);
+  revalidatePath(buildCatalogPath());
+  revalidatePath(buildPublicCoursePath(course.slug));
   redirect(returnPath);
 }
 
@@ -125,7 +126,7 @@ export async function duplicateCourseAction(formData: FormData) {
   const course = await duplicateCourse(courseId, session.user.id);
   revalidatePath('/admin');
   revalidatePath('/admin/courses');
-  revalidatePath('/courses');
+  revalidatePath(buildCatalogPath());
   redirect(`/admin/courses/${course.id}`);
 }
 
@@ -142,8 +143,8 @@ export async function deleteCourseAction(formData: FormData) {
   const deleted = await deleteCourse(courseId);
   revalidatePath('/admin');
   revalidatePath('/admin/courses');
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${deleted.slug}`);
+  revalidatePath(buildCatalogPath());
+  revalidatePath(buildPublicCoursePath(deleted.slug));
   revalidatePath(revalidationTarget);
   redirect(returnPath);
 }
@@ -275,7 +276,7 @@ export async function updateCourseSettingsAction(formData: FormData) {
   revalidatePath('/admin/courses');
   revalidatePath(`/admin/courses/${course.id}`);
   revalidatePath(`/admin/courses/${course.id}/settings`);
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${course.slug}`);
+  revalidatePath(buildCatalogPath());
+  revalidatePath(buildPublicCoursePath(course.slug));
   redirect(`/admin/courses/${course.id}/settings`);
 }

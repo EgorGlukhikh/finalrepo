@@ -3,6 +3,7 @@ import { redirect, notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Section, SectionHeader, Stack } from '@/components/layout';
 import { requireUser } from '@/modules/auth/access';
+import { buildPublicCoursePath } from '@/modules/courses/paths';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
 import { ProgressPill } from '@/components/branding';
@@ -24,7 +25,7 @@ export default async function CourseLearningPage({ params }: CourseLearningPageP
   }
 
   if (!tree.canAccess) {
-    redirect(`/courses/${slug}`);
+    redirect(buildPublicCoursePath(slug));
   }
 
   const lessonId = tree.continueLesson?.id ?? tree.modules[0]?.lessons[0]?.id;
@@ -47,7 +48,7 @@ export default async function CourseLearningPage({ params }: CourseLearningPageP
   const lessonView = await getLessonForUser(tree.course.id, lessonId, session.user.id);
 
   if (!lessonView) {
-    redirect(`/courses/${slug}`);
+    redirect(buildPublicCoursePath(slug));
   }
 
   return (
