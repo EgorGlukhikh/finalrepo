@@ -11,6 +11,7 @@ export { Select } from './select';
 export { Separator } from './separator';
 export { Skeleton } from './skeleton';
 export { StatusPill } from './status-pill';
+export { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from './table';
 export { Tabs, TabsList, TabsPanel, TabsTrigger } from './tabs';
 export { Textarea } from './textarea';
 

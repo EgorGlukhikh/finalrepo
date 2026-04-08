@@ -1,26 +1,19 @@
-import { CourseCard } from '@/components/branding';
-import { ActionLink } from '@/components/layout';
-import { Badge } from '@/components/ui';
-import { Grid, Section, SectionHeader, Stack } from '@/components/layout';
-import { listAdminCourses } from '@/modules/courses';
-import { CourseEditorForm } from '@/modules/courses/components';
-import { createCourseAction } from '@/modules/courses/actions';
-
-function accessLabel(accessType: string) {
-  switch (accessType) {
-    case 'FREE':
-      return 'Бесплатный';
-    case 'PAID':
-      return 'Платный';
-    case 'PRIVATE':
-      return 'Закрытый';
-    default:
-      return accessType;
-  }
-}
+import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
+import { Badge, Button, EmptyState, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
+import {
+  formatAdminCurrency,
+  formatAdminDate,
+  getAccessTypeLabel,
+  getAccessTypeTone,
+  getCourseStatusLabel,
+  getCourseStatusTone,
+} from '@/modules/admin/format';
+import { listCoursesForAdmin } from '@/modules/courses';
+import { createCourseAction, deleteCourseAction, duplicateCourseAction, setCourseStatusAction } from '@/modules/courses/actions';
+import { CourseCreateCard } from '@/modules/courses/components';
 
 export default async function AdminCoursesPage() {
-  const courses = await listAdminCourses();
+  const courses = await listCoursesForAdmin();
 
   return (
     <Section padding="lg">
@@ -28,48 +21,88 @@ export default async function AdminCoursesPage() {
         <SectionHeader
           eyebrow="Админка"
           title="Курсы"
-          description="Создание и базовое редактирование курсов. Бесплатный режим и цена управляются в одном потоке, без раздвоения форм."
+          description="Админка остается точкой входа. Само редактирование идет через конструктор курса, а не через длинную форму."
         />
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-          <CourseEditorForm
-            action={createCourseAction}
-            submitLabel="Создать курс"
-            title="Новый курс"
-            description="Заполните базовые данные курса и выберите, будет ли он бесплатным или платным."
-          />
-
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
           <Stack gap="md">
-            <SectionHeader eyebrow="Список" title="Существующие курсы" description="Последние изменения и быстрый переход к редактированию." />
-
             {courses.length === 0 ? (
-              <div className="rounded-xl border border-border bg-surface p-5 text-sm text-muted-foreground">
-                Пока нет созданных курсов.
-              </div>
+              <EmptyState title="Пока нет курсов" description="Создайте первый курс справа. После этого он сразу откроется в конструкторе." />
             ) : (
-              <Grid className="gap-4">
-                {courses.map((course) => (
-                  <CourseCard
-                    key={course.id}
-                    title={course.title}
-                    description={course.shortDescription ?? 'Описание пока не заполнено.'}
-                    status={accessLabel(course.accessType)}
-                    meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
-                    footer={
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>
-                          {course.accessType === 'FREE' ? 'Без оплаты' : `${course.priceAmount ?? 0} ₽`}
-                        </Badge>
-                        <ActionLink href={`/admin/courses/${course.id}`} variant="secondary">
-                          Редактировать
-                        </ActionLink>
-                      </div>
-                    }
-                  />
-                ))}
-              </Grid>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Курс</TableHeaderCell>
+                    <TableHeaderCell>Статус</TableHeaderCell>
+                    <TableHeaderCell>Доступ</TableHeaderCell>
+                    <TableHeaderCell>Структура</TableHeaderCell>
+                    <TableHeaderCell>Обновлен</TableHeaderCell>
+                    <TableHeaderCell className="w-[20rem]">Действия</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {courses.map((course) => (
+                    <TableRow key={course.id}>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <div className="font-medium text-foreground">{course.title}</div>
+                          <div className="text-xs text-muted-foreground">{course.slug}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge tone={getCourseStatusTone(course.status)}>{getCourseStatusLabel(course.status)}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-2">
+                          <Badge tone={getAccessTypeTone(course.accessType)}>{getAccessTypeLabel(course.accessType)}</Badge>
+                          <div className="text-xs text-muted-foreground">
+                            {course.accessType === 'PAID' ? formatAdminCurrency(course.priceAmount) : 'Без оплаты'}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm text-foreground">
+                          {course.modulesCount} модулей
+                          <div className="text-xs text-muted-foreground">{course.lessonsCount} уроков</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{formatAdminDate(course.updatedAt)}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-2">
+                          <ActionLink href={`/admin/courses/${course.id}`} variant="secondary">
+                            Открыть конструктор
+                          </ActionLink>
+                          <form action={setCourseStatusAction}>
+                            <input type="hidden" name="courseId" value={course.id} />
+                            <input type="hidden" name="status" value={course.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED'} />
+                            <input type="hidden" name="returnPath" value="/admin/courses" />
+                            <Button type="submit" size="sm" variant="ghost">
+                              {course.status === 'PUBLISHED' ? 'Снять с публикации' : 'Опубликовать'}
+                            </Button>
+                          </form>
+                          <form action={duplicateCourseAction}>
+                            <input type="hidden" name="courseId" value={course.id} />
+                            <Button type="submit" size="sm" variant="ghost">
+                              Дублировать
+                            </Button>
+                          </form>
+                          <form action={deleteCourseAction}>
+                            <input type="hidden" name="courseId" value={course.id} />
+                            <input type="hidden" name="returnPath" value="/admin/courses" />
+                            <Button type="submit" size="sm" variant="danger">
+                              Удалить
+                            </Button>
+                          </form>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </Stack>
+
+          <CourseCreateCard action={createCourseAction} />
         </div>
       </Stack>
     </Section>
