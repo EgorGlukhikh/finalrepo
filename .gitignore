@@ -1,0 +1,16 @@
+node_modules
+.next
+.husky/_
+.brv/
+coverage
+dist
+*.log
+.env
+.env.*
+!.env.example
+pnpm-debug.log*
+playwright-report
+test-results
+prisma/dev.db
+prisma/dev.db-journal
+tsconfig.tsbuildinfo

@@ -1,0 +1,15 @@
+---
+description: Billing and payment rules for Robokassa work.
+globs:
+  - src/modules/billing/**/*
+  - src/app/api/robokassa/**/*
+  - src/lib/security.ts
+---
+
+Billing must stay isolated:
+- Keep payment logic inside the billing module.
+- Treat `ResultURL` as the source of truth.
+- Validate the signature before any state change.
+- Make webhook handlers idempotent.
+- Persist order, payment event, and enrollment updates transactionally.
+

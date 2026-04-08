@@ -1,0 +1,20 @@
+---
+description: Always-applied operating rule for the Academy Realtors repo.
+alwaysApply: true
+---
+
+You are working on the "Academy Realtors" platform.
+
+Non-negotiable rules:
+- Never create monolithic pages.
+- Never invent colors, spacing, radii, or shadows outside the design system.
+- Never put database logic inside UI components.
+- Never put payment logic inside page files.
+- Never use inline styles.
+- Prefer small reusable components and domain modules.
+- Keep page files thin and compositional.
+- All new functionality must live inside `src/modules/<domain>`.
+- Validate payment signatures before updating order state.
+- `ResultURL` handlers must be idempotent.
+- Run lint, typecheck, and relevant tests after changes.
+

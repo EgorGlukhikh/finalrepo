@@ -1,0 +1,29 @@
+---
+description: Architecture and folder discipline for Academy Realtors.
+globs:
+  - src/**/*
+  - prisma/**/*
+  - railway.toml
+  - package.json
+---
+
+Use the repository structure deliberately:
+- `src/app` is for routes and layouts only.
+- `src/modules` owns domain logic.
+- `src/components/ui` owns reusable primitives.
+- `src/components/layout` owns shells and wrappers.
+- `src/components/branding` owns shared brand pieces.
+- `src/lib` owns infrastructure helpers.
+- `src/styles` owns tokens and global styles.
+- Route groups must stay clear:
+  - `(public)` for public shell and internal previews.
+  - `(auth)` for sign-in, sign-up, and auth stubs.
+  - `(platform)` for authenticated user shell.
+  - `admin` for admin shell.
+- Authentication logic belongs in `src/modules/auth` and `src/app/api/auth/*`, not in page files.
+- Session access for shells must be centralized in `src/modules/auth/shell.tsx`.
+
+Keep modules isolated:
+- Do not move domain logic into components.
+- Do not let page files become orchestration layers.
+- Do not duplicate the same logic in multiple routes.
