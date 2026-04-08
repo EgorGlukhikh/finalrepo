@@ -1,31 +1,24 @@
 import { UserRole } from '@prisma/client';
 
+import { getUserByEmail } from '@/modules/users';
 import { db } from '@/lib/db';
 
 import { AuthError } from './errors';
 import { comparePassword, hashPassword } from './password';
 import { signInSchema, signUpSchema, type SignInInput, type SignUpInput } from './schema';
 
-export async function findUserByEmail(email: string) {
-  return db.user.findUnique({
-    where: {
-      email: normalizeEmail(email),
-    },
-  });
-}
-
 export async function registerUser(input: SignUpInput) {
   const parsed = signUpSchema.safeParse(input);
 
   if (!parsed.success) {
-    throw new AuthError('INVALID_INPUT', 'Проверьте данные формы', 400);
+    throw new AuthError('INVALID_INPUT', 'РџСЂРѕРІРµСЂСЊС‚Рµ РґР°РЅРЅС‹Рµ С„РѕСЂРјС‹', 400);
   }
 
-  const email = normalizeEmail(parsed.data.email);
-  const existingUser = await findUserByEmail(email);
+  const email = parsed.data.email.trim().toLowerCase();
+  const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
-    throw new AuthError('EMAIL_TAKEN', 'Пользователь с таким email уже существует', 409);
+    throw new AuthError('EMAIL_TAKEN', 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј email СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚', 409);
   }
 
   return db.user.create({
@@ -45,7 +38,7 @@ export async function validateCredentials(input: SignInInput) {
     return null;
   }
 
-  const user = await findUserByEmail(parsed.data.email);
+  const user = await getUserByEmail(parsed.data.email);
 
   if (!user) {
     return null;
@@ -54,8 +47,4 @@ export async function validateCredentials(input: SignInInput) {
   const passwordMatches = await comparePassword(parsed.data.password, user.passwordHash);
 
   return passwordMatches ? user : null;
-}
-
-function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
 }
