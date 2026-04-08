@@ -1,1 +1,1 @@
-export { findEnrollmentRow, listUserEnrollmentRows } from './repository';
+export { findEnrollmentRow, listEnrollmentRowsForAdmin, listUserEnrollmentRows } from './repository';

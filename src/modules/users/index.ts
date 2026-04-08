@@ -1,2 +1,3 @@
 export { getUserByEmail, getUserById, listUsersForAdmin } from './queries';
-export type { UserSummary } from './types';
+export { getUserDetails, listUsers } from './service';
+export type { AdminUserDetails, AdminUserEnrollmentItem, AdminUserListItem, UserSummary } from './types';

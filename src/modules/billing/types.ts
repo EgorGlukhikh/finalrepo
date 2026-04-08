@@ -42,3 +42,27 @@ export type PaymentEventState = {
   receivedAt: Date;
   processedAt: Date | null;
 };
+
+export type AdminOrderListItem = {
+  id: number;
+  status: OrderStatus;
+  amount: number;
+  currency: string;
+  paidAt: Date | null;
+  createdAt: Date;
+  course: {
+    id: string;
+    slug: string;
+    title: string;
+  };
+  user: {
+    id: string;
+    name: string | null;
+    email: string;
+  };
+};
+
+export type AdminOrderDetails = AdminOrderListItem & {
+  updatedAt: Date;
+  events: PaymentEventState[];
+};

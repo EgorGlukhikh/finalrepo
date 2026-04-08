@@ -13,9 +13,10 @@ import {
   updateOrderStatusRow,
   upsertPaymentEventRow,
 } from './repository';
-import { findOrderRowById } from './queries';
+import { findOrderDetailRowById, findOrderRowById, listOrderRows } from './queries';
 import { robokassaResultSchema, type RobokassaResultInput } from './schemas';
 import type { OrderState, RobokassaCheckoutIntent, RobokassaResultPayload } from './types';
+import type { AdminOrderDetails, AdminOrderListItem } from './types';
 
 function assertRobokassaConfigured() {
   if (!env.ROBOKASSA_MERCHANT_LOGIN || !env.ROBOKASSA_PASSWORD_1 || !env.ROBOKASSA_PASSWORD_2) {
@@ -53,6 +54,27 @@ function mapOrderRow(row: NonNullable<Awaited<ReturnType<typeof findOrderRowById
     },
     user: {
       id: row.user.id,
+    },
+  };
+}
+
+function mapAdminOrderListItem(row: Awaited<ReturnType<typeof listOrderRows>>[number]): AdminOrderListItem {
+  return {
+    id: row.id,
+    status: row.status,
+    amount: row.amount,
+    currency: row.currency,
+    paidAt: row.paidAt,
+    createdAt: row.createdAt,
+    course: {
+      id: row.course.id,
+      slug: row.course.slug,
+      title: row.course.title,
+    },
+    user: {
+      id: row.user.id,
+      name: row.user.name,
+      email: row.user.email,
     },
   };
 }
@@ -130,6 +152,33 @@ export async function createPaidCoursePurchaseIntent(userId: string, courseId: s
 export async function getOrderById(orderId: number) {
   const row = await findOrderRowById(orderId);
   return row ? mapOrderRow(row) : null;
+}
+
+export async function listOrders(): Promise<AdminOrderListItem[]> {
+  const rows = await listOrderRows();
+  return rows.map(mapAdminOrderListItem);
+}
+
+export async function getOrderDetails(orderId: number): Promise<AdminOrderDetails | null> {
+  const row = await findOrderDetailRowById(orderId);
+
+  if (!row) {
+    return null;
+  }
+
+  return {
+    ...mapAdminOrderListItem(row),
+    updatedAt: row.updatedAt,
+    events: row.events.map((event) => ({
+      id: event.id,
+      orderId: event.orderId,
+      eventType: event.eventType,
+      signatureValue: event.signatureValue,
+      verified: event.verified,
+      receivedAt: event.receivedAt,
+      processedAt: event.processedAt,
+    })),
+  };
 }
 
 export async function handleRobokassaResult(input: RobokassaResultInput | RobokassaResultPayload) {

@@ -1,5 +1,7 @@
 export {
   createCourse,
+  deleteCourse,
+  duplicateCourse,
   createLesson,
   createModule,
   getCourseAccessForUser,
@@ -7,7 +9,9 @@ export {
   getCourseModules,
   getCourseStructureById,
   listAdminCourses,
+  listCoursesForAdmin,
   listPublishedCourses,
+  setCourseStatus,
   updateCourse,
   updateLesson,
   updateModule,

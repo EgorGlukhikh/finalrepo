@@ -211,6 +211,19 @@ export async function createCourseRecord(data: Prisma.CourseCreateInput) {
   });
 }
 
+export async function courseSlugExists(slug: string) {
+  const course = await db.course.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return Boolean(course);
+}
+
 export async function findModuleCourseIdByModuleId(moduleId: string) {
   const courseModule = await db.courseModule.findUnique({
     where: {
@@ -250,6 +263,97 @@ export async function updateCourseRecord(courseId: string, data: Prisma.CourseUp
     select: {
       id: true,
     },
+  });
+}
+
+export async function deleteCourseRecord(courseId: string) {
+  return db.course.delete({
+    where: {
+      id: courseId,
+    },
+    select: {
+      id: true,
+      slug: true,
+    },
+  });
+}
+
+export async function duplicateCourseTreeRecord(sourceCourseId: string, data: { slug: string; title: string; ownerId?: string | null }) {
+  return db.$transaction(async (tx) => {
+    const source = await tx.course.findUnique({
+      where: {
+        id: sourceCourseId,
+      },
+      select: courseStructureSelect,
+    });
+
+    if (!source) {
+      return null;
+    }
+
+    const createdCourse = await tx.course.create({
+      data: {
+        title: data.title,
+        slug: data.slug,
+        shortDescription: source.shortDescription,
+        description: source.description,
+        coverImageUrl: source.coverImageUrl,
+        status: 'DRAFT',
+        accessType: source.accessType,
+        priceAmount: source.priceAmount,
+        publishedAt: null,
+        owner: data.ownerId
+          ? {
+              connect: {
+                id: data.ownerId,
+              },
+            }
+          : source.owner
+            ? {
+                connect: {
+                  id: source.owner.id,
+                },
+              }
+            : undefined,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    for (const moduleRow of source.modules) {
+      const createdModule = await tx.courseModule.create({
+        data: {
+          courseId: createdCourse.id,
+          title: moduleRow.title,
+          sortOrder: moduleRow.sortOrder,
+          published: false,
+          publishedAt: null,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      for (const lessonRow of moduleRow.lessons) {
+        await tx.lesson.create({
+          data: {
+            moduleId: createdModule.id,
+            slug: lessonRow.slug,
+            title: lessonRow.title,
+            sortOrder: lessonRow.sortOrder,
+            lessonType: lessonRow.lessonType,
+            status: 'DRAFT',
+            preview: lessonRow.preview,
+            summary: lessonRow.summary,
+            content: lessonRow.content ?? Prisma.JsonNull,
+            publishedAt: null,
+          },
+        });
+      }
+    }
+
+    return createdCourse;
   });
 }
 

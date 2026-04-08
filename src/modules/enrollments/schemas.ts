@@ -6,3 +6,9 @@ export const grantFreeEnrollmentSchema = z.object({
 });
 
 export type GrantFreeEnrollmentInput = z.infer<typeof grantFreeEnrollmentSchema>;
+
+export const grantManualEnrollmentSchema = grantFreeEnrollmentSchema;
+export const revokeEnrollmentSchema = grantFreeEnrollmentSchema;
+
+export type GrantManualEnrollmentInput = z.infer<typeof grantManualEnrollmentSchema>;
+export type RevokeEnrollmentInput = z.infer<typeof revokeEnrollmentSchema>;

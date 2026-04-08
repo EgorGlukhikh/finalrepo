@@ -1,3 +1,10 @@
 export { purchasePaidCourseAction } from './actions';
-export { createPaidCoursePurchaseIntent, getOrderById, handleRobokassaResult, isRobokassaConfigured } from './service';
-export type { RobokassaCheckoutIntent, RobokassaResultPayload } from './types';
+export {
+  createPaidCoursePurchaseIntent,
+  getOrderById,
+  getOrderDetails,
+  handleRobokassaResult,
+  isRobokassaConfigured,
+  listOrders,
+} from './service';
+export type { AdminOrderDetails, AdminOrderListItem, RobokassaCheckoutIntent, RobokassaResultPayload } from './types';

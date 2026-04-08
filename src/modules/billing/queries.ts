@@ -23,6 +23,7 @@ export const orderSelect = {
   user: {
     select: {
       id: true,
+      name: true,
       email: true,
       role: true,
     },
@@ -81,5 +82,31 @@ export async function findPaidOrderRow(userId: string, courseId: string) {
       paidAt: 'desc',
     },
     select: orderSelect,
+  });
+}
+
+export async function listOrderRows() {
+  return db.order.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: orderSelect,
+  });
+}
+
+export async function findOrderDetailRowById(orderId: number) {
+  return db.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    select: {
+      ...orderSelect,
+      events: {
+        orderBy: {
+          receivedAt: 'desc',
+        },
+        select: paymentEventSelect,
+      },
+    },
   });
 }

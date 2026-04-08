@@ -1,4 +1,4 @@
-import { CourseAccessType, Prisma } from '@prisma/client';
+import { CourseAccessType, CourseStatus, Prisma } from '@prisma/client';
 
 import type {
   CreateCourseInput,
@@ -9,7 +9,10 @@ import type {
   UpdateModuleInput,
 } from './schemas';
 import {
+  courseSlugExists,
   createCourseRecord,
+  deleteCourseRecord,
+  duplicateCourseTreeRecord,
   createLessonRecord,
   createModuleRecord,
   listCourseRows,
@@ -51,6 +54,10 @@ export async function listAdminCourses(): Promise<CourseListItem[]> {
   return rows.map(mapCourseListItem);
 }
 
+export async function listCoursesForAdmin(): Promise<CourseListItem[]> {
+  return listAdminCourses();
+}
+
 function resolveCourseBilling(
   accessType: CourseAccessType | undefined,
   priceAmount: number | null | undefined,
@@ -75,6 +82,23 @@ function resolveCourseBilling(
     accessType: finalAccessType,
     priceAmount: finalPriceAmount,
   };
+}
+
+async function buildAvailableDuplicateSlug(baseSlug: string) {
+  let attempt = 0;
+
+  while (attempt < 100) {
+    const candidate = attempt === 0 ? `${baseSlug}-copy` : `${baseSlug}-copy-${attempt + 1}`;
+    const exists = await courseSlugExists(candidate);
+
+    if (!exists) {
+      return candidate;
+    }
+
+    attempt += 1;
+  }
+
+  throw new Error('COURSE_DUPLICATE_SLUG_FAILED');
 }
 
 export async function getCourseBySlug(
@@ -192,6 +216,66 @@ export async function updateCourse(input: UpdateCourseInput): Promise<CourseStru
   }
 
   return structure;
+}
+
+export async function setCourseStatus(courseId: string, status: CourseStatus): Promise<CourseStructure> {
+  const existing = await getCourseStructureById(courseId);
+
+  if (!existing) {
+    throw new Error('COURSE_NOT_FOUND');
+  }
+
+  await updateCourseRecord(courseId, {
+    status,
+    publishedAt: status === 'PUBLISHED' ? existing.publishedAt ?? new Date() : null,
+  });
+
+  const structure = await getCourseStructureById(courseId);
+
+  if (!structure) {
+    throw new Error('COURSE_STATUS_UPDATE_FAILED');
+  }
+
+  return structure;
+}
+
+export async function duplicateCourse(courseId: string, ownerId?: string | null): Promise<CourseStructure> {
+  const source = await getCourseStructureById(courseId);
+
+  if (!source) {
+    throw new Error('COURSE_NOT_FOUND');
+  }
+
+  const duplicateSlug = await buildAvailableDuplicateSlug(source.slug);
+  const created = await duplicateCourseTreeRecord(courseId, {
+    slug: duplicateSlug,
+    title: `${source.title} (копия)`,
+    ownerId,
+  });
+
+  if (!created) {
+    throw new Error('COURSE_DUPLICATE_FAILED');
+  }
+
+  const structure = await getCourseStructureById(created.id);
+
+  if (!structure) {
+    throw new Error('COURSE_DUPLICATE_FAILED');
+  }
+
+  return structure;
+}
+
+export async function deleteCourse(courseId: string) {
+  try {
+    return await deleteCourseRecord(courseId);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') {
+      throw new Error('COURSE_DELETE_BLOCKED');
+    }
+
+    throw error;
+  }
 }
 
 export async function createModule(input: CreateModuleInput): Promise<CourseStructure> {

@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { requireAdmin } from '@/modules/auth/access';
 
 import { createCourse, updateCourse } from './service';
+import { createLesson, createModule, deleteCourse, duplicateCourse, setCourseStatus } from './service';
 
 function readFormString(formData: FormData, key: string) {
   return String(formData.get(key) ?? '').trim();
@@ -76,6 +77,109 @@ export async function updateCourseAction(formData: FormData) {
   revalidatePath('/admin/courses');
   revalidatePath('/courses');
   revalidatePath(`/courses/${course.slug}`);
+  revalidatePath(`/admin/courses/${course.id}`);
+  redirect(`/admin/courses/${course.id}`);
+}
+
+export async function setCourseStatusAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const status = readFormString(formData, 'status');
+  const returnPath = readFormString(formData, 'returnPath') || '/admin/courses';
+  const revalidationTarget = returnPath.split('?')[0] || '/admin/courses';
+
+  if (!courseId || (status !== 'PUBLISHED' && status !== 'DRAFT' && status !== 'ARCHIVED')) {
+    throw new Error('COURSE_STATUS_INPUT_INVALID');
+  }
+
+  const course = await setCourseStatus(courseId, status);
+  revalidatePath('/admin');
+  revalidatePath('/admin/courses');
+  revalidatePath(revalidationTarget);
+  revalidatePath('/courses');
+  revalidatePath(`/courses/${course.slug}`);
+  redirect(returnPath);
+}
+
+export async function duplicateCourseAction(formData: FormData) {
+  const session = await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+
+  if (!courseId) {
+    throw new Error('COURSE_ID_REQUIRED');
+  }
+
+  const course = await duplicateCourse(courseId, session.user.id);
+  revalidatePath('/admin');
+  revalidatePath('/admin/courses');
+  revalidatePath('/courses');
+  redirect(`/admin/courses/${course.id}`);
+}
+
+export async function deleteCourseAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const returnPath = readFormString(formData, 'returnPath') || '/admin/courses';
+  const revalidationTarget = returnPath.split('?')[0] || '/admin/courses';
+
+  if (!courseId) {
+    throw new Error('COURSE_ID_REQUIRED');
+  }
+
+  const deleted = await deleteCourse(courseId);
+  revalidatePath('/admin');
+  revalidatePath('/admin/courses');
+  revalidatePath('/courses');
+  revalidatePath(`/courses/${deleted.slug}`);
+  revalidatePath(revalidationTarget);
+  redirect(returnPath);
+}
+
+export async function createModuleAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const title = readFormString(formData, 'title');
+
+  if (!courseId || !title) {
+    throw new Error('MODULE_INPUT_INVALID');
+  }
+
+  const course = await createModule({
+    courseId,
+    title,
+  });
+
+  revalidatePath('/admin/courses');
+  revalidatePath(`/admin/courses/${course.id}`);
+  redirect(`/admin/courses/${course.id}`);
+}
+
+export async function createLessonAction(formData: FormData) {
+  await requireAdmin('/admin/courses');
+  const courseId = readFormString(formData, 'courseId');
+  const moduleId = readFormString(formData, 'moduleId');
+  const title = readFormString(formData, 'title');
+  const slug = readFormString(formData, 'slug');
+  const lessonType = readFormString(formData, 'lessonType');
+
+  if (
+    !courseId ||
+    !moduleId ||
+    !title ||
+    !slug ||
+    (lessonType !== 'REGULAR' && lessonType !== 'ASSIGNMENT' && lessonType !== 'TEST' && lessonType !== 'WEBINAR')
+  ) {
+    throw new Error('LESSON_INPUT_INVALID');
+  }
+
+  const course = await createLesson({
+    moduleId,
+    title,
+    slug,
+    lessonType,
+  });
+
+  revalidatePath('/admin/courses');
   revalidatePath(`/admin/courses/${course.id}`);
   redirect(`/admin/courses/${course.id}`);
 }
