@@ -1,22 +1,56 @@
 # Design System
 
-## Principles
-- Use semantic tokens only: background, surface, muted surface, foreground, muted text, border, primary, secondary, accent, success, warning, and danger.
-- Use one spacing scale based on 4px steps.
-- Use one main page container width and a smaller content width when needed.
-- Use one radius scale and reuse it consistently.
-- Use one system font stack for the interface.
-- Use one brand accent and keep it consistent.
-- Keep motion minimal and purposeful.
+## Принципы
 
-## Implementation Rules
-- Put shared visual decisions into `src/styles/theme.css`, not page files.
-- Reuse primitives instead of cloning one-off UI.
-- Avoid arbitrary Tailwind values unless there is a documented exception.
-- Do not add decorative variation without a product reason.
-- Keep the preview page aligned with the real primitives, not a separate visual language.
+- Семантические токены вместо разрозненных значений
+- Единая шкала spacing
+- Единый набор радиусов
+- Единый ритм типографики
+- Минимум motion
+- Один акцентный brand color
 
-## Approved Primitives
-- Layout: `Container`, `Section`, `Stack`, `Inline`, `Grid`, `SectionHeader`
-- UI: `Button`, `Input`, `Textarea`, `Label`, `Select`, `Card`, `Badge`, `Tabs`, `Dialog`, `EmptyState`, `Skeleton`, `Separator`, `FormField`, `StatusPill`
-- LMS presentation: `CourseCard`, `StatCard`, `ProgressPill`, `LessonListItem`, `InfoRow`
+## Что считается источником правды
+
+- `src/styles/theme.css` — токены
+- `src/styles/globals.css` — глобальная база
+- `src/components/ui/*` — примитивы
+
+## Правила использования
+
+- Не добавлять случайные `p-[13px]`, `rounded-[17px]`, произвольные hex-цвета в JSX.
+- Не создавать отдельный визуальный язык для одной страницы.
+- Не дублировать существующие primitives ради локальной вариации.
+- Если нужен новый компонент, он сначала оформляется как часть design system.
+
+## Утвержденные группы компонентов
+
+### Layout
+- `Container`
+- `Section`
+- `Stack`
+- `Inline`
+- `Grid`
+- `SectionHeader`
+
+### UI
+- `Button`
+- `Input`
+- `Textarea`
+- `Label`
+- `Select`
+- `Card`
+- `Badge`
+- `Tabs`
+- `Dialog`
+- `EmptyState`
+- `Skeleton`
+- `Separator`
+- `FormField`
+- `StatusPill`
+
+### LMS presentation
+- `CourseCard`
+- `StatCard`
+- `ProgressPill`
+- `LessonListItem`
+- `InfoRow`

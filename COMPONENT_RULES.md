@@ -1,33 +1,60 @@
 # Component Rules
 
-## Primitives
-- `src/components/ui` is for reusable primitives only.
-- `src/components/layout` is for layout shells, navigation, and wrappers.
-- `src/components/branding` is for generic product presentation pieces that will be reused across the LMS.
+## Роли папок
 
-## Discipline
-- Components should stay presentational unless they clearly belong in a module.
-- Components must not access the database or payment systems.
-- Components must not decide whether the user is authenticated, signed out, or an admin.
-- Keep props small, explicit, and composable.
-- Prefer composition over deeply nested internal logic.
-- Use the shared token system for color, spacing, radius, shadow, and motion.
-- Keep state handling subtle and consistent.
+- `src/components/ui` — общие UI primitives
+- `src/components/layout` — shell, navigation, layout wrappers
+- `src/components/branding` — общие продуктовые presentation-компоненты
 
-## Layout Primitives
-- `Container` owns page width and horizontal padding.
-- `Section` owns vertical rhythm and optional muted banding.
-- `Stack`, `Inline`, and `Grid` handle composition spacing instead of ad-hoc wrappers.
-- `SectionHeader` is the default way to label internal content blocks.
-- Shells should stay small and route-specific:
-  - `PublicShell`
-  - `AuthShell`
-  - `PlatformShell`
-  - `AdminShell`
-- Navigation and session presentation live with the shell layer, not in page files.
-- Auth-aware rendering and shell decisions live in `src/modules/auth/shell.tsx`.
+## Основные правила
 
-## UI Primitives
-- Buttons, inputs, selects, and textareas must share size, radius, focus, and disabled patterns.
-- Cards, badges, and pills should feel like siblings, not separate component families.
-- Dialogs and tabs should stay minimal and operational.
+- Компоненты должны оставаться презентационными, если они явно не принадлежат модулю.
+- Компоненты не должны обращаться к базе данных.
+- Компоненты не должны принимать решения о доступе, роли или оплате.
+- Auth/access/billing/progress логика остается в `src/modules`.
+- Пропсы должны быть маленькими, явными и читаемыми.
+- Предпочтение композиции, а не глубокой внутренней магии.
+
+## Layout primitives
+
+- `Container` — ширина страницы и горизонтальные отступы
+- `Section` — вертикальный ритм
+- `Stack`, `Inline`, `Grid` — композиция без ad-hoc wrappers
+- `SectionHeader` — стандартный заголовок для внутренних экранов
+
+## Shell-компоненты
+
+Shell-слой должен быть небольшим и предсказуемым:
+- `PublicShell`
+- `AuthShell`
+- `PlatformShell`
+- `AdminShell`
+
+Навигация и shell-представление живут в layout-слое, а не в страницах.
+
+## UI primitives
+
+Базовые компоненты должны оставаться консистентными:
+- `Button`
+- `Input`
+- `Textarea`
+- `Select`
+- `Card`
+- `Badge`
+- `Dialog`
+- `Tabs`
+- `EmptyState`
+- `Skeleton`
+- `Separator`
+- `FormField`
+
+## Product presentation
+
+Переиспользуемые продуктовые компоненты:
+- `CourseCard`
+- `StatCard`
+- `ProgressPill`
+- `LessonListItem`
+- `InfoRow`
+
+Они не должны превращаться в место для доменной логики.

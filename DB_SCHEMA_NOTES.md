@@ -1,35 +1,40 @@
 # DB Schema Notes
 
-This repository keeps the LMS model intentionally small and explicit.
+## Текущие сущности
 
-## Current core entities
-- `User` for auth and ownership.
-- `Course` for the course shell and publish state.
-- `CourseModule` for ordered course sections.
-- `Lesson` for ordered units with a required `lessonType`.
-- `Enrollment` for access grants and purchase state.
-- `LessonProgress` for per-user progress tracking.
-- `Order` for paid-course purchase state.
-- `PaymentEvent` for Robokassa callback logging and idempotency.
+- `User` — пользователь, роли, auth-основа
+- `Course` — курс и его publish/access state
+- `CourseModule` — упорядоченные модули
+- `Lesson` — упорядоченные уроки с обязательным `lessonType`
+- `Enrollment` — доступ к курсам
+- `LessonProgress` — прогресс пользователя по урокам
+- `Order` — заказ на платный курс
+- `PaymentEvent` — события Robokassa и идемпотентность callback
 
-## Modeling rules
-- The hierarchy is course -> module -> lesson.
-- Course access is modeled with `accessType` and `priceAmount`.
-- Free courses must keep `priceAmount` null.
-- Paid courses must keep `priceAmount` set.
-- Lesson creation starts with type selection, so `lessonType` is required.
-- Module and lesson order fields support future tree-based builders.
-- Progress is separate from enrollment because access and completion are different concerns.
-- Orders are only created for paid courses.
-- Robokassa `ResultURL` handlers must verify signature before changing order state.
+## Моделирующие правила
 
-## Service boundaries
-- Prisma access lives in module repositories.
-- Read-only query helpers can sit in `queries.ts` for clearer boundaries.
-- Module services provide typed, UI-friendly data.
-- Pages should not query Prisma directly.
+- Иерархия фиксирована:
+  - курс -> модуль -> урок
+- Бесплатный курс:
+  - `accessType = FREE`
+  - `priceAmount = null`
+- Платный курс:
+  - `accessType = PAID`
+  - `priceAmount` обязателен
+- `lessonType` обязателен, потому что lesson creation flow тип-first
+- progress и enrollment разделены намеренно:
+  - enrollment = доступ
+  - progress = прохождение
 
-## Future additions
-- lesson content blocks
-- richer billing reporting
-- richer progress analytics
+## Billing правила
+
+- Order создается только для платного курса
+- `ResultURL` проверяет подпись до любого изменения состояния
+- callback должен быть идемпотентным
+- success/fail redirect не считаются подтверждением оплаты
+
+## Границы слоя данных
+
+- Prisma access живет в module repositories
+- read-side можно выносить в `queries.ts`
+- pages не должны работать с Prisma напрямую
