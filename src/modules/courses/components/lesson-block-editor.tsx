@@ -1,358 +1,424 @@
 'use client';
 
-import type { Dispatch, SetStateAction } from 'react';
-import { useMemo, useState } from 'react';
+import type { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Button, Input, Select, Textarea } from '@/components/ui';
+import { cn } from '@/lib/cn';
 
+import { createBlock, createTextBlock, duplicateBlockById, insertBlockAt, moveBlock, removeBlockById, replaceBlockById, updateBlockById } from '../lesson-block-editor-utils';
+import { getBlockOption, type LessonBlockType } from '../lesson-block-options';
 import { normalizeLessonBlocks, type LessonBlock } from '../lesson-blocks';
+import {
+  CalloutBlockFields,
+  ChecklistBlockFields,
+  EmbedBlockFields,
+  FileBlockFields,
+  ImageBlockFields,
+  resizeTextarea,
+  TextBlockFields,
+  VideoBlockFields,
+} from './lesson-block-fields';
+import { filterBlockOptions, LessonBlockPicker, type PickerState } from './lesson-block-picker';
 
 type LessonBlockEditorProps = {
   defaultValue: unknown;
   name: string;
 };
 
-type LessonBlockType = LessonBlock['type'];
-
-type BlockOption = {
-  type: LessonBlockType;
-  label: string;
-  description: string;
-  marker: string;
-};
-
-const blockOptions: BlockOption[] = [
-  { type: 'text', label: 'Текст', description: 'Абзац, краткое объяснение или заметка.', marker: 'TXT' },
-  { type: 'video', label: 'Видео', description: 'Встраиваемая ссылка или прямой видеофайл.', marker: 'VID' },
-  { type: 'file', label: 'Файл', description: 'Материал для скачивания или шаблон.', marker: 'FILE' },
-  { type: 'image', label: 'Изображение', description: 'Скриншот, схема или иллюстрация.', marker: 'IMG' },
-  { type: 'embed', label: 'Embed', description: 'Внешний фрейм или интерактивный блок.', marker: 'EMB' },
-  { type: 'callout', label: 'Callout', description: 'Подсветка важной мысли или предупреждения.', marker: 'NOTE' },
-  { type: 'checklist', label: 'Checklist', description: 'Набор шагов или критериев выполнения.', marker: 'LIST' },
-];
-
-function createId() {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-
-  return `block-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-function createBlock(type: LessonBlockType): LessonBlock {
-  const id = createId();
-
-  switch (type) {
-    case 'text':
-      return { id, type, text: '' };
-    case 'video':
-      return { id, type, url: '', title: '', caption: '' };
-    case 'file':
-      return { id, type, url: '', title: 'Файл', description: '' };
-    case 'image':
-      return { id, type, url: '', alt: 'Изображение', caption: '' };
-    case 'embed':
-      return { id, type, url: '', title: '', description: '' };
-    case 'callout':
-      return { id, type, title: '', text: '', tone: 'info' };
-    case 'checklist':
-      return { id, type, items: [{ id: createId(), label: '', checked: false }] };
-  }
-}
-
-function updateBlockAt(blocks: LessonBlock[], blockId: string, updater: (block: LessonBlock) => LessonBlock) {
-  return blocks.map((block) => (block.id === blockId ? updater(block) : block));
-}
+type FocusPosition = 'start' | 'end';
+type FocusState = {
+  blockId: string;
+  position?: FocusPosition;
+} | null;
 
 export function LessonBlockEditor({ defaultValue, name }: LessonBlockEditorProps) {
   const [blocks, setBlocks] = useState<LessonBlock[]>(() => normalizeLessonBlocks(defaultValue));
-  const [pickerOpen, setPickerOpen] = useState(blocks.length === 0);
-  const [commandValue, setCommandValue] = useState('');
+  const [picker, setPicker] = useState<PickerState | null>(null);
+  const [activePickerIndex, setActivePickerIndex] = useState(0);
   const serialized = useMemo(() => JSON.stringify({ blocks }), [blocks]);
+  const filteredOptions = useMemo(() => filterBlockOptions(picker?.query ?? ''), [picker?.query]);
+  const fieldRefs = useRef(new Map<string, HTMLInputElement | HTMLTextAreaElement | null>());
+  const pendingFocus = useRef<FocusState>(null);
 
-  const closePicker = () => {
-    setPickerOpen(false);
-    setCommandValue('');
+  useEffect(() => {
+    for (const element of fieldRefs.current.values()) {
+      if (element instanceof HTMLTextAreaElement) {
+        resizeTextarea(element);
+      }
+    }
+  }, [blocks]);
+
+  useEffect(() => {
+    setActivePickerIndex(0);
+  }, [picker?.index, picker?.mode, picker?.query]);
+
+  useEffect(() => {
+    if (!pendingFocus.current) {
+      return;
+    }
+
+    const nextFocus = pendingFocus.current;
+    pendingFocus.current = null;
+
+    requestAnimationFrame(() => {
+      const element = fieldRefs.current.get(nextFocus.blockId);
+
+      if (!element) {
+        return;
+      }
+
+      element.focus();
+
+      if ('selectionStart' in element && 'selectionEnd' in element) {
+        const position = nextFocus.position === 'start' ? 0 : element.value.length;
+        element.setSelectionRange(position, position);
+      }
+
+      if (element instanceof HTMLTextAreaElement) {
+        resizeTextarea(element);
+      }
+    });
+  }, [blocks]);
+
+  const registerFieldRef = (blockId: string, element: HTMLInputElement | HTMLTextAreaElement | null) => {
+    fieldRefs.current.set(blockId, element);
   };
 
-  const appendBlock = (type: LessonBlockType) => {
-    setBlocks((current) => [...current, createBlock(type)]);
+  const focusBlock = (blockId: string, position: FocusPosition = 'end') => {
+    pendingFocus.current = { blockId, position };
+  };
+
+  const closePicker = () => {
+    setPicker(null);
+    setActivePickerIndex(0);
+  };
+
+  const openInsertPicker = (index: number) => {
+    setPicker({
+      index,
+      mode: 'insert',
+      query: '',
+    });
+  };
+
+  const openReplacePicker = (blockId: string, index: number) => {
+    setPicker({
+      index,
+      mode: 'replace',
+      blockId,
+      query: '',
+    });
+  };
+
+  const selectBlockType = (type: LessonBlockType) => {
+    if (!picker) {
+      return;
+    }
+
+    const nextBlock = createBlock(type);
+
+    setBlocks((current) => {
+      if (picker.mode === 'replace' && picker.blockId) {
+        return replaceBlockById(current, picker.blockId, nextBlock);
+      }
+
+      return insertBlockAt(current, picker.index, nextBlock);
+    });
+
+    focusBlock(nextBlock.id ?? '');
     closePicker();
   };
 
+  const addFirstTextBlock = () => {
+    const nextBlock = createTextBlock();
+    setBlocks([nextBlock]);
+    focusBlock(nextBlock.id ?? '');
+  };
+
+  const insertTextBlockAfter = (index: number) => {
+    const nextBlock = createTextBlock();
+    setBlocks((current) => insertBlockAt(current, index + 1, nextBlock));
+    focusBlock(nextBlock.id ?? '');
+  };
+
+  const removeBlock = (blockId: string) => {
+    const index = blocks.findIndex((block) => block.id === blockId);
+    const previousBlock = index > 0 ? blocks[index - 1] : null;
+    const nextBlock = index >= 0 && index < blocks.length - 1 ? blocks[index + 1] : null;
+
+    setBlocks((current) => removeBlockById(current, blockId));
+
+    if (previousBlock?.id) {
+      focusBlock(previousBlock.id, 'end');
+      return;
+    }
+
+    if (nextBlock?.id) {
+      focusBlock(nextBlock.id, 'start');
+    }
+  };
+
+  const duplicateBlock = (blockId: string) => {
+    setBlocks((current) => {
+      const result = duplicateBlockById(current, blockId);
+
+      if (result.duplicatedBlockId) {
+        focusBlock(result.duplicatedBlockId);
+      }
+
+      return result.blocks;
+    });
+  };
+
+  const moveBlockByDirection = (blockId: string, direction: 'up' | 'down') => {
+    setBlocks((current) => moveBlock(current, blockId, direction));
+    focusBlock(blockId);
+  };
+
+  const updateBlock = (blockId: string, updater: (block: LessonBlock) => LessonBlock) => {
+    setBlocks((current) => updateBlockById(current, blockId, updater));
+  };
+
+  const focusNeighbor = (currentIndex: number, direction: 'up' | 'down', position: FocusPosition) => {
+    const neighborIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    const neighbor = blocks[neighborIndex];
+
+    if (neighbor?.id) {
+      focusBlock(neighbor.id, position);
+    }
+  };
+
+  const handlePickerKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closePicker();
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActivePickerIndex((current) => Math.min(current + 1, Math.max(filteredOptions.length - 1, 0)));
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActivePickerIndex((current) => Math.max(current - 1, 0));
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      const option = filteredOptions[activePickerIndex];
+
+      if (!option) {
+        return;
+      }
+
+      event.preventDefault();
+      selectBlockType(option.type);
+    }
+  };
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
       <input type="hidden" name={name} value={serialized} />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Контент урока</p>
-          <p className="text-sm text-muted-foreground">Добавляйте блоки по кнопке “+” или командой “/”.</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button type="button" variant="outline" size="sm" onClick={() => setPickerOpen(true)}>
-            + Блок
-          </Button>
-          <Input
-            value={commandValue}
-            onChange={(event) => {
-              const nextValue = event.currentTarget.value;
-              setCommandValue(nextValue);
-
-              if (nextValue.startsWith('/')) {
-                setPickerOpen(true);
-              }
-            }}
-            placeholder="Введите / для выбора блока"
-            className="w-56"
-          />
-        </div>
-      </div>
-
-      {pickerOpen ? (
-        <div className="grid gap-2 rounded-xl border border-border bg-surface p-3 md:grid-cols-2">
-          {blockOptions.map((option) => (
-            <button
-              key={option.type}
-              type="button"
-              onClick={() => appendBlock(option.type)}
-              className="flex items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted"
-            >
-              <span className="inline-flex min-w-12 justify-center rounded-full bg-surface-muted px-2 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {option.marker}
-              </span>
-              <span className="space-y-1">
-                <span className="block text-sm font-medium text-foreground">{option.label}</span>
-                <span className="block text-sm text-muted-foreground">{option.description}</span>
-              </span>
-            </button>
-          ))}
-        </div>
-      ) : null}
-
       {blocks.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border px-4 py-6 text-sm text-muted-foreground">
-          Выберите тип блока, чтобы начать собирать содержимое урока.
-        </div>
+        <button
+          type="button"
+          onClick={addFirstTextBlock}
+          className="w-full rounded-lg border border-dashed border-border/80 px-4 py-5 text-left text-sm text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:border-border hover:bg-surface/50 hover:text-foreground"
+        >
+          Начните ввод или нажмите /
+        </button>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-1">
           {blocks.map((block, index) => (
-            <BlockFields key={block.id ?? `${block.type}-${index}`} block={block} setBlocks={setBlocks} />
+            <div key={block.id ?? `${block.type}-${index}`} className="space-y-1">
+              <BlockRow
+                block={block}
+                index={index}
+                registerFieldRef={registerFieldRef}
+                setBlocks={setBlocks}
+                updateBlock={updateBlock}
+                openInsertPicker={openInsertPicker}
+                openReplacePicker={openReplacePicker}
+                insertTextBlockAfter={insertTextBlockAfter}
+                removeBlock={removeBlock}
+                duplicateBlock={duplicateBlock}
+                moveBlockByDirection={moveBlockByDirection}
+                focusNeighbor={focusNeighbor}
+              />
+
+              {picker &&
+              ((picker.mode === 'insert' && picker.index === index + 1) ||
+                (picker.mode === 'replace' && picker.blockId === block.id)) ? (
+                <LessonBlockPicker
+                  picker={picker}
+                  activeIndex={activePickerIndex}
+                  filteredOptions={filteredOptions}
+                  onClose={closePicker}
+                  onQueryChange={(query) => setPicker((current) => (current ? { ...current, query } : null))}
+                  onKeyDown={handlePickerKeyDown}
+                  onSelect={selectBlockType}
+                />
+              ) : null}
+            </div>
           ))}
         </div>
       )}
+
+      {blocks.length > 0 ? (
+        <>
+          {picker && picker.mode === 'insert' && picker.index === blocks.length ? (
+            <LessonBlockPicker
+              picker={picker}
+              activeIndex={activePickerIndex}
+              filteredOptions={filteredOptions}
+              onClose={closePicker}
+              onQueryChange={(query) => setPicker((current) => (current ? { ...current, query } : null))}
+              onKeyDown={handlePickerKeyDown}
+              onSelect={selectBlockType}
+            />
+          ) : null}
+
+          <div className="flex items-center gap-3 pt-1">
+            <button
+              type="button"
+              onClick={() => openInsertPicker(blocks.length)}
+              className="inline-flex size-8 items-center justify-center rounded-full border border-border/80 text-sm text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
+              aria-label="Добавить блок"
+            >
+              +
+            </button>
+            <span className="text-sm text-muted-foreground">Продолжайте ввод или добавьте следующий блок</span>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
 
-function BlockFields({
+function BlockRow({
   block,
+  index,
+  registerFieldRef,
   setBlocks,
+  updateBlock,
+  openInsertPicker,
+  openReplacePicker,
+  insertTextBlockAfter,
+  removeBlock,
+  duplicateBlock,
+  moveBlockByDirection,
+  focusNeighbor,
 }: {
   block: LessonBlock;
+  index: number;
+  registerFieldRef: (blockId: string, element: HTMLInputElement | HTMLTextAreaElement | null) => void;
   setBlocks: Dispatch<SetStateAction<LessonBlock[]>>;
+  updateBlock: (blockId: string, updater: (block: LessonBlock) => LessonBlock) => void;
+  openInsertPicker: (index: number) => void;
+  openReplacePicker: (blockId: string, index: number) => void;
+  insertTextBlockAfter: (index: number) => void;
+  removeBlock: (blockId: string) => void;
+  duplicateBlock: (blockId: string) => void;
+  moveBlockByDirection: (blockId: string, direction: 'up' | 'down') => void;
+  focusNeighbor: (currentIndex: number, direction: 'up' | 'down', position: FocusPosition) => void;
+}) {
+  const option = getBlockOption(block.type);
+  const isTextBlock = block.type === 'text';
+
+  return (
+    <div
+      className={cn(
+        'group rounded-lg px-3 py-2 transition-[background-color,border-color] duration-200 ease-[var(--ease-standard)] hover:bg-surface/45 focus-within:bg-surface/55',
+        !isTextBlock && 'border border-transparent hover:border-border/70 focus-within:border-border/70',
+      )}
+    >
+      <div className="flex items-start gap-3">
+        <div className="mt-1 flex flex-col items-center gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+          <button
+            type="button"
+            onClick={() => openInsertPicker(index + 1)}
+            className="inline-flex size-7 items-center justify-center rounded-full border border-border/80 text-xs text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
+            aria-label="Добавить блок ниже"
+          >
+            +
+          </button>
+          <span className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">::</span>
+        </div>
+
+        <div className="min-w-0 flex-1 space-y-3">
+          {!isTextBlock ? (
+            <div className="inline-flex rounded-full bg-surface-muted px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {option?.label ?? block.type}
+            </div>
+          ) : null}
+
+          {block.type === 'text' ? (
+            <TextBlockFields
+              block={block}
+              index={index}
+              registerFieldRef={registerFieldRef}
+              updateBlock={updateBlock}
+              openReplacePicker={openReplacePicker}
+              insertTextBlockAfter={insertTextBlockAfter}
+              removeBlock={removeBlock}
+              focusNeighbor={focusNeighbor}
+            />
+          ) : null}
+          {block.type === 'video' ? <VideoBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
+          {block.type === 'file' ? <FileBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
+          {block.type === 'image' ? <ImageBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
+          {block.type === 'embed' ? <EmbedBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
+          {block.type === 'callout' ? <CalloutBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
+          {block.type === 'checklist' ? <ChecklistBlockFields block={block} registerFieldRef={registerFieldRef} setBlocks={setBlocks} /> : null}
+        </div>
+
+        <div className="flex flex-col gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+          <InlineControl label="Вверх" onClick={() => moveBlockByDirection(block.id ?? '', 'up')}>
+            ↑
+          </InlineControl>
+          <InlineControl label="Вниз" onClick={() => moveBlockByDirection(block.id ?? '', 'down')}>
+            ↓
+          </InlineControl>
+          <InlineControl label="Дублировать" onClick={() => duplicateBlock(block.id ?? '')}>
+            ⧉
+          </InlineControl>
+          <InlineControl label="Удалить" onClick={() => removeBlock(block.id ?? '')} tone="danger">
+            ×
+          </InlineControl>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InlineControl({
+  children,
+  label,
+  onClick,
+  tone = 'default',
+}: {
+  children: string;
+  label: string;
+  onClick: () => void;
+  tone?: 'default' | 'danger';
 }) {
   return (
-    <div className="space-y-3 rounded-xl border border-border/70 bg-surface/55 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="inline-flex rounded-full bg-surface-muted px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          {blockOptions.find((option) => option.type === block.type)?.label ?? block.type}
-        </div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => setBlocks((current) => current.filter((currentBlock) => currentBlock.id !== block.id))}
-        >
-          Удалить
-        </Button>
-      </div>
-
-      {block.type === 'text' ? <TextBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'video' ? <VideoBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'file' ? <FileBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'image' ? <ImageBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'embed' ? <EmbedBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'callout' ? <CalloutBlockFields block={block} setBlocks={setBlocks} /> : null}
-      {block.type === 'checklist' ? <ChecklistBlockFields block={block} setBlocks={setBlocks} /> : null}
-    </div>
-  );
-}
-
-function TextBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'text' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="space-y-2">
-      <Textarea
-        rows={6}
-        value={block.text}
-        onChange={(event) =>
-          setBlocks((current) =>
-            updateBlockAt(current, block.id ?? '', (currentBlock) =>
-              currentBlock.type === 'text' ? { ...currentBlock, text: event.currentTarget.value } : currentBlock,
-            ),
-          )
-        }
-        placeholder="Текст урока"
-      />
-      <Select
-        value={block.tone ?? 'default'}
-        onChange={(event) =>
-          setBlocks((current) =>
-            updateBlockAt(current, block.id ?? '', (currentBlock) =>
-              currentBlock.type === 'text'
-                ? { ...currentBlock, tone: event.currentTarget.value === 'muted' ? 'muted' : 'default' }
-                : currentBlock,
-            ),
-          )
-        }
-      >
-        <option value="default">Обычный текст</option>
-        <option value="muted">Поддерживающий текст</option>
-      </Select>
-    </div>
-  );
-}
-
-function VideoBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'video' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <Input value={block.title ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'video' ? { ...currentBlock, title: event.currentTarget.value } : currentBlock))} placeholder="Название видео" />
-      <Input value={block.url} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'video' ? { ...currentBlock, url: event.currentTarget.value } : currentBlock))} placeholder="Ссылка на видео" />
-      <div className="md:col-span-2">
-        <Textarea rows={3} value={block.caption ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'video' ? { ...currentBlock, caption: event.currentTarget.value } : currentBlock))} placeholder="Подпись или пояснение" />
-      </div>
-    </div>
-  );
-}
-
-function FileBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'file' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <Input value={block.title} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'file' ? { ...currentBlock, title: event.currentTarget.value } : currentBlock))} placeholder="Название файла" />
-      <Input value={block.url} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'file' ? { ...currentBlock, url: event.currentTarget.value } : currentBlock))} placeholder="Ссылка на файл" />
-      <div className="md:col-span-2">
-        <Textarea rows={3} value={block.description ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'file' ? { ...currentBlock, description: event.currentTarget.value } : currentBlock))} placeholder="Короткое описание" />
-      </div>
-    </div>
-  );
-}
-
-function ImageBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'image' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <Input value={block.url} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'image' ? { ...currentBlock, url: event.currentTarget.value } : currentBlock))} placeholder="Ссылка на изображение" />
-      <Input value={block.alt} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'image' ? { ...currentBlock, alt: event.currentTarget.value } : currentBlock))} placeholder="Alt-текст" />
-      <div className="md:col-span-2">
-        <Textarea rows={3} value={block.caption ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'image' ? { ...currentBlock, caption: event.currentTarget.value } : currentBlock))} placeholder="Подпись" />
-      </div>
-    </div>
-  );
-}
-
-function EmbedBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'embed' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <Input value={block.title ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'embed' ? { ...currentBlock, title: event.currentTarget.value } : currentBlock))} placeholder="Название блока" />
-      <Input value={block.url} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'embed' ? { ...currentBlock, url: event.currentTarget.value } : currentBlock))} placeholder="Ссылка для встраивания" />
-      <div className="md:col-span-2">
-        <Textarea rows={3} value={block.description ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'embed' ? { ...currentBlock, description: event.currentTarget.value } : currentBlock))} placeholder="Что увидит пользователь" />
-      </div>
-    </div>
-  );
-}
-
-function CalloutBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'callout' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="space-y-3">
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_12rem]">
-        <Input value={block.title ?? ''} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'callout' ? { ...currentBlock, title: event.currentTarget.value } : currentBlock))} placeholder="Заголовок callout" />
-        <Select value={block.tone ?? 'info'} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'callout' ? { ...currentBlock, tone: event.currentTarget.value === 'success' || event.currentTarget.value === 'warning' ? event.currentTarget.value : 'info' } : currentBlock))}>
-          <option value="info">Info</option>
-          <option value="success">Success</option>
-          <option value="warning">Warning</option>
-        </Select>
-      </div>
-      <Textarea rows={4} value={block.text} onChange={(event) => setBlocks((current) => updateBlockAt(current, block.id ?? '', (currentBlock) => currentBlock.type === 'callout' ? { ...currentBlock, text: event.currentTarget.value } : currentBlock))} placeholder="Текст акцента" />
-    </div>
-  );
-}
-
-function ChecklistBlockFields({ block, setBlocks }: { block: Extract<LessonBlock, { type: 'checklist' }>; setBlocks: Dispatch<SetStateAction<LessonBlock[]>> }) {
-  return (
-    <div className="space-y-3">
-      {block.items.map((item, itemIndex) => (
-        <div key={item.id ?? `${block.id}-item-${itemIndex}`} className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={Boolean(item.checked)}
-            onChange={(event) =>
-              setBlocks((current) =>
-                updateBlockAt(current, block.id ?? '', (currentBlock) =>
-                  currentBlock.type === 'checklist'
-                    ? {
-                        ...currentBlock,
-                        items: currentBlock.items.map((currentItem) =>
-                          currentItem.id === item.id ? { ...currentItem, checked: event.currentTarget.checked } : currentItem,
-                        ),
-                      }
-                    : currentBlock,
-                ),
-              )
-            }
-            className="size-4 rounded border-border"
-          />
-          <Input
-            value={item.label}
-            onChange={(event) =>
-              setBlocks((current) =>
-                updateBlockAt(current, block.id ?? '', (currentBlock) =>
-                  currentBlock.type === 'checklist'
-                    ? {
-                        ...currentBlock,
-                        items: currentBlock.items.map((currentItem) =>
-                          currentItem.id === item.id ? { ...currentItem, label: event.currentTarget.value } : currentItem,
-                        ),
-                      }
-                    : currentBlock,
-                ),
-              )
-            }
-            placeholder="Шаг чеклиста"
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() =>
-              setBlocks((current) =>
-                updateBlockAt(current, block.id ?? '', (currentBlock) =>
-                  currentBlock.type === 'checklist'
-                    ? { ...currentBlock, items: currentBlock.items.filter((currentItem) => currentItem.id !== item.id) }
-                    : currentBlock,
-                ),
-              )
-            }
-          >
-            Удалить
-          </Button>
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() =>
-          setBlocks((current) =>
-            updateBlockAt(current, block.id ?? '', (currentBlock) =>
-              currentBlock.type === 'checklist'
-                ? { ...currentBlock, items: [...currentBlock.items, { id: createId(), label: '', checked: false }] }
-                : currentBlock,
-            ),
-          )
-        }
-      >
-        + Пункт
-      </Button>
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={cn(
+        'inline-flex size-7 items-center justify-center rounded-md text-xs transition-colors duration-200 ease-[var(--ease-standard)]',
+        tone === 'danger'
+          ? 'text-muted-foreground hover:bg-danger/10 hover:text-danger'
+          : 'text-muted-foreground hover:bg-surface-muted hover:text-foreground',
+      )}
+    >
+      {children}
+    </button>
   );
 }
