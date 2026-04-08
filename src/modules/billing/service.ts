@@ -1,4 +1,3 @@
-import crypto from 'node:crypto';
 import { CourseAccessType, OrderStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
@@ -8,11 +7,11 @@ import { enrollUserInPaidCourse } from '@/modules/enrollments';
 import { findEnrollmentRow } from '@/modules/enrollments/queries';
 
 import {
-  createOrderRow,
-  findOrderForPurchase,
+  createOrReusePendingOrderRow,
   updateOrderStatusRow,
   upsertPaymentEventRow,
 } from './repository';
+import { buildRobokassaSignature, normalizeAmount, normalizeSignature } from './helpers';
 import { findOrderDetailRowById, findOrderRowById, listOrderRows } from './queries';
 import { robokassaResultSchema, type RobokassaResultInput } from './schemas';
 import type { OrderState, RobokassaCheckoutIntent, RobokassaResultPayload } from './types';
@@ -22,22 +21,6 @@ function assertRobokassaConfigured() {
   if (!env.ROBOKASSA_MERCHANT_LOGIN || !env.ROBOKASSA_PASSWORD_1 || !env.ROBOKASSA_PASSWORD_2) {
     throw new Error('ROBOKASSA_NOT_CONFIGURED');
   }
-}
-
-function normalizeAmount(amount: number) {
-  return amount.toFixed(2);
-}
-
-function buildSignatureBase(parts: Array<string | number>, password: string) {
-  return `${parts.join(':')}:${password}`;
-}
-
-function md5(value: string) {
-  return crypto.createHash('md5').update(value).digest('hex');
-}
-
-function normalizeSignature(signature: string) {
-  return signature.trim().toLowerCase();
 }
 
 function mapOrderRow(row: NonNullable<Awaited<ReturnType<typeof findOrderRowById>>>) : OrderState {
@@ -102,29 +85,17 @@ export async function createPaidCoursePurchaseIntent(userId: string, courseId: s
     throw new Error('COURSE_ALREADY_ACCESSIBLE');
   }
 
-  const existingOrder = await findOrderForPurchase(userId, courseId);
-  const order =
-    existingOrder && existingOrder.amount === course.priceAmount
-      ? existingOrder
-      : await createOrderRow({
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-          course: {
-            connect: {
-              id: courseId,
-            },
-          },
-          amount: course.priceAmount,
-          currency: 'RUB',
-          status: OrderStatus.PENDING,
-        });
+  const order = await createOrReusePendingOrderRow({
+    userId,
+    courseId,
+    amount: course.priceAmount,
+    currency: 'RUB',
+  });
 
   const outSum = normalizeAmount(order.amount);
-  const signatureValue = md5(
-    buildSignatureBase([env.ROBOKASSA_MERCHANT_LOGIN, outSum, order.id], env.ROBOKASSA_PASSWORD_1),
+  const signatureValue = buildRobokassaSignature(
+    [env.ROBOKASSA_MERCHANT_LOGIN, outSum, order.id],
+    env.ROBOKASSA_PASSWORD_1,
   );
 
   const checkoutUrl = new URL(env.ROBOKASSA_PAYMENT_URL);
@@ -200,6 +171,10 @@ export async function handleRobokassaResult(input: RobokassaResultInput | Roboka
     throw new Error('ORDER_NOT_PAYABLE');
   }
 
+  if (order.status !== OrderStatus.PENDING && order.status !== OrderStatus.PAID) {
+    throw new Error('ORDER_NOT_PAYABLE');
+  }
+
   if (parsed.merchantLogin !== env.ROBOKASSA_MERCHANT_LOGIN) {
     throw new Error('ROBOKASSA_LOGIN_MISMATCH');
   }
@@ -210,8 +185,9 @@ export async function handleRobokassaResult(input: RobokassaResultInput | Roboka
     throw new Error('ORDER_AMOUNT_MISMATCH');
   }
 
-  const expectedSignature = md5(
-    buildSignatureBase([parsed.merchantLogin, parsed.outSum, parsed.invId], env.ROBOKASSA_PASSWORD_2),
+  const expectedSignature = buildRobokassaSignature(
+    [parsed.merchantLogin, parsed.outSum, parsed.invId],
+    env.ROBOKASSA_PASSWORD_2,
   );
 
   if (normalizeSignature(parsed.signatureValue) !== expectedSignature) {
@@ -246,4 +222,29 @@ export async function handleRobokassaResult(input: RobokassaResultInput | Roboka
     courseSlug: order.course.slug,
     responseText: `OK${order.id}`,
   };
+}
+
+export async function recordRobokassaRedirectEvent(input: {
+  orderId: number;
+  eventType: 'SUCCESS' | 'FAIL';
+  payload: Record<string, string>;
+}) {
+  const order = await findOrderRowById(input.orderId);
+
+  if (!order) {
+    return null;
+  }
+
+  const signatureValue = normalizeSignature(`${input.eventType}:${input.orderId}`);
+
+  await upsertPaymentEventRow({
+    orderId: input.orderId,
+    eventType: input.eventType,
+    signatureValue,
+    payload: input.payload,
+    verified: false,
+    processedAt: null,
+  });
+
+  return order;
 }

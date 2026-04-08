@@ -2,12 +2,12 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  DATABASE_URL: z.string().default(''),
+  DATABASE_URL: z.string().trim().default(''),
   NEXTAUTH_URL: z.string().trim().default(''),
-  NEXTAUTH_SECRET: z.string().default(''),
-  ROBOKASSA_MERCHANT_LOGIN: z.string().default(''),
-  ROBOKASSA_PASSWORD_1: z.string().default(''),
-  ROBOKASSA_PASSWORD_2: z.string().default(''),
+  NEXTAUTH_SECRET: z.string().trim().default(''),
+  ROBOKASSA_MERCHANT_LOGIN: z.string().trim().default(''),
+  ROBOKASSA_PASSWORD_1: z.string().trim().default(''),
+  ROBOKASSA_PASSWORD_2: z.string().trim().default(''),
   ROBOKASSA_PAYMENT_URL: z.string().url().default('https://auth.robokassa.ru/Merchant/Index.aspx'),
   ROBOKASSA_IS_TEST: z
     .union([z.literal('0'), z.literal('1'), z.boolean()])
@@ -26,3 +26,18 @@ export const env = envSchema.parse({
   ROBOKASSA_PAYMENT_URL: process.env.ROBOKASSA_PAYMENT_URL,
   ROBOKASSA_IS_TEST: process.env.ROBOKASSA_IS_TEST,
 });
+
+export const runtimeRequiredEnvKeys = [
+  'DATABASE_URL',
+  'NEXTAUTH_URL',
+  'NEXTAUTH_SECRET',
+  'ROBOKASSA_MERCHANT_LOGIN',
+  'ROBOKASSA_PASSWORD_1',
+  'ROBOKASSA_PASSWORD_2',
+] as const;
+
+export type RuntimeRequiredEnvKey = (typeof runtimeRequiredEnvKeys)[number];
+
+export function getMissingRuntimeEnv(keys: readonly RuntimeRequiredEnvKey[] = runtimeRequiredEnvKeys) {
+  return keys.filter((key) => !env[key]);
+}

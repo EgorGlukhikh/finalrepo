@@ -5,8 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/modules/auth/access';
 
-import { createCourse, updateCourse } from './service';
-import { createLesson, createModule, deleteCourse, duplicateCourse, setCourseStatus } from './service';
+import { createCourse, createLesson, createModule, deleteCourse, duplicateCourse, setCourseStatus } from './service';
 
 function readFormString(formData: FormData, key: string) {
   return String(formData.get(key) ?? '').trim();
@@ -51,33 +50,6 @@ export async function createCourseAction(formData: FormData) {
   revalidatePath('/admin/courses');
   revalidatePath('/courses');
   revalidatePath(`/courses/${course.slug}`);
-  redirect(`/admin/courses/${course.id}`);
-}
-
-export async function updateCourseAction(formData: FormData) {
-  await requireAdmin('/admin/courses');
-  const courseId = readFormString(formData, 'courseId');
-
-  if (!courseId) {
-    throw new Error('COURSE_ID_REQUIRED');
-  }
-
-  const isFree = readFreeFlag(formData);
-  const course = await updateCourse({
-    courseId,
-    title: readFormString(formData, 'title') || undefined,
-    slug: readFormString(formData, 'slug') || undefined,
-    shortDescription: readFormString(formData, 'shortDescription') || undefined,
-    description: readFormString(formData, 'description') || undefined,
-    coverImageUrl: readFormString(formData, 'coverImageUrl') || undefined,
-    accessType: isFree ? 'FREE' : 'PAID',
-    priceAmount: isFree ? null : readOptionalNumber(formData, 'priceAmount'),
-  });
-
-  revalidatePath('/admin/courses');
-  revalidatePath('/courses');
-  revalidatePath(`/courses/${course.slug}`);
-  revalidatePath(`/admin/courses/${course.id}`);
   redirect(`/admin/courses/${course.id}`);
 }
 

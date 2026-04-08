@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation';
 
 import { Section, SectionHeader, Stack } from '@/components/layout';
-import { getAuthSession } from '@/modules/auth/session';
+import { requireUser } from '@/modules/auth/access';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
 import { ProgressPill } from '@/components/branding';
@@ -15,11 +15,7 @@ type LessonPageProps = {
 
 export default async function LessonPage({ params }: LessonPageProps) {
   const { slug, lessonId } = await params;
-  const session = await getAuthSession();
-
-  if (!session?.user) {
-    redirect(`/sign-in?callbackUrl=${encodeURIComponent(`/app/courses/${slug}/lessons/${lessonId}`)}`);
-  }
+  const session = await requireUser(`/app/courses/${slug}/lessons/${lessonId}`);
 
   const tree = await getCourseLearningTree({ slug }, session.user.id, { view: 'learner' });
 

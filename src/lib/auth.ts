@@ -3,14 +3,14 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { getServerSession } from 'next-auth/next';
 import { UserRole } from '@prisma/client';
 
-import { comparePassword } from '@/modules/auth/password';
-import { signInSchema } from '@/modules/auth/schema';
+import { validateCredentials } from '@/modules/auth/users';
 
-import { db } from './db';
+import { env } from './env';
 
 export const authMode = 'next-auth-v4-credentials' as const;
 
-const authSecret = process.env.NEXTAUTH_SECRET ?? 'academy-realtors-development-secret';
+const authSecret =
+  env.NEXTAUTH_SECRET || (env.NODE_ENV === 'production' ? undefined : 'academy-realtors-development-secret');
 
 export const authOptions: NextAuthOptions = {
   secret: authSecret,
@@ -35,25 +35,12 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        const parsed = signInSchema.safeParse(credentials);
-
-        if (!parsed.success) {
-          return null;
-        }
-
-        const user = await db.user.findUnique({
-          where: {
-            email: parsed.data.email,
-          },
+        const user = await validateCredentials({
+          email: String(credentials?.email ?? ''),
+          password: String(credentials?.password ?? ''),
         });
 
         if (!user) {
-          return null;
-        }
-
-        const passwordMatches = await comparePassword(parsed.data.password, user.passwordHash);
-
-        if (!passwordMatches) {
           return null;
         }
 

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { getOrderById } from '@/modules/billing';
+import { getOrderById, recordRobokassaRedirectEvent } from '@/modules/billing';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -15,6 +15,12 @@ export async function GET(request: Request) {
   if (!order) {
     return NextResponse.redirect(new URL('/courses', request.url));
   }
+
+  await recordRobokassaRedirectEvent({
+    orderId,
+    eventType: 'SUCCESS',
+    payload: Object.fromEntries(url.searchParams.entries()),
+  });
 
   return NextResponse.redirect(
     new URL(

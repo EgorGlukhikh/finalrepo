@@ -2,7 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 
 import { Badge } from '@/components/ui/badge';
 import { Section, SectionHeader, Stack } from '@/components/layout';
-import { getAuthSession } from '@/modules/auth/session';
+import { requireUser } from '@/modules/auth/access';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
 import { ProgressPill } from '@/components/branding';
@@ -15,11 +15,7 @@ type CourseLearningPageProps = {
 
 export default async function CourseLearningPage({ params }: CourseLearningPageProps) {
   const { slug } = await params;
-  const session = await getAuthSession();
-
-  if (!session?.user) {
-    redirect(`/sign-in?callbackUrl=${encodeURIComponent(`/app/courses/${slug}`)}`);
-  }
+  const session = await requireUser(`/app/courses/${slug}`);
 
   const tree = await getCourseLearningTree({ slug }, session.user.id, { view: 'learner' });
 

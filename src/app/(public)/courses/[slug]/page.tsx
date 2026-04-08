@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation';
 
-import { ActionLink } from '@/components/layout';
+import { CourseCurriculum } from '@/modules/learning/components';
+import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
 import { Badge, Button, Card } from '@/components/ui';
-import { Section, SectionHeader, Stack } from '@/components/layout';
 import { getAuthSession } from '@/modules/auth/session';
+import { isRobokassaConfigured, purchasePaidCourseAction } from '@/modules/billing';
 import { enrollFreeCourseAction } from '@/modules/learning/actions';
 import { getCourseLearningTree } from '@/modules/learning';
-import { purchasePaidCourseAction } from '@/modules/billing';
-import { CourseCurriculum } from '@/modules/learning/components';
 
 type CoursePageProps = {
   params: Promise<{
@@ -43,6 +42,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   const course = tree.course;
   const isEnrolled = tree.enrollmentStatus === 'ACTIVE';
+  const billingAvailable = isRobokassaConfigured();
   const signInHref = `/sign-in?callbackUrl=${encodeURIComponent(`/courses/${slug}`)}`;
 
   return (
@@ -96,14 +96,22 @@ export default async function CoursePage({ params }: CoursePageProps) {
                       <input type="hidden" name="courseId" value={course.id} />
                       <input type="hidden" name="courseSlug" value={course.slug} />
                       <Button type="submit">Начать обучение</Button>
-                      <span className="text-sm text-muted-foreground">Бесплатный курс откроет личный маршрут обучения после зачисления.</span>
+                      <span className="text-sm text-muted-foreground">
+                        Бесплатный курс откроет личный маршрут обучения после зачисления.
+                      </span>
                     </form>
                   ) : (
                     <form action={purchasePaidCourseAction} className="flex flex-wrap items-center gap-3">
                       <input type="hidden" name="courseId" value={course.id} />
                       <input type="hidden" name="courseSlug" value={course.slug} />
-                      <Button type="submit">Купить курс</Button>
-                      <span className="text-sm text-muted-foreground">После оплаты доступ откроется автоматически.</span>
+                      <Button type="submit" disabled={!billingAvailable}>
+                        Купить курс
+                      </Button>
+                      <span className="text-sm text-muted-foreground">
+                        {billingAvailable
+                          ? 'После оплаты доступ откроется автоматически.'
+                          : 'Оплата временно недоступна. Проверьте Robokassa-конфигурацию перед запуском платного доступа.'}
+                      </span>
                     </form>
                   )
                 ) : (

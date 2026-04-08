@@ -6,5 +6,6 @@ export {
   handleRobokassaResult,
   isRobokassaConfigured,
   listOrders,
+  recordRobokassaRedirectEvent,
 } from './service';
 export type { AdminOrderDetails, AdminOrderListItem, RobokassaCheckoutIntent, RobokassaResultPayload } from './types';

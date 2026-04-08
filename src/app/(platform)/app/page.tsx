@@ -2,7 +2,7 @@ import { ActionLink } from '@/components/layout';
 import { CourseCard, StatCard } from '@/components/branding';
 import { EmptyState } from '@/components/ui';
 import { Grid, Section, SectionHeader, Stack } from '@/components/layout';
-import { getAuthSession } from '@/modules/auth/session';
+import { requireUser } from '@/modules/auth/access';
 import { getEnrolledCourseSummaries } from '@/modules/learning';
 
 function formatCompletionLabel(isCompleted: boolean) {
@@ -10,12 +10,7 @@ function formatCompletionLabel(isCompleted: boolean) {
 }
 
 export default async function PlatformHomePage() {
-  const session = await getAuthSession();
-
-  if (!session?.user) {
-    return null;
-  }
-
+  const session = await requireUser('/app');
   const summaries = await getEnrolledCourseSummaries(session.user.id);
   const completedCount = summaries.filter((course) => course.isCompleted).length;
   const progressAverage =
