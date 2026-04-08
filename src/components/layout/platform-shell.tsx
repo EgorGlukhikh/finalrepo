@@ -27,7 +27,7 @@ export function PlatformShell({ children, headerActions }: PlatformShellProps) {
                     Рабочая зона
                   </p>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Платформенный каркас для личного кабинета и будущих учебных разделов.
+                    Здесь живут личный кабинет, обучение и будущие рабочие разделы платформы.
                   </p>
                 </div>
                 <PlatformNav />

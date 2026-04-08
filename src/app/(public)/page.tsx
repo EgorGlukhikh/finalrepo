@@ -9,19 +9,17 @@ export default function PublicHomePage() {
         <SectionHeader
           eyebrow="Публичная зона"
           title="Академия риэлторов"
-          description="Фундамент приложения готов. Дальше здесь появятся каталог, кабинет и админка."
+          description="Спокойная точка входа в каталог курсов, личный кабинет и будущие рабочие разделы платформы."
         />
         <Card padding="lg">
           <Stack gap="md">
-            <p className="max-w-prose text-sm text-muted-foreground">
-              Это стартовый публичный слой платформы. Пока здесь только спокойный каркас и точки входа в систему.
+            <p className="max-w-prose text-sm leading-7 text-muted-foreground">
+              В этой версии уже можно посмотреть каталог курсов, перейти на публичную страницу курса и открыть личный кабинет после входа.
             </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <ActionLink href="/sign-in" variant="primary">
-                Войти
-              </ActionLink>
-              <ActionLink href="/sign-up" variant="secondary">
-                Создать аккаунт
+            <div className="flex flex-wrap items-center gap-3">
+              <ActionLink href="/courses">Открыть каталог</ActionLink>
+              <ActionLink href="/sign-in" variant="secondary">
+                Войти в кабинет
               </ActionLink>
             </div>
           </Stack>

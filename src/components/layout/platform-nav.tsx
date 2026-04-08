@@ -3,18 +3,17 @@ import { NavLink } from './nav-link';
 const items: Array<{
   href: string;
   label: string;
-  active?: boolean;
+  exact?: boolean;
   disabled?: boolean;
 }> = [
   {
     href: '/app',
-    label: 'Обзор',
-    active: true,
+    label: 'Мои курсы',
+    exact: true,
   },
   {
-    href: '/app/courses',
-    label: 'Мои курсы',
-    disabled: true,
+    href: '/courses',
+    label: 'Каталог',
   },
   {
     href: '/app/profile',
@@ -30,7 +29,7 @@ export function PlatformNav() {
         Личный кабинет
       </p>
       {items.map((item) => (
-        <NavLink key={item.label} href={item.href} active={item.active} disabled={item.disabled}>
+        <NavLink key={item.label} href={item.href} exact={item.exact} disabled={item.disabled}>
           {item.label}
         </NavLink>
       ))}

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/cn';
@@ -12,6 +13,8 @@ type LessonListItemProps = {
   duration?: string;
   active?: boolean;
   completed?: boolean;
+  href?: string;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -22,14 +25,17 @@ export function LessonListItem({
   duration,
   active = false,
   completed = false,
+  href,
+  disabled = false,
   className,
 }: LessonListItemProps) {
-  return (
+  const card = (
     <Card
       padding="sm"
       className={cn(
         'flex items-center justify-between gap-4 transition-colors duration-200',
         active ? 'border-primary/35 bg-primary/5' : 'bg-surface',
+        disabled ? 'opacity-70' : 'hover:bg-surface-muted',
         className,
       )}
     >
@@ -45,6 +51,19 @@ export function LessonListItem({
         {duration ? <span className="text-xs text-muted-foreground">{duration}</span> : null}
       </div>
     </Card>
+  );
+
+  if (!href || disabled) {
+    return card;
+  }
+
+  return (
+    <Link
+      href={href}
+      className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    >
+      {card}
+    </Link>
   );
 }
 

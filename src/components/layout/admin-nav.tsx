@@ -3,18 +3,17 @@ import { NavLink } from './nav-link';
 const items: Array<{
   href: string;
   label: string;
-  active?: boolean;
+  exact?: boolean;
   disabled?: boolean;
 }> = [
   {
     href: '/admin',
     label: 'Панель',
-    active: true,
+    exact: true,
   },
   {
     href: '/admin/courses',
     label: 'Курсы',
-    disabled: true,
   },
   {
     href: '/admin/orders',
@@ -35,7 +34,7 @@ export function AdminNav() {
         Админка
       </p>
       {items.map((item) => (
-        <NavLink key={item.label} href={item.href} active={item.active} disabled={item.disabled}>
+        <NavLink key={item.label} href={item.href} exact={item.exact} disabled={item.disabled}>
           {item.label}
         </NavLink>
       ))}

@@ -7,7 +7,7 @@ export function PublicFooter() {
       <Container size="wide" className="py-6 sm:py-8">
         <Inline justify="between" align="center" wrap className="text-sm text-muted-foreground">
           <span>Академия риэлторов</span>
-          <span>Основа приложения и дизайн-системы</span>
+          <span>Основной контур приложения и дизайн-системы</span>
         </Inline>
       </Container>
     </footer>
