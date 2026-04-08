@@ -39,6 +39,8 @@
 - Enrollment revoke is only meaningful for paid or manual access; free-course access remains governed by course access type.
 - Billing is isolated in `src/modules/billing`; only paid courses can create orders.
 - Robokassa callbacks must be idempotent and signature-checked before any state change.
+- Railway deploys through `railway.toml`, `pnpm prisma migrate deploy`, and `/api/health`.
+- Runtime secrets are environment-driven; build-time code must not assume production secrets are already injected.
 - Prisma queries stay inside module repositories and service layers.
 - Read-only helpers can live in `queries.ts`; mutation helpers stay in `repository.ts`.
 
