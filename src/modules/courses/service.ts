@@ -29,6 +29,7 @@ import {
   getModuleCourseIdByModuleId,
 } from './queries';
 import { findEnrollmentRow } from '@/modules/enrollments/queries';
+import { getUserById } from '@/modules/users';
 import {
   createCourseSchema,
   createLessonSchema,
@@ -291,9 +292,13 @@ export async function getCourseAccessForUser(userId: string, courseId: string): 
     throw new Error('COURSE_NOT_FOUND');
   }
 
+  const user = await getUserById(userId);
   const enrollment = await findEnrollmentRow(userId, courseId);
+  const isAdmin = user?.role === 'ADMIN';
 
-  const hasAccess = course.status === 'PUBLISHED' && (course.accessType === 'FREE' || enrollment?.status === 'ACTIVE');
+  const hasAccess =
+    isAdmin ||
+    (course.status === 'PUBLISHED' && (course.accessType === 'FREE' || enrollment?.status === 'ACTIVE'));
 
   return {
     userId,
