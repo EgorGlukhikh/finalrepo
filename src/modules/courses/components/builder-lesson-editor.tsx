@@ -3,7 +3,8 @@
 import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
-import { Badge, Button, EmptyState, Input, Select, Textarea } from '@/components/ui';
+import { ActionBar } from '@/components/product';
+import { Badge, Button, EmptyState, FormField, Input, Select, Textarea } from '@/components/ui';
 import type { LessonAnalytics } from '@/modules/analytics';
 import type { CourseLessonNode, CourseModuleNode } from '@/modules/courses';
 
@@ -62,7 +63,7 @@ export function BuilderLessonEditor({
           </Text>
         </Stack>
 
-        <HStack gap="2" flexWrap="wrap">
+        <ActionBar>
           <ActionLink href="/admin/courses" variant="outline">
             К списку
           </ActionLink>
@@ -70,18 +71,18 @@ export function BuilderLessonEditor({
             <input type="hidden" name="courseId" value={courseId} />
             <input type="hidden" name="lessonId" value={selectedLesson.id} />
             <input type="hidden" name="status" value={selectedLesson.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED'} />
-            <Button type="submit" size="sm" variant="ghost">
+            <Button type="submit" variant="ghost">
               {selectedLesson.status === 'PUBLISHED' ? 'Снять с публикации' : 'Опубликовать'}
             </Button>
           </form>
           <form action={deleteLessonAction}>
             <input type="hidden" name="courseId" value={courseId} />
             <input type="hidden" name="lessonId" value={selectedLesson.id} />
-            <Button type="submit" size="sm" variant="danger">
+            <Button type="submit" variant="danger">
               Удалить
             </Button>
           </form>
-        </HStack>
+        </ActionBar>
       </HStack>
 
       <form action={updateLessonAction}>
@@ -100,45 +101,39 @@ export function BuilderLessonEditor({
 
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap="6" alignItems="start">
             <Stack gap="4">
-              <Stack gap="2">
-                <Text textStyle="label" color="fg.default">
-                  Название урока
-                </Text>
-                <Input name="title" defaultValue={selectedLesson.title} placeholder="Название урока" required />
-              </Stack>
+              <FormField id="title" label="Название урока" required>
+                <Input id="title" name="title" defaultValue={selectedLesson.title} placeholder="Название урока" required />
+              </FormField>
 
-              <Stack gap="2">
-                <Text textStyle="label" color="fg.default">
-                  Краткое описание
-                </Text>
+              <FormField id="summary" label="Краткое описание">
                 <Textarea
+                  id="summary"
                   name="summary"
                   rows={4}
                   defaultValue={selectedLesson.summary ?? ''}
                   placeholder="Короткий контекст для автора и ученика"
                 />
-              </Stack>
+              </FormField>
             </Stack>
 
-            <Stack gap="2">
-              <Text textStyle="label" color="fg.default">
-                Тип урока
-              </Text>
-              <Select name="lessonType" defaultValue={selectedLesson.lessonType}>
-                {Object.entries(lessonTypeLabels).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </Select>
+            <Stack gap="4">
+              <FormField id="lessonType" label="Тип урока">
+                <Select id="lessonType" name="lessonType" defaultValue={selectedLesson.lessonType}>
+                  {Object.entries(lessonTypeLabels).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Select>
+              </FormField>
             </Stack>
           </SimpleGrid>
 
           <LessonBlockEditor name="content" defaultValue={selectedLesson.content} />
 
-          <HStack justify="end" pt="4" borderTopWidth="1px" borderColor="border.subtle">
+          <ActionBar justifyContent="end" pt="4" borderTopWidth="1px" borderColor="border.subtle">
             <Button type="submit">Сохранить изменения</Button>
-          </HStack>
+          </ActionBar>
         </Stack>
       </form>
     </Stack>

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Stack } from './stack';
+import { Box, Heading, Stack, Text } from '@chakra-ui/react';
+
 import { Card } from '@/components/ui';
 
 type AuthCardProps = {
@@ -14,14 +15,26 @@ type AuthCardProps = {
 export function AuthCard({ eyebrow, title, description, children, footer }: AuthCardProps) {
   return (
     <Card padding="lg">
-      <Stack gap="lg">
-        <Stack gap="xs">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{eyebrow}</p>
-          <h1 className="text-page-title font-semibold tracking-tight text-foreground">{title}</h1>
-          {description ? <p className="max-w-prose text-sm text-muted-foreground">{description}</p> : null}
+      <Stack gap="6">
+        <Stack gap="2">
+          <Text textStyle="overline" color="fg.subtle">
+            {eyebrow}
+          </Text>
+          <Heading as="h1" textStyle="pageTitle">
+            {title}
+          </Heading>
+          {description ? (
+            <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
+              {description}
+            </Text>
+          ) : null}
         </Stack>
         {children}
-        {footer ? <div className="border-t border-border pt-4">{footer}</div> : null}
+        {footer ? (
+          <Box pt="4" borderTopWidth="1px" borderColor="border.subtle">
+            {footer}
+          </Box>
+        ) : null}
       </Stack>
     </Card>
   );

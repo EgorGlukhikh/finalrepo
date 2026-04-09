@@ -1,11 +1,11 @@
 import { redirect, notFound } from 'next/navigation';
 
-import { Section, SectionHeader, Stack } from '@/components/layout';
+import { ProgressPill } from '@/components/branding';
+import { HeaderBar, PageLayout } from '@/components/product';
 import { requireUser } from '@/modules/auth/access';
 import { buildPublicCoursePath } from '@/modules/courses/paths';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
-import { ProgressPill } from '@/components/branding';
 
 type LessonPageProps = {
   params: Promise<{
@@ -35,16 +35,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
   return (
-    <Section padding="lg">
-      <Stack gap="lg">
-        <SectionHeader
-          eyebrow="Урок"
-          title={tree.course.title}
-          description="Отдельный маршрут урока сохраняет контекст курса, прогресс и навигацию между уроками."
-          actions={<ProgressPill value={tree.progressPercent} />}
-        />
-        <LearningWorkspace view={lessonView} />
-      </Stack>
-    </Section>
+    <PageLayout spacing="lg">
+      <HeaderBar
+        eyebrow="Урок"
+        title={tree.course.title}
+        description="Отдельный маршрут урока сохраняет контекст курса, прогресс и навигацию между уроками."
+        actions={<ProgressPill value={tree.progressPercent} />}
+      />
+      <LearningWorkspace view={lessonView} />
+    </PageLayout>
   );
 }

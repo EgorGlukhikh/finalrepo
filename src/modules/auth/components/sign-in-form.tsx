@@ -1,11 +1,11 @@
 'use client';
 
-import { HStack, Text } from '@chakra-ui/react';
+import { HStack, Stack, Text } from '@chakra-ui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState, type FormEvent } from 'react';
 
-import { ActionLink, Stack } from '@/components/layout';
+import { ActionLink } from '@/components/layout';
 import { Button, FormField, Input } from '@/components/ui';
 
 type SignInFormState = {
@@ -23,7 +23,7 @@ export function SignInForm() {
     email: '',
     password: '',
   });
-  const [error, setError] = useState<string | null>(searchParams.get('error') ? 'Проверьте email и пароль' : null);
+  const [error, setError] = useState<string | null>(searchParams.get('error') ? 'Проверьте email и пароль.' : null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -51,7 +51,7 @@ export function SignInForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap="md">
+      <Stack gap="4">
         {registered ? (
           <Text layerStyle="panelMuted" borderRadius="xl" px="4" py="3" textStyle="bodyMuted" color="fg.default">
             Аккаунт создан. Теперь войдите в систему.

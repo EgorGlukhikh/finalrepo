@@ -1,4 +1,7 @@
-import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
+import { Stack, Text } from '@chakra-ui/react';
+
+import { ActionLink } from '@/components/layout';
+import { ActionBar, ContentArea, HeaderBar, PageLayout, SettingsPanel, SplitPageLayout } from '@/components/product';
 import { Badge, Button, EmptyState, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
 import {
   formatAdminCurrency,
@@ -16,16 +19,16 @@ export default async function AdminCoursesPage() {
   const courses = await listCoursesForAdmin();
 
   return (
-    <Section padding="lg">
-      <Stack gap="xl">
-        <SectionHeader
-          eyebrow="Админка"
-          title="Курсы"
-          description="Админка остается точкой входа. Само редактирование идет через конструктор курса, а не через длинную форму."
-        />
+    <PageLayout spacing="lg">
+      <HeaderBar
+        eyebrow="Админка"
+        title="Курсы"
+        description="Админка остаётся точкой входа. Само редактирование идёт через конструктор курса, а не через длинную форму."
+      />
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-          <Stack gap="md">
+      <SplitPageLayout
+        content={
+          <ContentArea gap="4">
             {courses.length === 0 ? (
               <EmptyState title="Пока нет курсов" description="Создайте первый курс справа. После этого он сразу откроется в конструкторе." />
             ) : (
@@ -36,39 +39,47 @@ export default async function AdminCoursesPage() {
                     <TableHeaderCell>Статус</TableHeaderCell>
                     <TableHeaderCell>Доступ</TableHeaderCell>
                     <TableHeaderCell>Структура</TableHeaderCell>
-                    <TableHeaderCell>Обновлен</TableHeaderCell>
-                    <TableHeaderCell className="w-[20rem]">Действия</TableHeaderCell>
+                    <TableHeaderCell>Обновлён</TableHeaderCell>
+                    <TableHeaderCell>Действия</TableHeaderCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {courses.map((course) => (
                     <TableRow key={course.id}>
                       <TableCell>
-                        <div className="space-y-1">
-                          <div className="font-medium text-foreground">{course.title}</div>
-                          <div className="text-xs text-muted-foreground">{course.slug}</div>
-                        </div>
+                        <Stack gap="1">
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {course.title}
+                          </Text>
+                          <Text textStyle="caption" color="fg.muted">
+                            {course.slug}
+                          </Text>
+                        </Stack>
                       </TableCell>
                       <TableCell>
                         <Badge tone={getCourseStatusTone(course.status)}>{getCourseStatusLabel(course.status)}</Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="space-y-2">
+                        <Stack gap="2">
                           <Badge tone={getAccessTypeTone(course.accessType)}>{getAccessTypeLabel(course.accessType)}</Badge>
-                          <div className="text-xs text-muted-foreground">
+                          <Text textStyle="caption" color="fg.muted">
                             {course.accessType === 'PAID' ? formatAdminCurrency(course.priceAmount) : 'Без оплаты'}
-                          </div>
-                        </div>
+                          </Text>
+                        </Stack>
                       </TableCell>
                       <TableCell>
-                        <div className="text-sm text-foreground">
-                          {course.modulesCount} модулей
-                          <div className="text-xs text-muted-foreground">{course.lessonsCount} уроков</div>
-                        </div>
+                        <Stack gap="1">
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {course.modulesCount} модулей
+                          </Text>
+                          <Text textStyle="caption" color="fg.muted">
+                            {course.lessonsCount} уроков
+                          </Text>
+                        </Stack>
                       </TableCell>
                       <TableCell>{formatAdminDate(course.updatedAt)}</TableCell>
                       <TableCell>
-                        <div className="flex flex-wrap gap-2">
+                        <ActionBar>
                           <ActionLink href={`/admin/courses/${course.id}`} variant="secondary">
                             Открыть конструктор
                           </ActionLink>
@@ -76,35 +87,38 @@ export default async function AdminCoursesPage() {
                             <input type="hidden" name="courseId" value={course.id} />
                             <input type="hidden" name="status" value={course.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED'} />
                             <input type="hidden" name="returnPath" value="/admin/courses" />
-                            <Button type="submit" size="sm" variant="ghost">
+                            <Button type="submit" variant="ghost">
                               {course.status === 'PUBLISHED' ? 'Снять с публикации' : 'Опубликовать'}
                             </Button>
                           </form>
                           <form action={duplicateCourseAction}>
                             <input type="hidden" name="courseId" value={course.id} />
-                            <Button type="submit" size="sm" variant="ghost">
+                            <Button type="submit" variant="ghost">
                               Дублировать
                             </Button>
                           </form>
                           <form action={deleteCourseAction}>
                             <input type="hidden" name="courseId" value={course.id} />
                             <input type="hidden" name="returnPath" value="/admin/courses" />
-                            <Button type="submit" size="sm" variant="danger">
+                            <Button type="submit" variant="danger">
                               Удалить
                             </Button>
                           </form>
-                        </div>
+                        </ActionBar>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             )}
-          </Stack>
-
-          <CourseCreateCard action={createCourseAction} />
-        </div>
-      </Stack>
-    </Section>
+          </ContentArea>
+        }
+        sidebar={
+          <SettingsPanel>
+            <CourseCreateCard action={createCourseAction} />
+          </SettingsPanel>
+        }
+      />
+    </PageLayout>
   );
 }

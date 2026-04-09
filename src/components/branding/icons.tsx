@@ -1,7 +1,5 @@
 import type { SVGProps } from 'react';
 
-import { cn } from '@/lib/cn';
-
 type IconProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
@@ -17,7 +15,7 @@ function IconBase({ className, size = 18, strokeWidth = 2, children, ...props }:
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn('shrink-0', className)}
+      className={className}
       aria-hidden="true"
       {...props}
     >

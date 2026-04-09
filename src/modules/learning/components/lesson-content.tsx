@@ -1,3 +1,5 @@
+import { AspectRatio, Box, List, Stack, Text, chakra } from '@chakra-ui/react';
+
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -22,104 +24,159 @@ function renderBlock(block: LessonBlock) {
   switch (block.type) {
     case 'text':
       return (
-        <p className={block.tone === 'muted' ? 'text-sm leading-7 text-muted-foreground' : 'text-sm leading-7 text-foreground'}>
+        <Text textStyle="body" lineHeight="7" color={block.tone === 'muted' ? 'fg.muted' : 'fg.default'}>
           {block.text}
-        </p>
+        </Text>
       );
     case 'video': {
       const mediaUrl = getMediaUrl(block.url);
       const isDirectVideo = /\.(mp4|webm|ogg)$/i.test(block.url);
 
       return (
-        <Card padding="sm" className="space-y-3">
-          {block.title ? <div className="text-sm font-medium text-foreground">{block.title}</div> : null}
-          <div className="overflow-hidden rounded-lg border border-border bg-black/5">
-            {isDirectVideo && mediaUrl ? (
-              <video controls className="aspect-video w-full bg-black" src={block.url} />
-            ) : mediaUrl ? (
-              <iframe
-                className="aspect-video w-full"
-                src={block.url}
-                title={block.title ?? 'Видео'}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <div className="flex aspect-video items-center justify-center text-sm text-muted-foreground">
-                Видео будет доступно по ссылке
-              </div>
-            )}
-          </div>
-          {block.caption ? <p className="text-xs text-muted-foreground">{block.caption}</p> : null}
+        <Card padding="sm">
+          <Stack gap="3">
+            {block.title ? (
+              <Text textStyle="bodyStrong" color="fg.default">
+                {block.title}
+              </Text>
+            ) : null}
+            <Box overflow="hidden" borderRadius="xl" borderWidth="1px" borderColor="border.subtle" bg="blackAlpha.100">
+              <AspectRatio ratio={16 / 9}>
+                {isDirectVideo && mediaUrl ? (
+                  <video controls src={block.url} />
+                ) : mediaUrl ? (
+                  <iframe
+                    src={block.url}
+                    title={block.title ?? 'Видео'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <Box display="flex" alignItems="center" justifyContent="center" color="fg.muted">
+                    Видео будет доступно по ссылке
+                  </Box>
+                )}
+              </AspectRatio>
+            </Box>
+            {block.caption ? (
+              <Text textStyle="caption" color="fg.muted">
+                {block.caption}
+              </Text>
+            ) : null}
+          </Stack>
         </Card>
       );
     }
     case 'file':
       return (
-        <Card padding="sm" className="space-y-2">
-          <div className="text-sm font-medium text-foreground">{block.title}</div>
-          {block.description ? <p className="text-sm text-muted-foreground">{block.description}</p> : null}
-          <a className="text-sm font-medium text-primary hover:underline" href={block.url} target="_blank" rel="noreferrer">
-            Скачать файл
-          </a>
+        <Card padding="sm">
+          <Stack gap="2">
+            <Text textStyle="bodyStrong" color="fg.default">
+              {block.title}
+            </Text>
+            {block.description ? (
+              <Text textStyle="bodyMuted" color="fg.muted">
+                {block.description}
+              </Text>
+            ) : null}
+            <chakra.a href={block.url} target="_blank" rel="noreferrer">
+              <Text textStyle="bodyStrong" color="fg.brand">
+                Скачать файл
+              </Text>
+            </chakra.a>
+          </Stack>
         </Card>
       );
     case 'image':
       return (
-        <figure className="space-y-2">
-          <div className="overflow-hidden rounded-xl border border-border bg-surface">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt={block.alt} className="h-auto w-full object-cover" src={block.url} />
-          </div>
-          {block.caption ? <figcaption className="text-xs text-muted-foreground">{block.caption}</figcaption> : null}
-        </figure>
+        <Stack as="figure" gap="2">
+          <Box overflow="hidden" borderRadius="2xl" borderWidth="1px" borderColor="border.subtle" bg="bg.surface">
+            <chakra.img alt={block.alt} src={block.url} display="block" width="100%" height="auto" />
+          </Box>
+          {block.caption ? (
+            <Text as="figcaption" textStyle="caption" color="fg.muted">
+              {block.caption}
+            </Text>
+          ) : null}
+        </Stack>
       );
     case 'embed':
       return (
-        <Card padding="sm" className="space-y-2">
-          {block.title ? <div className="text-sm font-medium text-foreground">{block.title}</div> : null}
-          {block.description ? <p className="text-sm text-muted-foreground">{block.description}</p> : null}
-          <iframe className="aspect-video w-full rounded-lg border border-border" src={block.url} title={block.title ?? 'Встраиваемый блок'} />
+        <Card padding="sm">
+          <Stack gap="2">
+            {block.title ? (
+              <Text textStyle="bodyStrong" color="fg.default">
+                {block.title}
+              </Text>
+            ) : null}
+            {block.description ? (
+              <Text textStyle="bodyMuted" color="fg.muted">
+                {block.description}
+              </Text>
+            ) : null}
+            <AspectRatio ratio={16 / 9}>
+              <chakra.iframe
+                src={block.url}
+                title={block.title ?? 'Встраиваемый блок'}
+                border="0"
+                display="block"
+                width="100%"
+                height="100%"
+              />
+            </AspectRatio>
+          </Stack>
         </Card>
       );
     case 'callout':
       return (
         <Card
           padding="sm"
-          className={
-            block.tone === 'success'
-              ? 'border-success/20 bg-success/5'
-              : block.tone === 'warning'
-                ? 'border-warning/25 bg-warning/10'
-                : 'border-primary/15 bg-primary/5'
-          }
+          borderColor={block.tone === 'success' ? 'status.success' : block.tone === 'warning' ? 'status.warning' : 'accent.primary'}
+          bg={block.tone === 'success' ? 'status.successBg' : block.tone === 'warning' ? 'status.warningBg' : 'bg.inset'}
         >
-          <div className="space-y-2">
-            {block.title ? <div className="text-sm font-medium text-foreground">{block.title}</div> : null}
-            <p className="text-sm leading-7 text-foreground/90">{block.text}</p>
-          </div>
+          <Stack gap="2">
+            {block.title ? (
+              <Text textStyle="bodyStrong" color="fg.default">
+                {block.title}
+              </Text>
+            ) : null}
+            <Text textStyle="body" lineHeight="7" color="fg.default">
+              {block.text}
+            </Text>
+          </Stack>
         </Card>
       );
     case 'checklist':
       return (
-        <Card padding="sm" className="space-y-3">
-          <div className="text-sm font-medium text-foreground">Чеклист</div>
-          <ul className="space-y-2">
-            {block.items.map((item) => (
-              <li key={item.id ?? item.label} className="flex items-start gap-3 text-sm text-foreground">
-                <span
-                  className={
-                    item.checked
-                      ? 'mt-1 inline-flex size-4 items-center justify-center rounded-full bg-success/15 text-success'
-                      : 'mt-1 inline-flex size-4 items-center justify-center rounded-full border border-border text-muted-foreground'
-                  }
-                >
-                  <span className="size-1.5 rounded-full bg-current/70" />
-                </span>
-                <span className={item.checked ? 'text-foreground/70 line-through' : undefined}>{item.label}</span>
-              </li>
-            ))}
-          </ul>
+        <Card padding="sm">
+          <Stack gap="3">
+            <Text textStyle="bodyStrong" color="fg.default">
+              Чеклист
+            </Text>
+            <List.Root gap="2">
+              {block.items.map((item) => (
+                <List.Item key={item.id ?? item.label} display="flex" alignItems="start" gap="3" listStyleType="none">
+                  <Box
+                    mt="1"
+                    display="inline-flex"
+                    boxSize="4"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderRadius="full"
+                    borderWidth={item.checked ? '0' : '1px'}
+                    borderColor="border.default"
+                    bg={item.checked ? 'status.successBg' : 'transparent'}
+                    color={item.checked ? 'status.success' : 'fg.muted'}
+                  >
+                    <Box boxSize="1.5" borderRadius="full" bg="currentColor" opacity="0.75" />
+                  </Box>
+                  <Text textStyle="body" color={item.checked ? 'fg.muted' : 'fg.default'} textDecoration={item.checked ? 'line-through' : 'none'}>
+                    {item.label}
+                  </Text>
+                </List.Item>
+              ))}
+            </List.Root>
+          </Stack>
         </Card>
       );
     default:
@@ -132,26 +189,40 @@ export function LessonContent({ content, summary }: LessonContentProps) {
 
   if (blocks.length === 0) {
     return (
-      <Card padding="lg" className="space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-base font-semibold tracking-tight text-foreground">Содержимое урока</h3>
-          {summary ? <p className="max-w-prose text-sm leading-7 text-muted-foreground">{summary}</p> : null}
-        </div>
-        <Separator />
-        <p className="text-sm text-muted-foreground">Пока у этого урока нет добавленных блоков.</p>
+      <Card padding="lg">
+        <Stack gap="4">
+          <Stack gap="2">
+            <Text textStyle="sectionTitle" color="fg.default">
+              Содержимое урока
+            </Text>
+            {summary ? (
+              <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
+                {summary}
+              </Text>
+            ) : null}
+          </Stack>
+          <Separator />
+          <Text textStyle="bodyMuted" color="fg.muted">
+            Пока у этого урока нет добавленных блоков.
+          </Text>
+        </Stack>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <Stack gap="4">
       {summary ? (
         <Card padding="sm">
-          <Badge tone="secondary">Кратко</Badge>
-          <p className="mt-3 max-w-prose text-sm leading-7 text-muted-foreground">{summary}</p>
+          <Stack gap="3">
+            <Badge tone="secondary">Кратко</Badge>
+            <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
+              {summary}
+            </Text>
+          </Stack>
         </Card>
       ) : null}
-      <div className="space-y-4">{blocks.map((block, index) => <div key={index}>{renderBlock(block)}</div>)}</div>
-    </div>
+      <Stack gap="4">{blocks.map((block, index) => <Box key={index}>{renderBlock(block)}</Box>)}</Stack>
+    </Stack>
   );
 }

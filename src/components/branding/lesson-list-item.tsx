@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from '@/components/ui/card';
 import { StatusPill } from '@/components/ui/status-pill';
@@ -32,24 +32,36 @@ export function LessonListItem({
   const card = (
     <Card
       padding="sm"
-      className={cn(
-        'flex items-center justify-between gap-4 transition-colors duration-200',
-        active ? 'border-primary/35 bg-primary/5' : 'bg-surface',
-        disabled ? 'opacity-70' : 'hover:bg-surface-muted',
-        className,
-      )}
+      className={className}
+      borderColor={active ? 'accent.primary' : undefined}
+      bg={active ? 'bg.inset' : undefined}
+      opacity={disabled ? 0.7 : 1}
+      transition="background-color 0.2s ease, border-color 0.2s ease"
+      _hover={disabled ? undefined : { bg: active ? 'bg.inset' : 'bg.surfaceMuted' }}
     >
-      <div className="min-w-0 space-y-1">
-        <div className="flex items-center gap-2">
-          {completed ? <StatusPill tone="success">Done</StatusPill> : null}
-          <h4 className="truncate text-sm font-medium text-foreground">{title}</h4>
-        </div>
-        {meta ? <p className="text-sm text-muted-foreground">{meta}</p> : null}
-      </div>
-      <div className="flex shrink-0 items-center gap-2">
-        {status ? status : null}
-        {duration ? <span className="text-xs text-muted-foreground">{duration}</span> : null}
-      </div>
+      <HStack align="start" justify="space-between" gap="4">
+        <Stack minW="0" gap="1">
+          <HStack gap="2" align="center">
+            {completed ? <StatusPill tone="success">Done</StatusPill> : null}
+            <Text textStyle="bodyStrong" color="fg.default" truncate>
+              {title}
+            </Text>
+          </HStack>
+          {meta ? (
+            <Text textStyle="bodyMuted" color="fg.muted">
+              {meta}
+            </Text>
+          ) : null}
+        </Stack>
+        <HStack flexShrink="0" align="center" gap="2">
+          {status ? status : null}
+          {duration ? (
+            <Text textStyle="caption" color="fg.muted">
+              {duration}
+            </Text>
+          ) : null}
+        </HStack>
+      </HStack>
     </Card>
   );
 
@@ -58,12 +70,13 @@ export function LessonListItem({
   }
 
   return (
-    <Link
-      href={href}
-      className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    <Box
+      asChild
+      display="block"
+      borderRadius="xl"
+      _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-focus-ring)' }}
     >
-      {card}
-    </Link>
+      <Link href={href}>{card}</Link>
+    </Box>
   );
 }
-

@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { BrandMark } from '@/components/branding';
+import { Box, Container, Stack } from '@chakra-ui/react';
 
-import { Container } from './container';
-import { Stack } from './stack';
+import { BrandMark } from '@/components/branding';
 
 type AuthShellProps = {
   children: ReactNode;
@@ -11,17 +10,17 @@ type AuthShellProps = {
 
 export function AuthShell({ children }: AuthShellProps) {
   return (
-    <div className="min-h-dvh bg-background">
-      <main className="flex min-h-dvh items-center py-10 sm:py-16">
-        <Container size="content">
-          <Stack gap="lg">
-            <div className="flex justify-center">
+    <Box minH="dvh" bg="bg.canvas">
+      <Box as="main" display="flex" minH="dvh" alignItems="center" py={{ base: '10', md: '16' }}>
+        <Container maxW="content" px={{ base: '4', md: '6' }}>
+          <Stack gap="8">
+            <Box display="flex" justifyContent="center">
               <BrandMark />
-            </div>
+            </Box>
             {children}
           </Stack>
         </Container>
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }

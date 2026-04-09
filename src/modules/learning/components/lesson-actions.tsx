@@ -1,8 +1,9 @@
 import { ActionLink } from '@/components/layout';
-import { Button, Card } from '@/components/ui';
+import { ActionBar, Panel } from '@/components/product';
+import { Button } from '@/components/ui';
 
-import type { LearningLessonReference } from '../types';
 import { completeLessonAction } from '../actions';
+import type { LearningLessonReference } from '../types';
 
 type LessonActionsProps = {
   courseId: string;
@@ -22,21 +23,25 @@ export function LessonActions({
   isCompleted,
 }: LessonActionsProps) {
   return (
-    <Card padding="sm">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
+    <Panel tone="muted" p="4">
+      <ActionBar justifyContent="space-between">
+        <ActionBar>
           {previousLesson ? <ActionLink href={previousLesson.href}>Предыдущий урок</ActionLink> : null}
-          {nextLesson ? <ActionLink href={nextLesson.href} variant="secondary">Следующий урок</ActionLink> : null}
-        </div>
+          {nextLesson ? (
+            <ActionLink href={nextLesson.href} variant="secondary">
+              Следующий урок
+            </ActionLink>
+          ) : null}
+        </ActionBar>
         <form action={completeLessonAction}>
           <input type="hidden" name="courseId" value={courseId} />
           <input type="hidden" name="courseSlug" value={courseSlug} />
           <input type="hidden" name="lessonId" value={lessonId} />
           <Button type="submit" variant={isCompleted ? 'secondary' : 'primary'}>
-            {isCompleted ? 'Уже завершен' : 'Отметить как завершенный'}
+            {isCompleted ? 'Уже завершён' : 'Отметить как завершённый'}
           </Button>
         </form>
-      </div>
-    </Card>
+      </ActionBar>
+    </Panel>
   );
 }

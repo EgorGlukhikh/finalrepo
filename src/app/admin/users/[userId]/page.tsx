@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
-import { Badge, Button, Card, EmptyState, Label, Select, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
+import { DataList, Stack, Text } from '@chakra-ui/react';
+
+import { ActionLink } from '@/components/layout';
+import { ContentArea, HeaderBar, PageLayout, SettingsPanel, SplitPageLayout } from '@/components/product';
+import { Badge, Button, EmptyState, FormField, Select, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
 import {
   formatAdminCurrency,
   formatAdminDate,
@@ -31,23 +34,23 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
   }
 
   return (
-    <Section padding="lg">
-      <Stack gap="lg">
-        <SectionHeader
-          eyebrow="Пользователи"
-          title={user.name ?? user.email}
-          description="Точка для ручной выдачи доступа и проверки, какие курсы уже открыты пользователю."
-          actions={
-            <ActionLink href="/admin/users" variant="outline">
-              К списку
-            </ActionLink>
-          }
-        />
+    <PageLayout spacing="lg">
+      <HeaderBar
+        eyebrow="Пользователи"
+        title={user.name ?? user.email}
+        description="Точка для ручной выдачи доступа и проверки, какие курсы уже открыты пользователю."
+        actions={
+          <ActionLink href="/admin/users" variant="outline">
+            К списку
+          </ActionLink>
+        }
+      />
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-          <Stack gap="md">
+      <SplitPageLayout
+        content={
+          <ContentArea gap="4">
             {user.enrollments.length === 0 ? (
-              <EmptyState title="Пока нет доступов" description="Здесь появятся курсы, как только пользователю выдадут доступ или он приобретет курс." />
+              <EmptyState title="Пока нет доступов" description="Здесь появятся курсы, как только пользователю выдадут доступ или он приобретёт курс." />
             ) : (
               <Table>
                 <TableHead>
@@ -63,10 +66,14 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
                   {user.enrollments.map((enrollment) => (
                     <TableRow key={enrollment.id}>
                       <TableCell>
-                        <div className="space-y-1">
-                          <div className="font-medium text-foreground">{enrollment.course.title}</div>
-                          <div className="text-xs text-muted-foreground">{formatAdminCurrency(enrollment.course.priceAmount)}</div>
-                        </div>
+                        <Stack gap="1">
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {enrollment.course.title}
+                          </Text>
+                          <Text textStyle="caption" color="fg.muted">
+                            {formatAdminCurrency(enrollment.course.priceAmount)}
+                          </Text>
+                        </Stack>
                       </TableCell>
                       <TableCell>
                         <Badge tone={getEnrollmentSourceTone(enrollment.accessSource)}>
@@ -79,18 +86,22 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
                       <TableCell>{formatAdminDate(enrollment.createdAt)}</TableCell>
                       <TableCell>
                         {enrollment.accessSource === 'FREE' ? (
-                          <span className="text-xs text-muted-foreground">Free-доступ определяется типом курса</span>
+                          <Text textStyle="caption" color="fg.muted">
+                            Free-доступ определяется типом курса
+                          </Text>
                         ) : enrollment.status === 'ACTIVE' ? (
                           <form action={revokeAccessAction}>
                             <input type="hidden" name="userId" value={user.id} />
                             <input type="hidden" name="courseId" value={enrollment.course.id} />
                             <input type="hidden" name="returnPath" value={`/admin/users/${user.id}`} />
-                            <Button type="submit" size="sm" variant="danger">
+                            <Button type="submit" variant="danger">
                               Отозвать
                             </Button>
                           </form>
                         ) : (
-                          <span className="text-xs text-muted-foreground">Доступ уже отозван</span>
+                          <Text textStyle="caption" color="fg.muted">
+                            Доступ уже отозван
+                          </Text>
                         )}
                       </TableCell>
                     </TableRow>
@@ -98,66 +109,78 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
                 </TableBody>
               </Table>
             )}
-          </Stack>
+          </ContentArea>
+        }
+        sidebar={
+          <Stack gap="4">
+            <SettingsPanel>
+              <Stack gap="4">
+                <Stack gap="1">
+                  <Text textStyle="sectionTitle" color="fg.default">
+                    Карточка пользователя
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    Базовая информация без попытки строить богатый профиль.
+                  </Text>
+                </Stack>
 
-          <Stack gap="md">
-            <Card padding="lg">
-              <Stack gap="md">
-                <div className="space-y-1">
-                  <h2 className="text-section font-semibold tracking-tight text-foreground">Карточка пользователя</h2>
-                  <p className="text-sm text-muted-foreground">Базовая информация без попытки строить “богатый профиль”.</p>
-                </div>
-                <dl className="space-y-3 text-sm">
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Email</dt>
-                    <dd className="mt-1 text-foreground">{user.email}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Роль</dt>
-                    <dd className="mt-1">
+                <DataList.Root orientation="horizontal" gap="3">
+                  <DataList.Item>
+                    <DataList.ItemLabel>Email</DataList.ItemLabel>
+                    <DataList.ItemValue>{user.email}</DataList.ItemValue>
+                  </DataList.Item>
+                  <DataList.Item>
+                    <DataList.ItemLabel>Роль</DataList.ItemLabel>
+                    <DataList.ItemValue>
                       <Badge tone={getRoleTone(user.role)}>{getRoleLabel(user.role)}</Badge>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Зарегистрирован</dt>
-                    <dd className="mt-1 text-foreground">{formatAdminDate(user.createdAt)}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Всего доступов</dt>
-                    <dd className="mt-1 text-foreground">{user.enrollmentsCount}</dd>
-                  </div>
-                </dl>
+                    </DataList.ItemValue>
+                  </DataList.Item>
+                  <DataList.Item>
+                    <DataList.ItemLabel>Зарегистрирован</DataList.ItemLabel>
+                    <DataList.ItemValue>{formatAdminDate(user.createdAt)}</DataList.ItemValue>
+                  </DataList.Item>
+                  <DataList.Item>
+                    <DataList.ItemLabel>Всего доступов</DataList.ItemLabel>
+                    <DataList.ItemValue>{user.enrollmentsCount}</DataList.ItemValue>
+                  </DataList.Item>
+                </DataList.Root>
               </Stack>
-            </Card>
+            </SettingsPanel>
 
-            <Card padding="lg">
-              <Stack gap="md">
-                <div className="space-y-1">
-                  <h2 className="text-section font-semibold tracking-tight text-foreground">Выдать доступ вручную</h2>
-                  <p className="text-sm text-muted-foreground">Ручной доступ полезен для поддержки, тестирования и точечных договоренностей.</p>
-                </div>
-                <form action={grantAccessAction} className="space-y-4">
-                  <input type="hidden" name="userId" value={user.id} />
-                  <input type="hidden" name="returnPath" value={`/admin/users/${user.id}`} />
-                  <div className="space-y-2">
-                    <Label htmlFor="courseId">Курс</Label>
-                    <Select id="courseId" name="courseId" defaultValue={courses[0]?.id} required>
-                      {courses.map((course) => (
-                        <option key={course.id} value={course.id}>
-                          {course.title}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-                  <Button type="submit" variant="secondary" className="w-full" disabled={courses.length === 0}>
-                    Выдать доступ
-                  </Button>
+            <SettingsPanel>
+              <Stack gap="4">
+                <Stack gap="1">
+                  <Text textStyle="sectionTitle" color="fg.default">
+                    Выдать доступ вручную
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    Ручной доступ полезен для поддержки, тестирования и точечных договорённостей.
+                  </Text>
+                </Stack>
+
+                <form action={grantAccessAction}>
+                  <Stack gap="4">
+                    <input type="hidden" name="userId" value={user.id} />
+                    <input type="hidden" name="returnPath" value={`/admin/users/${user.id}`} />
+                    <FormField id="courseId" label="Курс">
+                      <Select id="courseId" name="courseId" defaultValue={courses[0]?.id} required>
+                        {courses.map((course) => (
+                          <option key={course.id} value={course.id}>
+                            {course.title}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormField>
+                    <Button type="submit" variant="secondary" w="full" disabled={courses.length === 0}>
+                      Выдать доступ
+                    </Button>
+                  </Stack>
                 </form>
               </Stack>
-            </Card>
+            </SettingsPanel>
           </Stack>
-        </div>
-      </Stack>
-    </Section>
+        }
+      />
+    </PageLayout>
   );
 }

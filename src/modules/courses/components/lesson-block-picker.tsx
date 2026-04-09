@@ -2,8 +2,9 @@
 
 import type { KeyboardEvent } from 'react';
 
+import { Box, Button as ChakraButton, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+
 import { Input } from '@/components/ui';
-import { cn } from '@/lib/cn';
 
 import { type BlockOption, blockOptions, type LessonBlockType } from '../lesson-block-options';
 
@@ -34,54 +35,67 @@ export function LessonBlockPicker({
   onSelect,
 }: LessonBlockPickerProps) {
   return (
-    <div className="rounded-xl border border-border/80 bg-surface p-3 shadow-card">
-      <div className="flex items-center gap-2">
+    <Box borderWidth="1px" borderColor="border.subtle" bg="bg.elevated" borderRadius="2xl" p="3" boxShadow="sm">
+      <HStack align="center" gap="2">
         <Input
           autoFocus
           value={picker.query}
           onChange={(event) => onQueryChange(event.currentTarget.value)}
           onKeyDown={onKeyDown}
           placeholder="Введите / или начните поиск блока"
-          className="w-full"
         />
-        <button
-          type="button"
-          onClick={onClose}
-          className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
-          aria-label="Закрыть выбор блока"
-        >
-          ×
-        </button>
-      </div>
+        <ChakraButton type="button" variant="ghost" onClick={onClose}>
+          Закрыть
+        </ChakraButton>
+      </HStack>
 
-      <div className="mt-3 grid gap-2 md:grid-cols-2">
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap="2" mt="3">
         {filteredOptions.length > 0 ? (
           filteredOptions.map((option, index) => (
-            <button
+            <ChakraButton
               key={option.type}
               type="button"
               onClick={() => onSelect(option.type)}
-              className={cn(
-                'flex items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted',
-                index === activeIndex && 'bg-surface-muted',
-              )}
+              variant="ghost"
+              justifyContent="start"
+              h="auto"
+              px="3"
+              py="3"
+              bg={index === activeIndex ? 'bg.surfaceMuted' : 'transparent'}
             >
-              <span className="inline-flex min-w-12 justify-center rounded-full bg-surface-muted px-2 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {option.marker}
-              </span>
-              <span className="space-y-1">
-                <span className="block text-sm font-medium text-foreground">{option.label}</span>
-                <span className="block text-sm text-muted-foreground">{option.description}</span>
-              </span>
-            </button>
+              <HStack align="start" gap="3" w="full">
+                <Box
+                  minW="12"
+                  borderRadius="full"
+                  bg="bg.surfaceMuted"
+                  px="2"
+                  py="1"
+                  textStyle="overline"
+                  color="fg.subtle"
+                  textAlign="center"
+                >
+                  {option.marker}
+                </Box>
+                <Stack gap="1" align="start" textAlign="left">
+                  <Text textStyle="bodyStrong" color="fg.default">
+                    {option.label}
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    {option.description}
+                  </Text>
+                </Stack>
+              </HStack>
+            </ChakraButton>
           ))
         ) : (
-          <div className="rounded-lg bg-surface-muted/60 px-3 py-4 text-sm text-muted-foreground">
-            Ничего не найдено. Попробуйте другой запрос.
-          </div>
+          <Box borderRadius="xl" bg="bg.surfaceMuted" px="3" py="4">
+            <Text textStyle="bodyMuted" color="fg.muted">
+              Ничего не найдено. Попробуйте другой запрос.
+            </Text>
+          </Box>
         )}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   );
 }
 

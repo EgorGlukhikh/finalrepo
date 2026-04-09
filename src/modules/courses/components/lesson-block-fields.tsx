@@ -2,6 +2,8 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 
+import { Checkbox, HStack, SimpleGrid, Stack } from '@chakra-ui/react';
+
 import { Button, Input, Select, Textarea } from '@/components/ui';
 
 import { updateBlockById } from '../lesson-block-editor-utils';
@@ -87,9 +89,25 @@ export function TextBlockFields({
         }
       }}
       placeholder="Начните ввод или нажмите /"
-      className="min-h-[2.5rem] resize-none overflow-hidden border-transparent bg-transparent px-0 py-0 text-base leading-7 shadow-none placeholder:text-muted-foreground/85 focus-visible:ring-0 focus-visible:ring-offset-0"
+      minH="10"
+      resize="none"
+      overflow="hidden"
+      borderColor="transparent"
+      bg="transparent"
+      px="0"
+      py="0"
+      fontSize="md"
+      lineHeight="7"
+      boxShadow="none"
+      _hover={{ borderColor: 'transparent' }}
+      _focusVisible={{ borderColor: 'transparent', boxShadow: 'none' }}
+      _placeholder={{ color: 'fg.muted' }}
     />
   );
+}
+
+function TwoColumnFields({ children }: { children: React.ReactNode }) {
+  return <SimpleGrid columns={{ base: 1, md: 2 }} gap="3">{children}</SimpleGrid>;
 }
 
 export function VideoBlockFields({
@@ -102,7 +120,7 @@ export function VideoBlockFields({
   updateBlock: UpdateBlock;
 }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <TwoColumnFields>
       <Input
         ref={(node) => registerFieldRef(block.id ?? '', node)}
         value={block.title ?? ''}
@@ -122,7 +140,7 @@ export function VideoBlockFields({
         }
         placeholder="Ссылка на видео"
       />
-      <div className="md:col-span-2">
+      <Stack gridColumn={{ md: 'span 2' }}>
         <Textarea
           rows={3}
           value={block.caption ?? ''}
@@ -133,8 +151,8 @@ export function VideoBlockFields({
           }
           placeholder="Короткая подпись"
         />
-      </div>
-    </div>
+      </Stack>
+    </TwoColumnFields>
   );
 }
 
@@ -148,7 +166,7 @@ export function FileBlockFields({
   updateBlock: UpdateBlock;
 }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <TwoColumnFields>
       <Input
         ref={(node) => registerFieldRef(block.id ?? '', node)}
         value={block.title}
@@ -168,7 +186,7 @@ export function FileBlockFields({
         }
         placeholder="Ссылка на файл"
       />
-      <div className="md:col-span-2">
+      <Stack gridColumn={{ md: 'span 2' }}>
         <Textarea
           rows={3}
           value={block.description ?? ''}
@@ -179,8 +197,8 @@ export function FileBlockFields({
           }
           placeholder="Короткое описание"
         />
-      </div>
-    </div>
+      </Stack>
+    </TwoColumnFields>
   );
 }
 
@@ -194,7 +212,7 @@ export function ImageBlockFields({
   updateBlock: UpdateBlock;
 }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <TwoColumnFields>
       <Input
         ref={(node) => registerFieldRef(block.id ?? '', node)}
         value={block.url}
@@ -214,7 +232,7 @@ export function ImageBlockFields({
         }
         placeholder="Alt-текст"
       />
-      <div className="md:col-span-2">
+      <Stack gridColumn={{ md: 'span 2' }}>
         <Textarea
           rows={3}
           value={block.caption ?? ''}
@@ -225,8 +243,8 @@ export function ImageBlockFields({
           }
           placeholder="Короткая подпись"
         />
-      </div>
-    </div>
+      </Stack>
+    </TwoColumnFields>
   );
 }
 
@@ -240,7 +258,7 @@ export function EmbedBlockFields({
   updateBlock: UpdateBlock;
 }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <TwoColumnFields>
       <Input
         ref={(node) => registerFieldRef(block.id ?? '', node)}
         value={block.title ?? ''}
@@ -260,7 +278,7 @@ export function EmbedBlockFields({
         }
         placeholder="Ссылка для встраивания"
       />
-      <div className="md:col-span-2">
+      <Stack gridColumn={{ md: 'span 2' }}>
         <Textarea
           rows={3}
           value={block.description ?? ''}
@@ -271,8 +289,8 @@ export function EmbedBlockFields({
           }
           placeholder="Что увидит пользователь"
         />
-      </div>
-    </div>
+      </Stack>
+    </TwoColumnFields>
   );
 }
 
@@ -286,8 +304,8 @@ export function CalloutBlockFields({
   updateBlock: UpdateBlock;
 }) {
   return (
-    <div className="space-y-3">
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_12rem]">
+    <Stack gap="3">
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap="3">
         <Input
           ref={(node) => registerFieldRef(block.id ?? '', node)}
           value={block.title ?? ''}
@@ -318,7 +336,7 @@ export function CalloutBlockFields({
           <option value="success">Success</option>
           <option value="warning">Warning</option>
         </Select>
-      </div>
+      </SimpleGrid>
       <Textarea
         rows={4}
         value={block.text}
@@ -329,7 +347,7 @@ export function CalloutBlockFields({
         }
         placeholder="Текст акцента"
       />
-    </div>
+    </Stack>
   );
 }
 
@@ -343,28 +361,29 @@ export function ChecklistBlockFields({
   setBlocks: Dispatch<SetStateAction<LessonBlock[]>>;
 }) {
   return (
-    <div className="space-y-3">
+    <Stack gap="3">
       {block.items.map((item, itemIndex) => (
-        <div key={item.id ?? `${block.id}-item-${itemIndex}`} className="flex items-center gap-3">
-          <input
-            type="checkbox"
+        <HStack key={item.id ?? `${block.id}-item-${itemIndex}`} align="center" gap="3">
+          <Checkbox.Root
             checked={Boolean(item.checked)}
-            onChange={(event) =>
+            onCheckedChange={(details) =>
               setBlocks((current) =>
                 updateBlockById(current, block.id ?? '', (currentBlock) =>
                   currentBlock.type === 'checklist'
                     ? {
                         ...currentBlock,
                         items: currentBlock.items.map((currentItem) =>
-                          currentItem.id === item.id ? { ...currentItem, checked: event.currentTarget.checked } : currentItem,
+                          currentItem.id === item.id ? { ...currentItem, checked: details.checked === true } : currentItem,
                         ),
                       }
                     : currentBlock,
                 ),
               )
             }
-            className="size-4 rounded border-border"
-          />
+          >
+            <Checkbox.HiddenInput />
+            <Checkbox.Control />
+          </Checkbox.Root>
           <Input
             ref={itemIndex === 0 ? (node) => registerFieldRef(block.id ?? '', node) : undefined}
             value={item.label}
@@ -384,8 +403,9 @@ export function ChecklistBlockFields({
             }
             placeholder="Пункт чеклиста"
           />
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() =>
               setBlocks((current) =>
                 updateBlockById(current, block.id ?? '', (currentBlock) =>
@@ -395,17 +415,14 @@ export function ChecklistBlockFields({
                 ),
               )
             }
-            className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
-            aria-label="Удалить пункт"
           >
-            ×
-          </button>
-        </div>
+            Удалить
+          </Button>
+        </HStack>
       ))}
       <Button
         type="button"
         variant="outline"
-        size="sm"
         onClick={() =>
           setBlocks((current) =>
             updateBlockById(current, block.id ?? '', (currentBlock) =>
@@ -428,9 +445,10 @@ export function ChecklistBlockFields({
             ),
           )
         }
+        alignSelf="start"
       >
         + Пункт
       </Button>
-    </div>
+    </Stack>
   );
 }

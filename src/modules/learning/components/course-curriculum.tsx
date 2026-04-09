@@ -1,7 +1,8 @@
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
+import { Accordion, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { LessonListItem, ProgressPill } from '@/components/branding';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 import type { LearningModuleState } from '../types';
 
@@ -27,64 +28,87 @@ export function CourseCurriculum({
   mode = 'learning',
   className,
 }: CourseCurriculumProps) {
+  const defaultValue = modules
+    .filter((courseModule) => courseModule.lessons.some((lesson) => lesson.isCurrent) || courseModule.sortOrder === 0)
+    .map((courseModule) => courseModule.id);
+
   return (
     <Card padding="md" className={className}>
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{title}</p>
-          {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
-        </div>
-        <div className="space-y-3">
-          {modules.map((courseModule) => {
-            const isOpen = courseModule.lessons.some((lesson) => lesson.isCurrent) || courseModule.sortOrder === 0;
+      <Stack gap="4">
+        <Stack gap="1">
+          <Text textStyle="overline" color="fg.subtle">
+            {title}
+          </Text>
+          {description ? (
+            <Text textStyle="bodyMuted" color="fg.muted">
+              {description}
+            </Text>
+          ) : null}
+        </Stack>
 
-            return (
-              <details
+        <Accordion.Root collapsible multiple defaultValue={defaultValue} variant="plain">
+          <Stack gap="3">
+            {modules.map((courseModule) => (
+              <Accordion.Item
                 key={courseModule.id}
-                open={isOpen}
-                className="overflow-hidden rounded-xl border border-border bg-surface"
+                value={courseModule.id}
+                borderWidth="1px"
+                borderColor="border.subtle"
+                borderRadius="2xl"
+                bg="bg.surface"
+                overflow="hidden"
               >
-                <summary className="cursor-pointer list-none px-4 py-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0 space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-sm font-semibold tracking-tight text-foreground">{courseModule.title}</h3>
+                <Accordion.ItemTrigger px="4" py="3.5">
+                  <HStack justify="space-between" align="start" gap="3" w="full">
+                    <Stack gap="1" minW="0" textAlign="left">
+                      <HStack gap="2" flexWrap="wrap">
+                        <Text textStyle="bodyStrong" color="fg.default">
+                          {courseModule.title}
+                        </Text>
                         {courseModule.published ? <Badge tone="secondary">Опубликован</Badge> : <Badge tone="outline">Черновик</Badge>}
-                      </div>
-                      <p className="text-xs text-muted-foreground">
+                      </HStack>
+                      <Text textStyle="caption" color="fg.muted">
                         {courseModule.lessons.length} уроков · {courseModule.completedLessonsCount} завершено
-                      </p>
-                    </div>
-                    <ProgressPill value={courseModule.progressPercent} />
-                  </div>
-                </summary>
-                <div className="space-y-2 border-t border-border px-3 py-3">
-                  {courseModule.lessons.map((lesson) => (
-                    <LessonListItem
-                      key={lesson.id}
-                      href={mode === 'learning' && lesson.canAccess ? lesson.href ?? undefined : undefined}
-                      title={lesson.title}
-                      meta={lesson.summary ?? lessonTypeLabels[lesson.lessonType] ?? lesson.lessonType}
-                      active={lesson.isCurrent}
-                      completed={lesson.isCompleted}
-                      disabled={mode === 'preview' || !lesson.canAccess || lesson.isLocked}
-                      status={
-                        lesson.isLocked ? (
-                          <Badge tone="outline">Закрыт</Badge>
-                        ) : lesson.preview && mode === 'preview' ? (
-                          <Badge tone="secondary">Превью</Badge>
-                        ) : lesson.isCurrent ? (
-                          <Badge tone="primary">Сейчас</Badge>
-                        ) : null
-                      }
-                    />
-                  ))}
-                </div>
-              </details>
-            );
-          })}
-        </div>
-      </div>
+                      </Text>
+                    </Stack>
+                    <HStack gap="3">
+                      <ProgressPill value={courseModule.progressPercent} />
+                      <Accordion.ItemIndicator color="fg.subtle" />
+                    </HStack>
+                  </HStack>
+                </Accordion.ItemTrigger>
+
+                <Accordion.ItemContent>
+                  <Accordion.ItemBody pt="0" px="3" pb="3">
+                    <Stack gap="2" borderTopWidth="1px" borderColor="border.subtle" pt="3">
+                      {courseModule.lessons.map((lesson) => (
+                        <LessonListItem
+                          key={lesson.id}
+                          href={mode === 'learning' && lesson.canAccess ? lesson.href ?? undefined : undefined}
+                          title={lesson.title}
+                          meta={lesson.summary ?? lessonTypeLabels[lesson.lessonType] ?? lesson.lessonType}
+                          active={lesson.isCurrent}
+                          completed={lesson.isCompleted}
+                          disabled={mode === 'preview' || !lesson.canAccess || lesson.isLocked}
+                          status={
+                            lesson.isLocked ? (
+                              <Badge tone="outline">Закрыт</Badge>
+                            ) : lesson.preview && mode === 'preview' ? (
+                              <Badge tone="secondary">Превью</Badge>
+                            ) : lesson.isCurrent ? (
+                              <Badge tone="primary">Сейчас</Badge>
+                            ) : null
+                          }
+                        />
+                      ))}
+                    </Stack>
+                  </Accordion.ItemBody>
+                </Accordion.ItemContent>
+              </Accordion.Item>
+            ))}
+          </Stack>
+        </Accordion.Root>
+      </Stack>
     </Card>
   );
 }

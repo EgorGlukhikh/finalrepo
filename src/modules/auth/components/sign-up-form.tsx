@@ -1,10 +1,10 @@
 'use client';
 
-import { HStack } from '@chakra-ui/react';
+import { HStack, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
-import { ActionLink, Stack } from '@/components/layout';
+import { ActionLink } from '@/components/layout';
 import { Button, FormField, Input } from '@/components/ui';
 
 type SignUpFormState = {
@@ -56,7 +56,7 @@ export function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap="md">
+      <Stack gap="4">
         <FormField id="sign-up-name" label="Имя">
           <Input
             id="sign-up-name"

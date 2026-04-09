@@ -1,3 +1,5 @@
+import { HStack, Text } from '@chakra-ui/react';
+
 import { ActionLink } from '@/components/layout';
 import { AuthCard } from '@/components/layout/auth-card';
 
@@ -8,14 +10,14 @@ export default function ForgotPasswordPage() {
       title="Сброс пароля"
       description="Этот шаг мы подключим отдельно, когда будет согласован почтовый контур."
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="max-w-prose text-sm text-muted-foreground">
+      <HStack justify="space-between" align="center" gap="3" flexWrap="wrap">
+        <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
           Сейчас здесь только честный заглушечный экран без лишней логики.
-        </p>
+        </Text>
         <ActionLink href="/sign-in" variant="secondary">
           Вернуться ко входу
         </ActionLink>
-      </div>
+      </HStack>
     </AuthCard>
   );
 }

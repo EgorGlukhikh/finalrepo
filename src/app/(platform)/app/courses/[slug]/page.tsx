@@ -1,12 +1,12 @@
 import { redirect, notFound } from 'next/navigation';
 
 import { Badge } from '@/components/ui/badge';
-import { Section, SectionHeader, Stack } from '@/components/layout';
+import { ProgressPill } from '@/components/branding';
+import { HeaderBar, PageLayout } from '@/components/product';
 import { requireUser } from '@/modules/auth/access';
 import { buildPublicCoursePath } from '@/modules/courses/paths';
 import { getCourseLearningTree, getLessonForUser } from '@/modules/learning';
 import { LearningWorkspace } from '@/modules/learning/components';
-import { ProgressPill } from '@/components/branding';
 
 type CourseLearningPageProps = {
   params: Promise<{
@@ -32,16 +32,14 @@ export default async function CourseLearningPage({ params }: CourseLearningPageP
 
   if (!lessonId) {
     return (
-      <Section padding="lg">
-        <Stack gap="lg">
-          <SectionHeader
-            eyebrow="Обучение"
-            title={tree.course.title}
-            description="В этом курсе пока нет опубликованных уроков."
-            actions={<Badge tone="secondary">Пустой курс</Badge>}
-          />
-        </Stack>
-      </Section>
+      <PageLayout spacing="lg">
+        <HeaderBar
+          eyebrow="Обучение"
+          title={tree.course.title}
+          description="В этом курсе пока нет опубликованных уроков."
+          actions={<Badge tone="secondary">Пустой курс</Badge>}
+        />
+      </PageLayout>
     );
   }
 
@@ -52,16 +50,14 @@ export default async function CourseLearningPage({ params }: CourseLearningPageP
   }
 
   return (
-    <Section padding="lg">
-      <Stack gap="lg">
-        <SectionHeader
-          eyebrow="Обучение"
-          title={tree.course.title}
-          description="Плеер собран для спокойного прохождения уроков без лишнего интерфейсного шума."
-          actions={<ProgressPill value={tree.progressPercent} />}
-        />
-        <LearningWorkspace view={lessonView} />
-      </Stack>
-    </Section>
+    <PageLayout spacing="lg">
+      <HeaderBar
+        eyebrow="Обучение"
+        title={tree.course.title}
+        description="Плеер собран для спокойного прохождения уроков без лишнего интерфейсного шума."
+        actions={<ProgressPill value={tree.progressPercent} />}
+      />
+      <LearningWorkspace view={lessonView} />
+    </PageLayout>
   );
 }

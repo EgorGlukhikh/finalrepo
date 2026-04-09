@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { Section, Stack } from '@/components/layout';
+import { PageLayout } from '@/components/product';
 import { getCourseAnalytics } from '@/modules/analytics';
 import { CourseAnalyticsStrip } from '@/modules/analytics/components';
 import { getCourseStructureById } from '@/modules/courses';
@@ -32,20 +32,18 @@ export default async function AdminCoursePage({ params, searchParams }: AdminCou
   }
 
   return (
-    <Section padding="lg">
-      <Stack gap="xl">
-        <CourseAnalyticsStrip analytics={analytics} />
-        <CourseBuilderWorkspace
-          course={course}
-          selectedLessonId={lessonId ?? null}
-          createModuleAction={createModuleAction}
-          createLessonDraftAction={createLessonDraftAction}
-          updateLessonAction={updateLessonAction}
-          setLessonStatusAction={setLessonStatusAction}
-          deleteLessonAction={deleteLessonAction}
-          lessonMetrics={analytics.lessonMetrics}
-        />
-      </Stack>
-    </Section>
+    <PageLayout spacing="lg">
+      <CourseAnalyticsStrip analytics={analytics} />
+      <CourseBuilderWorkspace
+        course={course}
+        selectedLessonId={lessonId ?? null}
+        createModuleAction={createModuleAction}
+        createLessonDraftAction={createLessonDraftAction}
+        updateLessonAction={updateLessonAction}
+        setLessonStatusAction={setLessonStatusAction}
+        deleteLessonAction={deleteLessonAction}
+        lessonMetrics={analytics.lessonMetrics}
+      />
+    </PageLayout>
   );
 }

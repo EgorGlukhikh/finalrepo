@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Separator as ChakraSeparator } from '@chakra-ui/react';
 
 export function Separator({ className, ...props }: HTMLAttributes<HTMLHRElement>) {
-  return <hr className={cn('h-px border-0 bg-border', className)} {...props} />;
+  return <ChakraSeparator className={className} borderColor="border.default" {...props} />;
 }

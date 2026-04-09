@@ -1,8 +1,5 @@
-import type { HTMLAttributes } from 'react';
+import { Box, type BoxProps } from '@chakra-ui/react';
 
-import { cn } from '@/lib/cn';
-
-export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('animate-pulse rounded-md bg-surface-muted', className)} {...props} />;
+export function Skeleton({ className, ...props }: BoxProps) {
+  return <Box className={className} animation="pulse" borderRadius="md" bg="bg.surfaceMuted" {...props} />;
 }
-

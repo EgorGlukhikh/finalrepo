@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { Box, Heading, HStack, Stack, Text, chakra } from '@chakra-ui/react';
+import { Accordion, Box, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
-import { Badge, Button, Card, Input } from '@/components/ui';
+import { Badge, Button, Dialog, Input } from '@/components/ui';
 import type { CourseStructure } from '@/modules/courses';
 
 import { buildBuilderLessonHref } from '../builder';
@@ -25,123 +25,129 @@ export function BuilderStructurePanel({
   createModuleAction,
   createLessonDraftAction,
 }: BuilderStructurePanelProps) {
-  const [openModuleId, setOpenModuleId] = useState<string | null>(null);
+  const defaultValue = course.modules
+    .filter((courseModule) => courseModule.lessons.some((lesson) => lesson.id === selectedLessonId) || courseModule.sortOrder === 0)
+    .map((courseModule) => courseModule.id);
 
   return (
-    <Stack gap="6" position={{ xl: 'sticky' }} top={{ xl: '24' }} maxH={{ xl: 'calc(100vh - 8rem)' }} overflowY={{ xl: 'auto' }} pr={{ xl: '4' }}>
+    <Stack gap="6">
       <Stack gap="3">
         <HStack align="start" justify="space-between" gap="3">
           <Stack gap="1">
             <Text textStyle="overline" color="fg.subtle">
               Структура курса
             </Text>
-            <Heading as="h2" textStyle="sectionTitle">
+            <Text textStyle="sectionTitle" color="fg.default">
               {course.title}
-            </Heading>
+            </Text>
           </Stack>
-          <ActionLink href={`/admin/courses/${course.id}/settings`} variant="ghost" size="sm">
+          <ActionLink href={`/admin/courses/${course.id}/settings`} variant="ghost">
             Настройки курса
           </ActionLink>
         </HStack>
-        <Text textStyle="bodyMuted" color="fg.muted" maxW="md">
-          Левая панель остаётся навигацией и точкой создания. Метаданные курса вынесены из builder в отдельные
-          настройки.
+        <Text textStyle="bodyMuted" color="fg.muted">
+          Левая панель остаётся навигацией и точкой создания. Метаданные курса вынесены из builder в отдельные настройки.
         </Text>
       </Stack>
 
-      <Card padding="lg" tone="muted">
+      <Box layerStyle="panelMuted" borderRadius="3xl" p="6">
         <form action={createModuleAction}>
           <Stack gap="3">
             <input type="hidden" name="courseId" value={course.id} />
-            <Stack gap="2">
-              <Text textStyle="label" color="fg.default">
-                + Модуль
-              </Text>
-              <Input name="title" placeholder="Например, Введение в профессию" required />
-            </Stack>
+            <Text textStyle="label" color="fg.default">
+              + Модуль
+            </Text>
+            <Input name="title" placeholder="Например, Введение в профессию" required />
             <Button type="submit" variant="secondary" w="full">
               Добавить модуль
             </Button>
           </Stack>
         </form>
-      </Card>
+      </Box>
 
-      <Stack gap="4">
-        {course.modules.length === 0 ? (
-          <Card padding="lg">
-            <Text textStyle="bodyMuted" color="fg.muted">
-              Начните со структуры: создайте первый модуль, а затем добавьте урок внутри него.
-            </Text>
-          </Card>
-        ) : (
-          course.modules.map((courseModule) => {
-            const hasActiveLesson = courseModule.lessons.some((lesson) => lesson.id === selectedLessonId);
-            const isOpen = openModuleId === courseModule.id || hasActiveLesson || openModuleId === null;
+      {course.modules.length === 0 ? (
+        <Box layerStyle="panel" borderRadius="3xl" p="6">
+          <Text textStyle="bodyMuted" color="fg.muted">
+            Начните со структуры: создайте первый модуль, а затем добавьте урок внутри него.
+          </Text>
+        </Box>
+      ) : (
+        <Accordion.Root collapsible multiple defaultValue={defaultValue} variant="plain">
+          <Stack gap="4">
+            {course.modules.map((courseModule) => {
+              const hasActiveLesson = courseModule.lessons.some((lesson) => lesson.id === selectedLessonId);
 
-            return (
-              <chakra.details
-                key={courseModule.id}
-                open={isOpen}
-                onToggle={(event) => {
-                  setOpenModuleId(event.currentTarget.open ? courseModule.id : null);
-                }}
-                layerStyle="panel"
-                borderRadius="2xl"
-                p="4"
-              >
-                <chakra.summary listStyleType="none" cursor="pointer">
-                  <HStack align="start" justify="space-between" gap="3">
-                    <Stack gap="1" minW="0">
-                      <Text textStyle="bodyStrong" color="fg.default">
-                        {courseModule.title}
-                      </Text>
-                      <Text textStyle="caption" color="fg.muted">
-                        {courseModule.lessons.length} уроков
-                      </Text>
-                    </Stack>
-                    <Badge tone={courseModule.published ? 'secondary' : 'outline'}>
-                      {courseModule.published ? 'Live' : 'Draft'}
-                    </Badge>
-                  </HStack>
-                </chakra.summary>
+              return (
+                <Accordion.Item
+                  key={courseModule.id}
+                  value={courseModule.id}
+                  borderWidth="1px"
+                  borderColor={hasActiveLesson ? 'accent.primary' : 'border.subtle'}
+                  borderRadius="2xl"
+                  bg={hasActiveLesson ? 'bg.inset' : 'bg.surface'}
+                  overflow="hidden"
+                >
+                  <Accordion.ItemTrigger px="4" py="3.5">
+                    <HStack align="start" justify="space-between" gap="3" w="full">
+                      <Stack gap="1" minW="0" textAlign="left">
+                        <Text textStyle="bodyStrong" color="fg.default">
+                          {courseModule.title}
+                        </Text>
+                        <Text textStyle="caption" color="fg.muted">
+                          {courseModule.lessons.length} уроков
+                        </Text>
+                      </Stack>
+                      <HStack gap="3">
+                        <Badge tone={courseModule.published ? 'secondary' : 'outline'}>
+                          {courseModule.published ? 'Live' : 'Draft'}
+                        </Badge>
+                        <Accordion.ItemIndicator color="fg.subtle" />
+                      </HStack>
+                    </HStack>
+                  </Accordion.ItemTrigger>
 
-                <Stack gap="2" pl="4" mt="4" borderLeftWidth="1px" borderColor="border.subtle">
-                  {courseModule.lessons.map((lesson) => (
-                    <Box
-                      key={lesson.id}
-                      asChild
-                      layerStyle={lesson.id === selectedLessonId ? 'panelHighlight' : 'panelMuted'}
-                      borderRadius="xl"
-                    >
-                      <Link href={buildBuilderLessonHref(course.id, lesson.id)}>
-                        <Box p="3">
-                          <Stack gap="2">
-                            <HStack justify="space-between" gap="3" align="start">
-                              <Text textStyle="bodyStrong" color="fg.default" minW="0">
-                                {lesson.title}
-                              </Text>
-                              <Badge tone="outline">{lessonTypeMarkers[lesson.lessonType]}</Badge>
-                            </HStack>
-                            <Text textStyle="caption" color="fg.muted">
-                              {lessonTypeLabels[lesson.lessonType]} · {lesson.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}
-                            </Text>
-                          </Stack>
-                        </Box>
-                      </Link>
-                    </Box>
-                  ))}
+                  <Accordion.ItemContent>
+                    <Accordion.ItemBody pt="0" px="4" pb="4">
+                      <Stack gap="2" borderTopWidth="1px" borderColor="border.subtle" pt="4">
+                        {courseModule.lessons.map((lesson) => (
+                          <Box
+                            key={lesson.id}
+                            asChild
+                            layerStyle={lesson.id === selectedLessonId ? 'panelHighlight' : 'panelMuted'}
+                            borderRadius="xl"
+                          >
+                            <Link href={buildBuilderLessonHref(course.id, lesson.id)}>
+                              <Box p="3">
+                                <Stack gap="2">
+                                  <HStack justify="space-between" gap="3" align="start">
+                                    <Text textStyle="bodyStrong" color="fg.default" minW="0">
+                                      {lesson.title}
+                                    </Text>
+                                    <Badge tone="outline">{lessonTypeMarkers[lesson.lessonType]}</Badge>
+                                  </HStack>
+                                  <Text textStyle="caption" color="fg.muted">
+                                    {lessonTypeLabels[lesson.lessonType]} · {lesson.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}
+                                  </Text>
+                                </Stack>
+                              </Box>
+                            </Link>
+                          </Box>
+                        ))}
 
-                  <LessonTypeChooser
-                    courseId={course.id}
-                    moduleId={courseModule.id}
-                    createLessonDraftAction={createLessonDraftAction}
-                  />
-                </Stack>
-              </chakra.details>
-            );
-          })
-        )}
-      </Stack>
+                        <LessonTypeChooser
+                          courseId={course.id}
+                          moduleId={courseModule.id}
+                          createLessonDraftAction={createLessonDraftAction}
+                        />
+                      </Stack>
+                    </Accordion.ItemBody>
+                  </Accordion.ItemContent>
+                </Accordion.Item>
+              );
+            })}
+          </Stack>
+        </Accordion.Root>
+      )}
     </Stack>
   );
 }
@@ -159,41 +165,34 @@ function LessonTypeChooser({
 
   return (
     <Stack gap="3" pt="2">
-      <Button type="button" variant="ghost" size="sm" alignSelf="start" onClick={() => setOpen((current) => !current)}>
+      <Button type="button" variant="ghost" alignSelf="start" onClick={() => setOpen(true)}>
         + Урок
       </Button>
 
-      {open ? (
-        <Card padding="md" tone="muted">
-          <Stack gap="3">
-            <Text textStyle="overline" color="fg.subtle">
-              Сначала выберите тип
-            </Text>
-            <Stack gap="2">
-              {Object.entries(lessonTypeLabels).map(([value, label]) => (
-                <form key={value} action={createLessonDraftAction}>
-                  <input type="hidden" name="courseId" value={courseId} />
-                  <input type="hidden" name="moduleId" value={moduleId} />
-                  <input type="hidden" name="lessonType" value={value} />
-                  <Button type="submit" variant="ghost" justifyContent="start" h="auto" py="3" px="3" w="full">
-                    <HStack align="start" gap="3" w="full">
-                      <Badge tone="outline">{lessonTypeMarkers[value as keyof typeof lessonTypeMarkers]}</Badge>
-                      <Stack gap="1" align="start">
-                        <Text textStyle="bodyStrong" color="fg.default">
-                          {label}
-                        </Text>
-                        <Text textStyle="bodyMuted" color="fg.muted">
-                          {lessonTypeDescriptions[value as keyof typeof lessonTypeDescriptions]}
-                        </Text>
-                      </Stack>
-                    </HStack>
-                  </Button>
-                </form>
-              ))}
-            </Stack>
-          </Stack>
-        </Card>
-      ) : null}
+      <Dialog open={open} onOpenChange={setOpen} title="Сначала выберите тип" description="Lesson creation остаётся type-first: это помогает не ломать структуру конструктора.">
+        <Stack gap="2">
+          {Object.entries(lessonTypeLabels).map(([value, label]) => (
+            <form key={value} action={createLessonDraftAction}>
+              <input type="hidden" name="courseId" value={courseId} />
+              <input type="hidden" name="moduleId" value={moduleId} />
+              <input type="hidden" name="lessonType" value={value} />
+              <Button type="submit" variant="ghost" justifyContent="start" h="auto" py="3" px="3" w="full" onClick={() => setOpen(false)}>
+                <HStack align="start" gap="3" w="full">
+                  <Badge tone="outline">{lessonTypeMarkers[value as keyof typeof lessonTypeMarkers]}</Badge>
+                  <Stack gap="1" align="start" textAlign="left">
+                    <Text textStyle="bodyStrong" color="fg.default">
+                      {label}
+                    </Text>
+                    <Text textStyle="bodyMuted" color="fg.muted">
+                      {lessonTypeDescriptions[value as keyof typeof lessonTypeDescriptions]}
+                    </Text>
+                  </Stack>
+                </HStack>
+              </Button>
+            </form>
+          ))}
+        </Stack>
+      </Dialog>
     </Stack>
   );
 }

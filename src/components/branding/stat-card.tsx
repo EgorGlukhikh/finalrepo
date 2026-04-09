@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 
-import { Stack } from '@/components/layout';
 import { Card } from '@/components/ui/card';
 
 type StatCardProps = {

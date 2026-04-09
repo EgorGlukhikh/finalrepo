@@ -1,5 +1,6 @@
+import { SimpleGrid } from '@chakra-ui/react';
+
 import { StatCard } from '@/components/branding';
-import { Grid } from '@/components/layout';
 
 import type { CourseAnalytics } from '../types';
 
@@ -9,7 +10,7 @@ type CourseAnalyticsStripProps = {
 
 export function CourseAnalyticsStrip({ analytics }: CourseAnalyticsStripProps) {
   return (
-    <Grid cols={3} gap="md">
+    <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
       <StatCard
         label="Студенты"
         value={analytics.studentsCount}
@@ -27,6 +28,6 @@ export function CourseAnalyticsStrip({ analytics }: CourseAnalyticsStripProps) {
         description={`${analytics.publishedLessonsCount} опубликованных уроков`}
         tone="primary"
       />
-    </Grid>
+    </SimpleGrid>
   );
 }

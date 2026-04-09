@@ -3,7 +3,7 @@
 import type { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box, Button as ChakraButton, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { createBlock, createTextBlock, duplicateBlockById, insertBlockAt, moveBlock, removeBlockById, replaceBlockById, updateBlockById } from '../lesson-block-editor-utils';
 import { getBlockOption, type LessonBlockType } from '../lesson-block-options';
@@ -220,21 +220,27 @@ export function LessonBlockEditor({ defaultValue, name }: LessonBlockEditorProps
   };
 
   return (
-    <div className="space-y-3">
+    <Stack gap="3">
       <input type="hidden" name={name} value={serialized} />
 
       {blocks.length === 0 ? (
-        <button
+        <ChakraButton
           type="button"
           onClick={addFirstTextBlock}
-          className="w-full rounded-lg border border-dashed border-border/80 px-4 py-5 text-left text-sm text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:border-border hover:bg-surface/50 hover:text-foreground"
+          variant="outline"
+          justifyContent="start"
+          h="auto"
+          px="4"
+          py="5"
+          borderStyle="dashed"
+          color="fg.muted"
         >
           Начните ввод или нажмите /
-        </button>
+        </ChakraButton>
       ) : (
-        <div className="space-y-1">
+        <Stack gap="1">
           {blocks.map((block, index) => (
-            <div key={block.id ?? `${block.type}-${index}`} className="space-y-1">
+            <Stack key={block.id ?? `${block.type}-${index}`} gap="1">
               <BlockRow
                 block={block}
                 index={index}
@@ -263,9 +269,9 @@ export function LessonBlockEditor({ defaultValue, name }: LessonBlockEditorProps
                   onSelect={selectBlockType}
                 />
               ) : null}
-            </div>
+            </Stack>
           ))}
-        </div>
+        </Stack>
       )}
 
       {blocks.length > 0 ? (
@@ -282,20 +288,17 @@ export function LessonBlockEditor({ defaultValue, name }: LessonBlockEditorProps
             />
           ) : null}
 
-          <div className="flex items-center gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => openInsertPicker(blocks.length)}
-              className="inline-flex size-8 items-center justify-center rounded-full border border-border/80 text-sm text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
-              aria-label="Добавить блок"
-            >
-              +
-            </button>
-            <span className="text-sm text-muted-foreground">Продолжайте ввод или добавьте следующий блок</span>
-          </div>
+          <HStack gap="3" pt="1">
+            <ChakraButton type="button" variant="outline" onClick={() => openInsertPicker(blocks.length)}>
+              + Блок
+            </ChakraButton>
+            <Text textStyle="bodyMuted" color="fg.muted">
+              Продолжайте ввод или добавьте следующий блок
+            </Text>
+          </HStack>
         </>
       ) : null}
-    </div>
+    </Stack>
   );
 }
 
@@ -330,30 +333,33 @@ function BlockRow({
   const isTextBlock = block.type === 'text';
 
   return (
-    <div
-      className={cn(
-        'group rounded-lg px-3 py-2 transition-[background-color,border-color] duration-200 ease-[var(--ease-standard)] hover:bg-surface/45 focus-within:bg-surface/55',
-        !isTextBlock && 'border border-transparent hover:border-border/70 focus-within:border-border/70',
-      )}
+    <Box
+      borderWidth={isTextBlock ? '0' : '1px'}
+      borderColor="transparent"
+      borderRadius="xl"
+      px="3"
+      py="2"
+      transition="background-color 0.2s ease, border-color 0.2s ease"
+      _hover={{ bg: 'bg.surface', borderColor: isTextBlock ? 'transparent' : 'border.subtle' }}
+      _focusWithin={{ bg: 'bg.surface', borderColor: isTextBlock ? 'transparent' : 'border.subtle' }}
     >
-      <div className="flex items-start gap-3">
-        <div className="mt-1 flex flex-col items-center gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-          <button
-            type="button"
-            onClick={() => openInsertPicker(index + 1)}
-            className="inline-flex size-7 items-center justify-center rounded-full border border-border/80 text-xs text-muted-foreground transition-colors duration-200 ease-[var(--ease-standard)] hover:bg-surface-muted hover:text-foreground"
-            aria-label="Добавить блок ниже"
-          >
+      <HStack align="start" gap="3">
+        <Stack gap="1" pt="1" opacity={0.78}>
+          <ChakraButton type="button" variant="ghost" onClick={() => openInsertPicker(index + 1)}>
             +
-          </button>
-          <span className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">::</span>
-        </div>
+          </ChakraButton>
+          <Text textStyle="overline" color="fg.subtle" textAlign="center">
+            ::
+          </Text>
+        </Stack>
 
-        <div className="min-w-0 flex-1 space-y-3">
+        <Stack minW="0" flex="1" gap="3">
           {!isTextBlock ? (
-            <div className="inline-flex rounded-full bg-surface-muted px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              {option?.label ?? block.type}
-            </div>
+            <Box display="inline-flex" alignSelf="start" borderRadius="full" bg="bg.surfaceMuted" px="2.5" py="1">
+              <Text textStyle="overline" color="fg.subtle">
+                {option?.label ?? block.type}
+              </Text>
+            </Box>
           ) : null}
 
           {block.type === 'text' ? (
@@ -374,9 +380,9 @@ function BlockRow({
           {block.type === 'embed' ? <EmbedBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
           {block.type === 'callout' ? <CalloutBlockFields block={block} registerFieldRef={registerFieldRef} updateBlock={updateBlock} /> : null}
           {block.type === 'checklist' ? <ChecklistBlockFields block={block} registerFieldRef={registerFieldRef} setBlocks={setBlocks} /> : null}
-        </div>
+        </Stack>
 
-        <div className="flex flex-col gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+        <Stack gap="1">
           <InlineControl label="Вверх" onClick={() => moveBlockByDirection(block.id ?? '', 'up')}>
             ↑
           </InlineControl>
@@ -384,14 +390,14 @@ function BlockRow({
             ↓
           </InlineControl>
           <InlineControl label="Дублировать" onClick={() => duplicateBlock(block.id ?? '')}>
-            ⧉
+            Дубль
           </InlineControl>
           <InlineControl label="Удалить" onClick={() => removeBlock(block.id ?? '')} tone="danger">
-            ×
+            Удалить
           </InlineControl>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </HStack>
+    </Box>
   );
 }
 
@@ -407,18 +413,8 @@ function InlineControl({
   tone?: 'default' | 'danger';
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className={cn(
-        'inline-flex size-7 items-center justify-center rounded-md text-xs transition-colors duration-200 ease-[var(--ease-standard)]',
-        tone === 'danger'
-          ? 'text-muted-foreground hover:bg-danger/10 hover:text-danger'
-          : 'text-muted-foreground hover:bg-surface-muted hover:text-foreground',
-      )}
-    >
+    <ChakraButton type="button" variant="ghost" onClick={onClick} colorPalette={tone === 'danger' ? 'red' : undefined} aria-label={label}>
       {children}
-    </button>
+    </ChakraButton>
   );
 }
