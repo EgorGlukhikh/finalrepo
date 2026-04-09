@@ -35,9 +35,8 @@ export function IconChip({ icon, className, boxSize = '10', tone = 'default' }: 
       boxSize={boxSize}
       alignItems="center"
       justifyContent="center"
-      borderRadius="2xl"
+      borderRadius="lg"
       borderWidth="1px"
-      boxShadow="sm"
       transitionProperty="common"
       transitionDuration="normal"
       {...toneStyles[tone]}

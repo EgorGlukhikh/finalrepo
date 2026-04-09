@@ -60,7 +60,7 @@ export function NavLink({
     <Button
       asChild
       className={className}
-      variant={isActive ? 'surface' : 'ghost'}
+      variant={isActive ? 'subtle' : 'ghost'}
       size="md"
       justifyContent="flex-start"
       width="full"

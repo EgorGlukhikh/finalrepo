@@ -11,7 +11,7 @@ type LandingCtaSectionProps = {
 export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCtaSectionProps) {
   return (
     <PageSection>
-      <SurfacePanel tone="highlight" maxW="5xl" mx="auto">
+      <SurfacePanel tone="highlight" maxW="6xl" mx="auto" p={{ base: 6, md: 7 }}>
         <Grid gap="6" templateColumns={{ base: '1fr', lg: 'minmax(0,1fr) auto' }} alignItems={{ base: 'start', lg: 'end' }}>
           <GridItem>
             <Stack gap="3" maxW="2xl">
@@ -22,8 +22,7 @@ export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCt
                 Выберите курс и откройте личный кабинет для спокойного обучения по шагам.
               </Heading>
               <Text textStyle="bodyMuted" color="fg.muted">
-                Зарегистрируйтесь, откройте каталог и начните с бесплатной программы или перейдите к платному курсу,
-                если нужен полный трек.
+                Сначала вход, затем каталог и выбранная программа. Интерфейс не перегружает вас лишними действиями между этими шагами.
               </Text>
             </Stack>
           </GridItem>

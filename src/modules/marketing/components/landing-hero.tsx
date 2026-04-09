@@ -1,6 +1,5 @@
 import { Badge, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
-import { BookOpenIcon, EyeIcon, IconChip } from '@/components/branding';
 import { ButtonLink, PageSection, SurfacePanel } from '@/components/compositions';
 
 import { marketingSteps } from '../content';
@@ -11,24 +10,30 @@ type LandingHeroProps = {
   secondaryCtaHref: string;
 };
 
+const keyPoints = [
+  { label: 'Каталог', value: 'Бесплатные и платные программы в одном месте' },
+  { label: 'Кабинет', value: 'Прогресс, доступ и возврат к урокам без поиска' },
+  { label: 'Формат', value: 'Курс -> модуль -> урок, без запутанной навигации' },
+];
+
 export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref }: LandingHeroProps) {
   return (
     <PageSection>
-      <Grid gap={{ base: 6, xl: 8 }} templateColumns={{ base: '1fr', xl: 'minmax(0,1.3fr) 22rem' }} alignItems="start">
+      <Grid gap={{ base: 10, xl: 12 }} templateColumns={{ base: '1fr', xl: 'minmax(0,1.45fr) 20rem' }} alignItems="start">
         <GridItem>
-          <Stack gap="8" maxW="5xl">
-            <Stack gap="6">
-              <Badge alignSelf="flex-start" colorPalette="brand" variant="subtle">
+          <Stack gap="10" maxW="5xl">
+            <Stack gap="6" maxW="4xl">
+              <Badge alignSelf="flex-start" variant="outline" borderColor="border.strong">
                 Платформа обучения для риэлторов
               </Badge>
 
               <Stack gap="5">
-                <Heading textStyle="display" fontSize={{ base: '4xl', lg: '5xl' }} maxW="4xl">
-                  Курсы для риэлторов, которые помогают учиться спокойно и работать увереннее.
+                <Heading textStyle="display" maxW="4xl">
+                  Курсы, доступ и личный кабинет собраны в одной спокойной рабочей системе.
                 </Heading>
                 <Text textStyle="body" color="fg.muted" maxW="2xl">
-                  Выберите программу, откройте бесплатный или платный курс, проходите уроки по шагам и возвращайтесь к
-                  материалам с сохраненным прогрессом.
+                  Пользователь выбирает программу, открывает курс, проходит уроки по шагам и возвращается к материалам без
+                  лишних экранов, декоративных блоков и потери прогресса.
                 </Text>
               </Stack>
 
@@ -42,67 +47,43 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
               </HStack>
             </Stack>
 
-            <Grid gap="4" templateColumns={{ base: '1fr', lg: 'minmax(0,1.15fr) minmax(0,0.85fr)' }}>
-              <SurfacePanel tone="highlight" minH={{ base: 'auto', lg: '20rem' }}>
-                <Stack gap="5" h="full">
-                  <HStack justify="space-between" align="start">
-                    <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
-                    <Badge variant="outline">Что есть внутри</Badge>
-                  </HStack>
-
-                  <Stack gap="4">
+            <SurfacePanel tone="highlight" p={{ base: 6, md: 7 }}>
+              <Grid gap="5" templateColumns={{ base: '1fr', lg: '1.2fr 0.8fr' }}>
+                <GridItem>
+                  <Stack gap="4" maxW="2xl">
+                    <Text textStyle="overline" color="fg.subtle">
+                      Что получает пользователь
+                    </Text>
                     <Heading textStyle="sectionTitle" maxW="2xl">
-                      Каталог курсов, личный кабинет, прогресс и доступ к материалам собраны в одной понятной системе.
+                      Не витрину из одинаковых карточек, а понятную среду: где открыть курс, где продолжить урок и где увидеть прогресс.
                     </Heading>
                     <Text textStyle="bodyMuted" color="fg.muted" maxW="xl">
-                      Пользователь видит, какие программы доступны, где он остановился и как вернуться к следующему
-                      уроку без лишней навигации.
+                      Важное действие здесь одно: начать или продолжить обучение. Всё остальное подчинено этой задаче и не спорит за внимание.
                     </Text>
                   </Stack>
+                </GridItem>
 
-                  <Grid mt="auto" gap="3" templateColumns={{ base: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }}>
-                    <SurfacePanel tone="inset" p="4" borderRadius="xl">
-                      <Text textStyle="overline" color="fg.subtle">
-                        Курсы
-                      </Text>
-                      <Text mt="2" textStyle="bodyMuted" color="fg.muted">
-                        Бесплатные и платные программы с честным обозначением доступа и стоимости.
-                      </Text>
-                    </SurfacePanel>
-                    <SurfacePanel tone="inset" p="4" borderRadius="xl">
-                      <Text textStyle="overline" color="fg.subtle">
-                        Прогресс
-                      </Text>
-                      <Text mt="2" textStyle="bodyMuted" color="fg.muted">
-                        Личный кабинет помогает продолжать обучение с того места, где пользователь остановился.
-                      </Text>
-                    </SurfacePanel>
-                  </Grid>
-                </Stack>
-              </SurfacePanel>
-
-              <Stack gap="4">
-                <SurfacePanel tone="muted" p="5">
-                  <HStack align="start" gap="4">
-                    <IconChip icon={<EyeIcon size={17} />} tone="muted" />
-                    <Stack gap="2">
-                      <Text textStyle="overline" color="fg.subtle">
-                        Для кого
-                      </Text>
-                      <Text textStyle="bodyMuted" color="fg.muted">
-                        Для риэлторов, которым нужны практические курсы, понятный доступ и спокойный учебный процесс без
-                        перегруженного интерфейса.
-                      </Text>
-                    </Stack>
-                  </HStack>
-                </SurfacePanel>
-              </Stack>
-            </Grid>
+                <GridItem>
+                  <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+                    {keyPoints.map((item) => (
+                      <Stack key={item.label} gap="2" py="4" borderBottomWidth="1px" borderColor="border.subtle">
+                        <Text textStyle="overline" color="fg.subtle">
+                          {item.label}
+                        </Text>
+                        <Text textStyle="bodyStrong" color="fg.default">
+                          {item.value}
+                        </Text>
+                      </Stack>
+                    ))}
+                  </Stack>
+                </GridItem>
+              </Grid>
+            </SurfacePanel>
           </Stack>
         </GridItem>
 
         <GridItem>
-          <SurfacePanel minH="72">
+          <SurfacePanel tone="muted" p={{ base: 5, md: 6 }}>
             <Stack gap="5">
               <HStack justify="space-between">
                 <Text textStyle="overline" color="fg.subtle">
@@ -115,22 +96,12 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
 
               <Stack gap="4">
                 {marketingSteps.map((item) => (
-                  <Grid key={item.step} templateColumns="2.5rem minmax(0,1fr)" gap="3.5">
-                    <HStack
-                      justify="center"
-                      align="center"
-                      h="10"
-                      borderRadius="xl"
-                      bg="bg.inset"
-                      borderWidth="1px"
-                      borderColor="border.subtle"
-                      fontSize="sm"
-                      fontWeight="700"
-                    >
+                  <Grid key={item.step} templateColumns="2rem minmax(0,1fr)" gap="3">
+                    <Text textStyle="overline" color="fg.subtle">
                       {item.step}
-                    </HStack>
-                    <Stack gap="1.5" pt="1">
-                      <Text fontSize="sm" fontWeight="700" letterSpacing="-0.02em">
+                    </Text>
+                    <Stack gap="1.5">
+                      <Text textStyle="bodyStrong" color="fg.default">
                         {item.title}
                       </Text>
                       <Text textStyle="bodyMuted" color="fg.muted">

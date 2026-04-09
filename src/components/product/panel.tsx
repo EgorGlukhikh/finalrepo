@@ -19,7 +19,7 @@ type PanelProps = BoxProps & {
 
 export function Panel({ children, tone = 'default', ...props }: PanelProps) {
   return (
-    <Box layerStyle={layerStyleByTone[tone]} borderRadius={{ base: 'xl', md: '2xl' }} p={{ base: '5', md: '6' }} {...props}>
+    <Box layerStyle={layerStyleByTone[tone]} borderRadius="xl" p={{ base: '5', md: '6' }} {...props}>
       {children}
     </Box>
   );

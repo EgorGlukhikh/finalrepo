@@ -4,11 +4,7 @@ export const layerStyles = defineLayerStyles({
   shell: {
     description: 'Sticky framing shell with slight translucency',
     value: {
-      bg: 'bg.surface',
-      borderWidth: '1px',
-      borderColor: 'border.subtle',
-      boxShadow: 'xs',
-      backdropFilter: 'blur(12px)',
+      bg: 'transparent',
     },
   },
   panel: {
@@ -17,7 +13,6 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.surface',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'xs',
     },
   },
   panelElevated: {
@@ -54,7 +49,6 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.inset',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'xs',
     },
   },
 });

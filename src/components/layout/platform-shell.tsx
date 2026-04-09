@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
-import { Box } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text } from '@chakra-ui/react';
 
 import { BrandMark } from '@/components/branding';
-import { HeaderBar, PageLayout, Panel, SplitPageLayout } from '@/components/product';
+import { PageLayout, SplitPageLayout } from '@/components/product';
 
 import { AppHeader } from './app-header';
 import { PlatformNav } from './platform-nav';
@@ -20,16 +20,20 @@ export function PlatformShell({ children, headerActions }: PlatformShellProps) {
       <PageLayout>
         <SplitPageLayout
           sidebar={
-            <Panel tone="elevated" position={{ xl: 'sticky' }} top={{ xl: '24' }}>
-              <HeaderBar
-                eyebrow="Рабочая зона"
-                title="Личный кабинет"
-                description="Курсы, прогресс и точки возврата в обучение собраны в одном спокойном контуре."
-              />
-              <Box pt="6">
+            <Stack gap="6" position={{ xl: 'sticky' }} top={{ xl: '24' }}>
+              <Stack gap="3">
+                <Text textStyle="overline" color="fg.subtle">
+                  Рабочая зона
+                </Text>
+                <Heading textStyle="sectionTitle">Личный кабинет</Heading>
+                <Text textStyle="bodyMuted" color="fg.muted">
+                  Курсы, прогресс и точки возврата в обучение собраны в одном спокойном месте.
+                </Text>
+              </Stack>
+              <Box pt="1">
                 <PlatformNav />
               </Box>
-            </Panel>
+            </Stack>
           }
           content={<Box minW="0">{children}</Box>}
         />

@@ -1,34 +1,26 @@
 import Link from 'next/link';
+
 import { HStack, Link as ChakraLink, Text } from '@chakra-ui/react';
-import type { ReactNode } from 'react';
 
-import { BookIcon } from '@/components/branding';
-
-const navItems: Array<{ href: string; label: string; icon?: ReactNode }> = [
-  { href: '/courses', label: 'Курсы', icon: <BookIcon size={16} /> },
+const navItems = [
+  { href: '/courses', label: 'Курсы' },
   { href: '/app', label: 'Кабинет' },
 ];
 
 export function PublicNav() {
   return (
-    <HStack as="nav" gap="1" align="center">
+    <HStack as="nav" gap="5" align="center">
       {navItems.map((item) => (
         <ChakraLink
           key={item.href}
           asChild
           color="fg.muted"
-          _hover={{ color: 'fg.default', textDecoration: 'none', bg: 'bg.inset' }}
-          px="3"
-          py="2"
-          borderRadius="full"
+          _hover={{ color: 'fg.default', textDecoration: 'none' }}
         >
           <Link href={item.href}>
-            <HStack gap="2">
-              {item.icon ?? null}
-              <Text fontSize="sm" fontWeight="600" letterSpacing="-0.01em">
-                {item.label}
-              </Text>
-            </HStack>
+            <Text fontSize="sm" fontWeight="600" letterSpacing="-0.02em">
+              {item.label}
+            </Text>
           </Link>
         </ChakraLink>
       ))}

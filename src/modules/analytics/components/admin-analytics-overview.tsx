@@ -16,7 +16,7 @@ function formatCount(value: number) {
 export function AdminAnalyticsOverview({ analytics }: AdminAnalyticsOverviewProps) {
   return (
     <Stack gap="6">
-      <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap="6">
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap="5">
         <MetricCard label="Пользователи" value={formatCount(analytics.business.totalUsers)} description="Все зарегистрированные аккаунты платформы." />
         <MetricCard label="Активные доступы" value={formatCount(analytics.business.totalEnrollments)} description="Enrollment-записи со статусом ACTIVE." />
         <MetricCard
@@ -48,7 +48,7 @@ export function AdminAnalyticsOverview({ analytics }: AdminAnalyticsOverviewProp
             </Text>
           </Stack>
 
-          <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap="4">
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
             <MetricCard label="Курс открыт" value={formatCount(analytics.funnel.courseOpened)} description="У пользователя появился активный доступ." />
             <MetricCard label="Курс начат" value={formatCount(analytics.funnel.courseStarted)} description="Есть хотя бы один старт урока внутри курса." />
             <MetricCard label="Урок начат" value={formatCount(analytics.funnel.lessonStarted)} description="Уроки в статусе IN_PROGRESS или COMPLETED." />

@@ -7,22 +7,32 @@ import { marketingFaq, marketingTrustPoints } from '../content';
 export function LandingTrustSection() {
   return (
     <PageSection tone="muted">
-      <Grid gap="6" templateColumns={{ base: '1fr', xl: 'minmax(0,1fr) 24rem' }}>
+      <Grid gap={{ base: 8, xl: 12 }} templateColumns={{ base: '1fr', xl: 'minmax(0,1fr) 24rem' }}>
         <GridItem>
           <Stack gap="8">
             <SectionHeading
               eyebrow="Что получает пользователь"
               title="После регистрации всё важное уже собрано в одном месте"
-              description="Каталог курсов, личный кабинет, сохраненный прогресс и понятный вход в обучение работают как единая система, а не как набор разрозненных экранов."
+              description="Пользователь не прыгает между экранами в поиске доступа, уроков и прогресса. Каталог, кабинет и сам курс продолжают друг друга."
             />
 
-            <Stack gap="3">
+            <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
               {marketingTrustPoints.map((item, index) => (
-                <SurfacePanel key={item} tone={index === 0 ? 'highlight' : 'muted'} p="5">
-                  <Text textStyle="bodyMuted" color="fg.muted">
+                <Grid
+                  key={item}
+                  templateColumns={{ base: '1fr', md: '2.5rem minmax(0,1fr)' }}
+                  gap="4"
+                  py="4"
+                  borderBottomWidth="1px"
+                  borderColor="border.subtle"
+                >
+                  <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
+                    0{index + 1}
+                  </Text>
+                  <Text textStyle={index === 0 ? 'body' : 'bodyMuted'} color={index === 0 ? 'fg.default' : 'fg.muted'} maxW="2xl">
                     {item}
                   </Text>
-                </SurfacePanel>
+                </Grid>
               ))}
             </Stack>
           </Stack>

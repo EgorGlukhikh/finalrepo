@@ -1,6 +1,5 @@
 import { Badge, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
-import { BookOpenIcon, IconChip } from '@/components/branding';
 import { ButtonLink, PageSection, SectionHeading, SurfacePanel } from '@/components/compositions';
 import type { CourseListItem } from '@/modules/courses';
 import { buildCatalogPath, buildPublicCoursePath } from '@/modules/courses/paths';
@@ -41,7 +40,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
         <SectionHeading
           eyebrow="Каталог"
           title="Программы, которые можно открыть сейчас"
-          description="Бесплатные курсы доступны сразу. Платные программы обозначены честно и открываются только после подтвержденной оплаты."
+          description="Если программа бесплатная, пользователь начинает сразу. Если курс платный, это обозначено честно и не прячется внутри интерфейса."
           actions={
             <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
               Открыть каталог
@@ -50,34 +49,35 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
         />
 
         {featuredCourse ? (
-          <Grid gap="4" templateColumns={{ base: '1fr', xl: 'minmax(0,1.1fr) minmax(0,0.9fr)' }}>
+          <Grid gap="6" templateColumns={{ base: '1fr', xl: 'minmax(0,1.15fr) minmax(0,0.85fr)' }}>
             <GridItem>
-              <SurfacePanel tone="highlight" minH={{ base: 'auto', xl: '18rem' }}>
-                <Stack gap="4" h="full">
-                  <HStack justify="space-between" align="start">
-                    <Stack gap="3" maxW="2xl">
-                      <Badge colorPalette={featuredCourse.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
-                        {accessLabel(featuredCourse.accessType)}
-                      </Badge>
-                      <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
-                        {featuredCourse.title}
-                      </Heading>
-                    </Stack>
-                    <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
+              <SurfacePanel tone="highlight" p={{ base: 6, md: 7 }}>
+                <Stack gap="5">
+                  <HStack gap="3" flexWrap="wrap">
+                    <Badge colorPalette={featuredCourse.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
+                      {accessLabel(featuredCourse.accessType)}
+                    </Badge>
+                    <Text textStyle="caption" color="fg.muted">
+                      {priceLabel(featuredCourse)}
+                    </Text>
                   </HStack>
 
-                  <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                    {featuredCourse.shortDescription ??
-                      'На странице курса пользователь видит программу, условия доступа и понятный путь к началу обучения.'}
-                  </Text>
+                  <Stack gap="3" maxW="2xl">
+                    <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
+                      {featuredCourse.title}
+                    </Heading>
+                    <Text textStyle="body" color="fg.muted" maxW="2xl">
+                      {featuredCourse.shortDescription ??
+                        'На странице курса пользователь видит программу, условия доступа и понятный путь к началу обучения.'}
+                    </Text>
+                  </Stack>
 
-                  <HStack gap="2.5" flexWrap="wrap">
-                    <MetaBadge label={`${featuredCourse.modulesCount} модулей`} />
-                    <MetaBadge label={`${featuredCourse.lessonsCount} уроков`} />
-                    <MetaBadge label={priceLabel(featuredCourse)} />
+                  <HStack gap="4" flexWrap="wrap" color="fg.muted">
+                    <Text textStyle="bodyMuted">{featuredCourse.modulesCount} модулей</Text>
+                    <Text textStyle="bodyMuted">{featuredCourse.lessonsCount} уроков</Text>
                   </HStack>
 
-                  <HStack mt="auto" gap="3" flexWrap="wrap" pt="2">
+                  <HStack gap="3" flexWrap="wrap" pt="1">
                     <ButtonLink href={buildPublicCoursePath(featuredCourse.slug)} colorPalette="brand">
                       Открыть курс
                     </ButtonLink>
@@ -90,64 +90,63 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
             </GridItem>
 
             <GridItem>
-              <Stack gap="4">
-                {secondaryCourses.map((course) => (
-                  <SurfacePanel key={course.id} tone="muted">
-                    <Stack gap="4">
-                      <HStack justify="space-between" align="start">
-                        <Badge colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
-                          {accessLabel(course.accessType)}
-                        </Badge>
-                        <Text fontSize="sm" color="fg.muted">
-                          {priceLabel(course)}
-                        </Text>
-                      </HStack>
-
+              <SurfacePanel tone="muted" p={{ base: 5, md: 6 }}>
+                <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+                  {secondaryCourses.map((course) => (
+                    <Grid
+                      key={course.id}
+                      templateColumns={{ base: '1fr', md: 'minmax(0,1fr) auto' }}
+                      gap="4"
+                      py="4"
+                      borderBottomWidth="1px"
+                      borderColor="border.subtle"
+                      alignItems="start"
+                    >
                       <Stack gap="2">
-                        <Heading as="h3" fontSize="lg" lineHeight="1.25" letterSpacing="-0.03em">
+                        <HStack gap="2" flexWrap="wrap">
+                          <Badge colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
+                            {accessLabel(course.accessType)}
+                          </Badge>
+                          <Text textStyle="caption" color="fg.muted">
+                            {priceLabel(course)}
+                          </Text>
+                        </HStack>
+                        <Heading as="h3" textStyle="h4">
                           {course.title}
                         </Heading>
                         <Text textStyle="bodyMuted" color="fg.muted">
-                          {course.shortDescription ?? 'Курс открывается на отдельной странице с программой, доступом и следующим шагом.'}
+                          {course.shortDescription ?? 'Курс открывается на отдельной странице с программой и следующим шагом для старта.'}
                         </Text>
                       </Stack>
 
-                      <HStack justify="space-between" align="center" gap="3" pt="1" flexWrap="wrap">
-                        <Text fontSize="sm" color="fg.muted">
-                          {course.modulesCount} модулей · {course.lessonsCount} уроков
-                        </Text>
-                        <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong">
-                          Открыть
-                        </ButtonLink>
-                      </HStack>
-                    </Stack>
-                  </SurfacePanel>
-                ))}
-              </Stack>
+                      <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong">
+                        Открыть
+                      </ButtonLink>
+                    </Grid>
+                  ))}
+                </Stack>
+              </SurfacePanel>
             </GridItem>
           </Grid>
         ) : (
-          <SurfacePanel tone="muted">
-            <Stack gap="3">
-              <Text textStyle="bodyStrong" color="fg.default">
-                Каталог запускается поэтапно.
-              </Text>
-              <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                Первая подборка курсов появится здесь после публикации. Платформа уже готова к обучению: личный кабинет,
-                доступ к курсам и прогресс работают как единая система.
-              </Text>
-            </Stack>
+          <SurfacePanel tone="muted" p={{ base: 6, md: 7 }}>
+            <Grid gap="6" templateColumns={{ base: '1fr', lg: 'minmax(0,1fr) auto' }} alignItems="end">
+              <Stack gap="3" maxW="2xl">
+                <Text textStyle="overline" color="fg.subtle">
+                  Поэтапный запуск
+                </Text>
+                <Heading textStyle="sectionTitle">Каталог наполняется постепенно, но сама система обучения уже готова к работе.</Heading>
+                <Text textStyle="bodyMuted" color="fg.muted">
+                  Когда первые программы будут опубликованы, они появятся здесь без переработки интерфейса: личный кабинет, доступ к курсам и сохранённый прогресс уже работают как единая среда.
+                </Text>
+              </Stack>
+              <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
+                Перейти в каталог
+              </ButtonLink>
+            </Grid>
           </SurfacePanel>
         )}
       </Stack>
     </PageSection>
-  );
-}
-
-function MetaBadge({ label }: { label: string }) {
-  return (
-    <Badge variant="outline" borderColor="border.strong">
-      {label}
-    </Badge>
   );
 }

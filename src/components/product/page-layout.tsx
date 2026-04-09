@@ -27,7 +27,11 @@ type SplitPageLayoutProps = {
 
 export function SplitPageLayout({ sidebar, content }: SplitPageLayoutProps) {
   return (
-    <Grid templateColumns={{ base: '1fr', xl: 'minmax(20rem, 31%) minmax(0, 1fr)' }} gap={{ base: '6', xl: '10' }}>
+    <Grid
+      templateColumns={{ base: '1fr', xl: '17.5rem minmax(0, 1fr)' }}
+      gap={{ base: '6', xl: '10' }}
+      alignItems="start"
+    >
       {sidebar}
       {content}
     </Grid>
