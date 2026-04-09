@@ -81,17 +81,18 @@ export default async function CoursePage({ params }: CoursePageProps) {
               <Stack gap="4">
                 <Stack gap="1">
                   <Text textStyle="overline" color="fg.subtle">
-                    Сводка
+                    О курсе
                   </Text>
                   <Text textStyle="bodyMuted" color="fg.muted">
-                    Короткий ориентир перед стартом или покупкой курса.
+                    Здесь видны программа, формат доступа и следующий шаг: начать бесплатно, перейти к оплате или
+                    продолжить обучение.
                   </Text>
                 </Stack>
 
                 <Stack gap="3">
                   <SummaryRow label="Модулей" value={tree.modules.length} />
                   <SummaryRow label="Уроков" value={tree.totalLessonsCount} />
-                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'} />
+                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к обучению' : 'Черновик'} />
                 </Stack>
 
                 <ActionLink href={buildCatalogPath()} variant="outline" w="full">
@@ -103,10 +104,11 @@ export default async function CoursePage({ params }: CoursePageProps) {
             <Panel>
               <Stack gap="3">
                 <Text textStyle="overline" color="fg.subtle">
-                  Что дальше
+                  Доступ
                 </Text>
                 <Text textStyle="bodyMuted" color="fg.muted">
-                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после подтверждённой оплаты.
+                  Бесплатный курс можно открыть сразу после зачисления. Платный курс становится доступен только после
+                  подтвержденной оплаты.
                 </Text>
               </Stack>
             </Panel>
@@ -119,9 +121,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 <HStack align="start" justify="space-between" gap="4">
                   <Stack gap="4" maxW="3xl">
                     <HStack gap="2" flexWrap="wrap">
-                      <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>
-                        {accessLabel(course.accessType)}
-                      </Badge>
+                      <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
                       <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
                       <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
                     </HStack>
@@ -134,7 +134,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         {course.title}
                       </Heading>
                       <Text textStyle="body" color="fg.muted" maxW="3xl">
-                        {course.description ?? course.shortDescription ?? 'Подробности курса и программа показаны ниже.'}
+                        {course.description ?? course.shortDescription ?? 'На этой странице показаны программа курса, условия доступа и следующий шаг для пользователя.'}
                       </Text>
                     </Stack>
                   </Stack>
@@ -180,7 +180,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         <input type="hidden" name="courseSlug" value={course.slug} />
                         <Button type="submit">Начать обучение</Button>
                         <Text textStyle="bodyMuted" color="fg.muted">
-                          Бесплатный курс откроет личный маршрут обучения сразу после зачисления.
+                          После зачисления откроется личный кабинет и первый урок курса.
                         </Text>
                       </Stack>
                     </form>
@@ -190,12 +190,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         <input type="hidden" name="courseId" value={course.id} />
                         <input type="hidden" name="courseSlug" value={course.slug} />
                         <Button type="submit" disabled={!billingAvailable}>
-                          Купить курс
+                          Перейти к оплате
                         </Button>
                         <Text textStyle="bodyMuted" color="fg.muted">
                           {billingAvailable
-                            ? 'После оплаты доступ откроется автоматически.'
-                            : 'Оплата временно недоступна. Проверьте Robokassa-конфигурацию перед запуском платного доступа.'}
+                            ? 'После подтвержденной оплаты доступ к курсу откроется автоматически.'
+                            : 'Оплата временно недоступна. Проверьте настройку Robokassa перед запуском платного доступа.'}
                         </Text>
                       </Stack>
                     </form>
@@ -204,7 +204,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   <HStack gap="3" flexWrap="wrap">
                     <ActionLink href={signInHref}>Войти и продолжить</ActionLink>
                     <Text textStyle="bodyMuted" color="fg.muted">
-                      После входа вы сможете начать бесплатный курс или перейти к оплате платного.
+                      После входа можно начать бесплатный курс или перейти к оплате платной программы.
                     </Text>
                   </HStack>
                 )}
@@ -213,7 +213,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
             <CourseCurriculum
               title="Программа курса"
-              description="На публичной странице видны модули и уроки, но содержимое защищённых уроков остаётся скрытым."
+              description="На публичной странице видны модули и уроки, но содержимое защищенных материалов остается доступным только после получения доступа."
               modules={tree.modules}
               mode="preview"
             />

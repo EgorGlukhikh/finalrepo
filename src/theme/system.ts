@@ -21,7 +21,7 @@ const config = defineConfig({
       fontFamily: 'body',
       textRendering: 'optimizeLegibility',
       backgroundImage:
-        'radial-gradient(circle at top left, color-mix(in srgb, var(--chakra-colors-accent-secondary) 28%, transparent) 0, transparent 22%), radial-gradient(circle at top right, color-mix(in srgb, var(--chakra-colors-brand-100) 34%, transparent) 0, transparent 24%), linear-gradient(180deg, var(--chakra-colors-bg-canvas) 0%, color-mix(in srgb, var(--chakra-colors-bg-canvas) 90%, white) 100%)',
+        'radial-gradient(circle at top left, color-mix(in srgb, var(--chakra-colors-accent-secondary) 18%, transparent) 0, transparent 18%), linear-gradient(180deg, var(--chakra-colors-bg-canvas) 0%, color-mix(in srgb, var(--chakra-colors-bg-canvas) 94%, white) 100%)',
       backgroundAttachment: 'fixed',
     },
     '::selection': {
@@ -117,12 +117,12 @@ const config = defineConfig({
         16: { value: '4rem' },
       },
       radii: {
-        sm: { value: '0.5rem' },
-        md: { value: '0.75rem' },
-        lg: { value: '1rem' },
-        xl: { value: '1.25rem' },
-        '2xl': { value: '1.5rem' },
-        '3xl': { value: '2rem' },
+        sm: { value: '0.375rem' },
+        md: { value: '0.625rem' },
+        lg: { value: '0.875rem' },
+        xl: { value: '1rem' },
+        '2xl': { value: '1.25rem' },
+        '3xl': { value: '1.5rem' },
       },
       shadows: {
         xs: { value: '0 1px 2px rgba(21, 29, 41, 0.04)' },
@@ -141,10 +141,10 @@ const config = defineConfig({
       colors: {
         'bg.canvas': { value: '#f3f1ec' },
         'bg.subtle': { value: '#ece8df' },
-        'bg.surface': { value: 'rgba(255, 255, 252, 0.84)' },
-        'bg.surfaceMuted': { value: 'rgba(246, 243, 236, 0.92)' },
-        'bg.elevated': { value: 'rgba(255, 255, 253, 0.96)' },
-        'bg.inset': { value: 'rgba(232, 226, 214, 0.6)' },
+        'bg.surface': { value: 'rgba(255, 255, 252, 0.76)' },
+        'bg.surfaceMuted': { value: 'rgba(243, 239, 231, 0.9)' },
+        'bg.elevated': { value: 'rgba(255, 255, 253, 0.94)' },
+        'bg.inset': { value: 'rgba(228, 222, 209, 0.52)' },
         'bg.brand': { value: '{colors.brand.600}' },
         'fg.default': { value: '#18212f' },
         'fg.muted': { value: '#5b6678' },

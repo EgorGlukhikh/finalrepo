@@ -3,7 +3,7 @@ import { defineRecipe } from '@chakra-ui/react';
 export const buttonRecipe = defineRecipe({
   base: {
     fontWeight: '600',
-    borderRadius: '2xl',
+    borderRadius: 'lg',
     letterSpacing: '-0.015em',
     transitionProperty: 'common',
     transitionDuration: 'normal',
@@ -93,17 +93,17 @@ export const buttonRecipe = defineRecipe({
     },
     size: {
       sm: {
-        h: '10',
+        h: '9',
         px: '4',
         fontSize: 'sm',
       },
       md: {
-        h: '11',
+        h: '10',
         px: '5',
         fontSize: 'sm',
       },
       lg: {
-        h: '12',
+        h: '11',
         px: '6',
         fontSize: 'sm',
       },

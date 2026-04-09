@@ -7,8 +7,8 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.surface',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'sm',
-      backdropFilter: 'blur(16px)',
+      boxShadow: 'xs',
+      backdropFilter: 'blur(12px)',
     },
   },
   panel: {
@@ -17,7 +17,7 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.surface',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'sm',
+      boxShadow: 'xs',
     },
   },
   panelElevated: {
@@ -26,7 +26,7 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.elevated',
       borderWidth: '1px',
       borderColor: 'border.default',
-      boxShadow: 'md',
+      boxShadow: 'sm',
     },
   },
   panelMuted: {
@@ -35,7 +35,6 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.surfaceMuted',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'xs',
     },
   },
   panelHighlight: {
@@ -44,9 +43,9 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.elevated',
       borderWidth: '1px',
       borderColor: 'border.strong',
-      boxShadow: 'md',
+      boxShadow: 'sm',
       backgroundImage:
-        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 92%, white) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 94%, var(--chakra-colors-accent-secondary) 6%) 100%)',
+        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 96%, white) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 98%, var(--chakra-colors-accent-secondary) 2%) 100%)',
     },
   },
   inset: {
@@ -55,7 +54,7 @@ export const layerStyles = defineLayerStyles({
       bg: 'bg.inset',
       borderWidth: '1px',
       borderColor: 'border.subtle',
-      boxShadow: 'inner',
+      boxShadow: 'xs',
     },
   },
 });

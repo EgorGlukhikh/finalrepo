@@ -8,7 +8,7 @@ import { LandingPage } from '@/modules/marketing/components/landing-page';
 export const metadata: Metadata = {
   title: 'Главная',
   description:
-    'Академия риэлторов — образовательная платформа с каталогом курсов, личным кабинетом, прогрессом обучения и прозрачной логикой бесплатного и платного доступа.',
+    'Академия риэлторов — платформа с курсами для риэлторов, личным кабинетом, сохраненным прогрессом и понятной логикой бесплатного и платного доступа.',
 };
 
 export default async function PublicHomePage() {

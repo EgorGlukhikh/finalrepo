@@ -11,11 +11,12 @@ export function LandingTrustSection() {
         <GridItem>
           <Stack gap="8">
             <SectionHeading
-              eyebrow="Доверие"
-              title="Платформа говорит фактами, а не обещаниями"
-              description="Здесь нет фальшивых цифр и искусственных отзывов. Только рабочая логика продукта и понятный путь для пользователя."
+              eyebrow="Что получает пользователь"
+              title="После регистрации всё важное уже собрано в одном месте"
+              description="Каталог курсов, личный кабинет, сохраненный прогресс и понятный вход в обучение работают как единая система, а не как набор разрозненных экранов."
             />
-            <Stack gap="4">
+
+            <Stack gap="3">
               {marketingTrustPoints.map((item, index) => (
                 <SurfacePanel key={item} tone={index === 0 ? 'highlight' : 'muted'} p="5">
                   <Text textStyle="bodyMuted" color="fg.muted">

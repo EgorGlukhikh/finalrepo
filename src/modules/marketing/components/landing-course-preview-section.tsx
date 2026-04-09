@@ -40,8 +40,8 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
       <Stack gap="8">
         <SectionHeading
           eyebrow="Каталог"
-          title="Курсы, которые можно открыть сразу"
-          description="Публичная витрина остается частью продукта: бесплатные курсы можно начать без оплаты, а платные программы обозначены честно и без сюрпризов."
+          title="Программы, которые можно открыть сейчас"
+          description="Бесплатные курсы доступны сразу. Платные программы обозначены честно и открываются только после подтвержденной оплаты."
           actions={
             <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
               Открыть каталог
@@ -52,18 +52,11 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
         {featuredCourse ? (
           <Grid gap="4" templateColumns={{ base: '1fr', xl: 'minmax(0,1.1fr) minmax(0,0.9fr)' }}>
             <GridItem>
-              <SurfacePanel tone="highlight" minH={{ base: 'auto', xl: '20rem' }}>
+              <SurfacePanel tone="highlight" minH={{ base: 'auto', xl: '18rem' }}>
                 <Stack gap="4" h="full">
                   <HStack justify="space-between" align="start">
                     <Stack gap="3" maxW="2xl">
-                      <Badge
-                        alignSelf="flex-start"
-                        borderRadius="full"
-                        px="3"
-                        py="1.5"
-                        colorPalette={featuredCourse.accessType === 'FREE' ? 'green' : 'brand'}
-                        variant="subtle"
-                      >
+                      <Badge colorPalette={featuredCourse.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
                         {accessLabel(featuredCourse.accessType)}
                       </Badge>
                       <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
@@ -75,7 +68,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
 
                   <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
                     {featuredCourse.shortDescription ??
-                      'Курс можно открыть на отдельной странице и пройти по шагам в личном кабинете.'}
+                      'На странице курса пользователь видит программу, условия доступа и понятный путь к началу обучения.'}
                   </Text>
 
                   <HStack gap="2.5" flexWrap="wrap">
@@ -84,12 +77,12 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                     <MetaBadge label={priceLabel(featuredCourse)} />
                   </HStack>
 
-                  <HStack mt="auto" gap="3" flexWrap="wrap" pt="4">
+                  <HStack mt="auto" gap="3" flexWrap="wrap" pt="2">
                     <ButtonLink href={buildPublicCoursePath(featuredCourse.slug)} colorPalette="brand">
                       Открыть курс
                     </ButtonLink>
-                    <ButtonLink href={buildCatalogPath()} variant="ghost" color="fg.muted" _hover={{ bg: 'bg.inset', color: 'fg.default' }}>
-                      Смотреть все программы
+                    <ButtonLink href={buildCatalogPath()} variant="ghost">
+                      Все программы
                     </ButtonLink>
                   </HStack>
                 </Stack>
@@ -102,32 +95,28 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                   <SurfacePanel key={course.id} tone="muted">
                     <Stack gap="4">
                       <HStack justify="space-between" align="start">
-                        <Badge
-                          borderRadius="full"
-                          px="3"
-                          py="1"
-                          colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'}
-                          variant="subtle"
-                        >
+                        <Badge colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
                           {accessLabel(course.accessType)}
                         </Badge>
                         <Text fontSize="sm" color="fg.muted">
                           {priceLabel(course)}
                         </Text>
                       </HStack>
+
                       <Stack gap="2">
                         <Heading as="h3" fontSize="lg" lineHeight="1.25" letterSpacing="-0.03em">
                           {course.title}
                         </Heading>
                         <Text textStyle="bodyMuted" color="fg.muted">
-                          {course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                          {course.shortDescription ?? 'Курс открывается на отдельной странице с программой, доступом и следующим шагом.'}
                         </Text>
                       </Stack>
+
                       <HStack justify="space-between" align="center" gap="3" pt="1" flexWrap="wrap">
                         <Text fontSize="sm" color="fg.muted">
                           {course.modulesCount} модулей · {course.lessonsCount} уроков
                         </Text>
-                        <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong" size="sm">
+                        <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong">
                           Открыть
                         </ButtonLink>
                       </HStack>
@@ -139,9 +128,15 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
           </Grid>
         ) : (
           <SurfacePanel tone="muted">
-            <Text textStyle="bodyMuted" color="fg.muted">
-              Каталог появится здесь, как только в системе будут опубликованы первые курсы.
-            </Text>
+            <Stack gap="3">
+              <Text textStyle="bodyStrong" color="fg.default">
+                Каталог запускается поэтапно.
+              </Text>
+              <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
+                Первая подборка курсов появится здесь после публикации. Платформа уже готова к обучению: личный кабинет,
+                доступ к курсам и прогресс работают как единая система.
+              </Text>
+            </Stack>
           </SurfacePanel>
         )}
       </Stack>
@@ -151,7 +146,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
 
 function MetaBadge({ label }: { label: string }) {
   return (
-    <Badge variant="outline" borderRadius="full" px="3" py="1.5" borderColor="border.strong">
+    <Badge variant="outline" borderColor="border.strong">
       {label}
     </Badge>
   );

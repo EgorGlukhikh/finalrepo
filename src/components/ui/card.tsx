@@ -31,7 +31,7 @@ export function Card({ children, className, padding = 'md', tone = 'default', ..
     <Box
       className={className}
       layerStyle={layerStyleMap[tone]}
-      borderRadius="3xl"
+      borderRadius="2xl"
       p={paddingMap[padding]}
       {...props}
     >

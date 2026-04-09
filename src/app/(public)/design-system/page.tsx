@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-
-import { DesignSystemShowcase } from './showcase';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Design system',
@@ -8,6 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default function DesignSystemPage() {
-  return <DesignSystemShowcase />;
+  notFound();
 }
 

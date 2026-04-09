@@ -14,7 +14,7 @@ import { getUserEnrollments } from '@/modules/enrollments';
 export const metadata: Metadata = {
   title: 'Каталог курсов',
   description:
-    'Каталог Академии риэлторов: бесплатные и платные курсы с понятной структурой, описанием и прямым входом в обучение.',
+    'Каталог Академии риэлторов: бесплатные и платные курсы с понятным доступом, программой обучения и прямым входом в занятия.',
 };
 
 function accessLabel(accessType: string) {
@@ -54,7 +54,7 @@ function buildCourseCta({
       : isFree && sessionUserId
         ? buildAppCoursePath(slug)
         : buildPublicCoursePath(slug),
-    label: isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс',
+    label: isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Открыть страницу курса',
   };
 }
 
@@ -73,14 +73,14 @@ export default async function CoursesCatalogPage() {
       <HeaderBar
         eyebrow="Каталог"
         title="Курсы для риэлторов"
-        description="Публичный каталог доступных программ. Бесплатные курсы можно начать сразу, а платные открываются после подтверждённой оплаты."
+        description="Здесь собраны программы, которые можно открыть сразу или после оплаты. Пользователь видит формат доступа, структуру курса и следующий шаг без лишних переходов."
       />
 
       {courses.length === 0 ? (
         <Stack gap="4">
           <EmptyState
-            title="Пока нет опубликованных курсов"
-            description="Когда программы появятся, каталог соберёт их в спокойный и понятный список без лишнего визуального шума."
+            title="Каталог запускается поэтапно"
+            description="Первая подборка курсов появится здесь после публикации. Платформа уже готова к работе: личный кабинет, доступ к программам и прогресс обучения собраны в одной системе."
           />
           <HStack justify="center">
             <ActionLink href="/">Вернуться на главную</ActionLink>
@@ -90,7 +90,7 @@ export default async function CoursesCatalogPage() {
         <Stack gap="8">
           {featuredCourse ? (
             <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6">
-              <Panel tone="highlight" minH={{ base: 'auto', xl: '24rem' }}>
+              <Panel tone="highlight" minH={{ base: 'auto', xl: '22rem' }}>
                 {(() => {
                   const cta = buildCourseCta({
                     courseId: featuredCourse.id,
@@ -114,7 +114,8 @@ export default async function CoursesCatalogPage() {
                             {featuredCourse.title}
                           </Heading>
                           <Text textStyle="body" color="fg.muted" maxW="2xl">
-                            {featuredCourse.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                            {featuredCourse.shortDescription ??
+                              'На странице курса пользователь видит программу, формат доступа и понятный вход в обучение.'}
                           </Text>
                         </Stack>
                         <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
@@ -124,7 +125,7 @@ export default async function CoursesCatalogPage() {
                         <Badge tone="outline">{featuredCourse.lessonsCount} уроков</Badge>
                         <Badge tone="outline">
                           {cta.isFree
-                            ? 'Бесплатно'
+                            ? 'Без оплаты'
                             : featuredCourse.priceAmount !== null
                               ? `${featuredCourse.priceAmount} ₽`
                               : 'Цена уточняется'}
@@ -148,15 +149,16 @@ export default async function CoursesCatalogPage() {
                     <IconChip icon={<SearchIcon size={17} />} tone="muted" />
                     <Stack gap="1">
                       <Text textStyle="overline" color="fg.subtle">
-                        Как выбирать
+                        Как читать каталог
                       </Text>
                       <Heading as="h2" textStyle="h4">
-                        Короткий ориентир по каталогу
+                        Пользователь сразу понимает, что доступно и как начать
                       </Heading>
                     </Stack>
                   </HStack>
                   <Text textStyle="bodyMuted" color="fg.muted">
-                    Бесплатные курсы можно начать сразу, а платные открываются после подтверждённой оплаты. Если доступ уже есть, каталог ведёт не к покупке, а сразу обратно в обучение.
+                    Бесплатные курсы можно открыть сразу. Платные программы ведут на страницу курса и к оплате только
+                    после явного решения пользователя продолжить.
                   </Text>
                 </Stack>
               </Panel>
@@ -181,14 +183,16 @@ export default async function CoursesCatalogPage() {
                         key={course.id}
                         featured={course.id === featuredCourse?.id}
                         title={course.title}
-                        description={course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                        description={
+                          course.shortDescription ?? 'На отдельной странице курса видны программа, формат доступа и следующий шаг.'
+                        }
                         status={accessLabel(course.accessType)}
                         meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
                         footer={
                           <HStack justify="space-between" gap="3" flexWrap="wrap">
                             <Text textStyle="bodyMuted" color="fg.muted">
                               {cta.isFree
-                                ? 'Бесплатно'
+                                ? 'Без оплаты'
                                 : course.priceAmount !== null
                                   ? `${course.priceAmount} ₽`
                                   : 'Цена уточняется'}
@@ -231,14 +235,15 @@ export default async function CoursesCatalogPage() {
                               {course.title}
                             </Heading>
                             <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                              {course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                              {course.shortDescription ??
+                                'На странице курса пользователь видит программу, доступ и следующий шаг.'}
                             </Text>
                           </Stack>
 
                           <Stack gap="3" align={{ base: 'start', lg: 'end' }}>
                             <Text textStyle="bodyStrong" color="fg.default">
                               {cta.isFree
-                                ? 'Бесплатно'
+                                ? 'Без оплаты'
                                 : course.priceAmount !== null
                                   ? `${course.priceAmount} ₽`
                                   : 'Цена уточняется'}

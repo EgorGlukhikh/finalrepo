@@ -11,7 +11,7 @@ type LandingCtaSectionProps = {
 export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCtaSectionProps) {
   return (
     <PageSection>
-      <SurfacePanel tone="highlight" maxW="6xl" mx="auto">
+      <SurfacePanel tone="highlight" maxW="5xl" mx="auto">
         <Grid gap="6" templateColumns={{ base: '1fr', lg: 'minmax(0,1fr) auto' }} alignItems={{ base: 'start', lg: 'end' }}>
           <GridItem>
             <Stack gap="3" maxW="2xl">
@@ -19,20 +19,20 @@ export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCt
                 Начать
               </Text>
               <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
-                Выберите курс и войдите в свой рабочий маршрут обучения.
+                Выберите курс и откройте личный кабинет для спокойного обучения по шагам.
               </Heading>
               <Text textStyle="bodyMuted" color="fg.muted">
-                Откройте каталог, зарегистрируйтесь и начните обучение в том темпе, который подходит вам: спокойно, по
-                шагам и без лишней навигации.
+                Зарегистрируйтесь, откройте каталог и начните с бесплатной программы или перейдите к платному курсу,
+                если нужен полный трек.
               </Text>
             </Stack>
           </GridItem>
           <GridItem>
             <HStack gap="3" flexWrap="wrap">
-              <ButtonLink href={primaryCtaHref} colorPalette="brand" size="lg">
+              <ButtonLink href={primaryCtaHref} colorPalette="brand">
                 {primaryCtaLabel}
               </ButtonLink>
-              <ButtonLink href={buildCatalogPath()} variant="outline" size="lg" borderColor="border.strong">
+              <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
                 Перейти в каталог
               </ButtonLink>
             </HStack>
