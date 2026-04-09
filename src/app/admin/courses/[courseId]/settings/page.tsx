@@ -28,7 +28,7 @@ export default async function AdminCourseSettingsPage({ params }: AdminCourseSet
       <HeaderBar
         eyebrow="Настройки курса"
         title={course.title}
-        description="Builder отвечает только за структуру и контент уроков. Метаданные курса живут отдельно."
+        help="Builder отвечает за структуру и уроки. Здесь редактируются метаданные курса, доступ и цена."
         actions={
           <ActionLink href={`/admin/courses/${course.id}`} variant="outline">
             Вернуться в builder

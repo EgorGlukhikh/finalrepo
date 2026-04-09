@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { Accordion, Box, HStack, Menu, Portal, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
-import { Badge, Button, Input } from '@/components/ui';
+import { Badge, Button, HelpTooltip, Input } from '@/components/ui';
 import type { CourseStructure } from '@/modules/courses';
 
 import { buildBuilderLessonHref } from '../builder';
-import { lessonTypeDescriptions, lessonTypeLabels, lessonTypeMarkers } from '../lesson-meta';
+import { lessonTypeLabels, lessonTypeMarkers } from '../lesson-meta';
 
 type BuilderStructurePanelProps = {
   course: CourseStructure;
@@ -33,9 +33,16 @@ export function BuilderStructurePanel({
       <Stack gap="3">
         <HStack align="start" justify="space-between" gap="3">
           <Stack gap="1">
-            <Text textStyle="overline" color="fg.subtle">
-              Структура курса
-            </Text>
+            <HStack gap="2" align="center">
+              <Text textStyle="overline" color="fg.subtle">
+                Структура курса
+              </Text>
+              <HelpTooltip
+                content="Здесь собираются модули и уроки. Метаданные курса и настройки доступа редактируются отдельно."
+                label="Пояснение к структуре курса"
+                placement="right"
+              />
+            </HStack>
             <Text textStyle="sectionTitle" color="fg.default">
               {course.title}
             </Text>
@@ -44,10 +51,6 @@ export function BuilderStructurePanel({
             Настройки курса
           </ActionLink>
         </HStack>
-        <Text textStyle="bodyMuted" color="fg.muted">
-          Слева остаётся только структура и создание нового материала. Метаданные курса вынесены отдельно, чтобы редактор не
-          превращался в перегруженную форму.
-        </Text>
       </Stack>
 
       <Box layerStyle="panelMuted" borderRadius="2xl" p="6">
@@ -68,7 +71,7 @@ export function BuilderStructurePanel({
       {course.modules.length === 0 ? (
         <Box layerStyle="panel" borderRadius="2xl" p="6">
           <Text textStyle="bodyMuted" color="fg.muted">
-            Начните со структуры: создайте первый модуль, а затем добавьте урок внутри него.
+            Создайте первый модуль, чтобы начать сборку курса.
           </Text>
         </Box>
       ) : (
@@ -163,14 +166,21 @@ function LessonTypeChooser({
 }) {
   return (
     <Menu.Root positioning={{ placement: 'bottom-start' }}>
-      <Menu.Trigger asChild>
-        <Button type="button" variant="ghost" alignSelf="start">
-          + Урок
-        </Button>
-      </Menu.Trigger>
+      <HStack gap="2" align="center">
+        <Menu.Trigger asChild>
+          <Button type="button" variant="ghost" alignSelf="start">
+            + Урок
+          </Button>
+        </Menu.Trigger>
+        <HelpTooltip
+          content="Выберите тип урока по формату материала: обычный урок, задание, тест или вебинар."
+          label="Пояснение к типам уроков"
+          placement="right"
+        />
+      </HStack>
       <Portal>
         <Menu.Positioner>
-          <Menu.Content minW={{ base: '18rem', md: '22rem' }} p="2">
+          <Menu.Content minW={{ base: '16rem', md: '18rem' }} p="2">
             <Stack gap="1">
               {Object.entries(lessonTypeLabels).map(([value, label]) => (
                 <form key={value} action={createLessonDraftAction}>
@@ -180,12 +190,9 @@ function LessonTypeChooser({
                   <Button type="submit" variant="ghost" justifyContent="start" h="auto" py="3" px="3" w="full">
                     <HStack align="start" gap="3" w="full">
                       <Badge tone="outline">{lessonTypeMarkers[value as keyof typeof lessonTypeMarkers]}</Badge>
-                      <Stack gap="1" align="start" textAlign="left">
+                      <Stack gap="0" align="start" textAlign="left">
                         <Text textStyle="bodyStrong" color="fg.default">
                           {label}
-                        </Text>
-                        <Text textStyle="bodyMuted" color="fg.muted">
-                          {lessonTypeDescriptions[value as keyof typeof lessonTypeDescriptions]}
                         </Text>
                       </Stack>
                     </HStack>

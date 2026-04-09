@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { DataList, Stack, Text } from '@chakra-ui/react';
+import { DataList, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
 import { ContentArea, HeaderBar, PageLayout, SettingsPanel, SplitPageLayout } from '@/components/product';
-import { Badge, EmptyState, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
+import { Badge, EmptyState, HelpTooltip, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
 import {
   formatAdminCurrency,
   formatAdminDate,
@@ -33,7 +33,7 @@ export default async function AdminOrderDetailsPage({ params }: AdminOrderDetail
       <HeaderBar
         eyebrow="Заказы"
         title={`Заказ #${order.id}`}
-        description="Базовая карточка платежа и история входящих payment events."
+        help="Здесь видны статус заказа и входящие события оплаты, связанные с callback и redirect."
         actions={
           <ActionLink href="/admin/orders" variant="outline">
             К списку
@@ -46,12 +46,12 @@ export default async function AdminOrderDetailsPage({ params }: AdminOrderDetail
           <SettingsPanel>
             <Stack gap="4">
               <Stack gap="1">
-                <Text textStyle="sectionTitle" color="fg.default">
-                  Сводка
-                </Text>
-                <Text textStyle="bodyMuted" color="fg.muted">
-                  Короткий операционный срез без финансового отчёта.
-                </Text>
+                <HStack gap="2" align="center">
+                  <Text textStyle="sectionTitle" color="fg.default">
+                    Сводка
+                  </Text>
+                  <HelpTooltip content="Карточка заказа для операционной проверки, без бухгалтерской отчетности." label="Пояснение к сводке заказа" />
+                </HStack>
               </Stack>
               <DataList.Root orientation="horizontal" gap="3">
                 <DataList.Item>

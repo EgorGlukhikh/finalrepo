@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Checkbox, Grid, HStack, Stack, Text } from '@chakra-ui/react';
 
-import { Button, FormField, Input, Select, Textarea } from '@/components/ui';
+import { Button, FormField, HelpTooltip, Input, Select, Textarea } from '@/components/ui';
 import type { CourseStructure } from '@/modules/courses';
 
 type CourseSettingsFormProps = {
@@ -69,14 +69,17 @@ export function CourseSettingsForm({ course, action }: CourseSettingsFormProps) 
                   <Text textStyle="bodyStrong" color="fg.default">
                     Этот курс бесплатный
                   </Text>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Если курс бесплатный, цена выключается и биллинг не участвует.
-                  </Text>
+                  <HStack gap="2" align="center">
+                    <Text textStyle="bodyMuted" color="fg.muted">
+                      Цена отключена, пока курс отмечен как бесплатный.
+                    </Text>
+                    <HelpTooltip content="Бесплатный курс не создает заказ и не использует биллинг." label="Пояснение к бесплатному курсу" />
+                  </HStack>
                 </Stack>
               </Checkbox.Label>
             </Checkbox.Root>
 
-            <FormField id="priceAmount" label="Цена, ₽">
+            <FormField id="priceAmount" label="Цена, ₽" help="Цена нужна только для платного курса. Для бесплатного курса поле остается выключенным.">
               <Input
                 id="priceAmount"
                 name="priceAmount"

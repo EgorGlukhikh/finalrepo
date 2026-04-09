@@ -2,6 +2,7 @@ import { Grid, GridItem, Heading, HStack, SimpleGrid, Stack, Text } from '@chakr
 
 import { ActionLink } from '@/components/layout';
 import { Panel } from '@/components/product';
+import { HelpTooltip } from '@/components/ui';
 import { getAdminDashboardAnalytics } from '@/modules/analytics';
 import { AdminAnalyticsOverview } from '@/modules/analytics/components';
 
@@ -15,39 +16,35 @@ export default async function AdminHomePage() {
           <Panel tone="highlight" p={{ base: '7', md: '8' }}>
             <Stack gap="6" maxW="3xl">
               <Text textStyle="overline" color="fg.subtle">
-                РђРґРјРёРЅРєР°
+                Админка
               </Text>
               <Heading textStyle="pageTitle" maxW="3xl">
-                РћРґРёРЅ СЂР°Р±РѕС‡РёР№ СЌРєСЂР°РЅ РґР»СЏ РєСѓСЂСЃРѕРІ, РґРѕСЃС‚СѓРїРѕРІ, РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Рё Р·Р°РєР°Р·РѕРІ.
+                Курсы, пользователи, доступ и платежи
               </Heading>
-              <Text textStyle="body" color="fg.muted" maxW="2xl">
-                Р—РґРµСЃСЊ РІР°Р¶РЅРѕ РЅРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р±Р»РѕРєРѕРІ, Р° СЃРєРѕСЂРѕСЃС‚СЊ РѕСЂРёРµРЅС‚РёСЂРѕРІР°РЅРёСЏ. РЎРЅР°С‡Р°Р»Р° РєР»СЋС‡РµРІС‹Рµ СЃРёРіРЅР°Р»С‹ РїРѕ СЃРёСЃС‚РµРјРµ, Р·Р°С‚РµРј РєРѕСЂРѕС‚РєРёР№ РїСѓС‚СЊ РІ РЅСѓР¶РЅС‹Р№ РѕРїРµСЂР°С†РёРѕРЅРЅС‹Р№ СЂР°Р·РґРµР».
-              </Text>
-
               <SimpleGrid columns={{ base: 1, md: 2 }} gap="4" pt="2">
                 <QuickAccessCard
                   href="/admin/courses"
-                  title="РљСѓСЂСЃС‹"
+                  title="Курсы"
                   value={analytics.business.totalCourses}
-                  description="РџСѓР±Р»РёРєР°С†РёСЏ, workspace Рё СЃС‚СЂСѓРєС‚СѓСЂР° РїСЂРѕРіСЂР°РјРј."
+                  help="Список курсов, публикация и переход в конструктор."
                 />
                 <QuickAccessCard
                   href="/admin/users"
-                  title="РџРѕР»СЊР·РѕРІР°С‚РµР»Рё"
+                  title="Пользователи"
                   value={analytics.business.totalUsers}
-                  description="Р РѕР»Рё, РїСЂРѕС„РёР»Рё Рё СЂСѓС‡РЅРѕРµ СѓРїСЂР°РІР»РµРЅРёРµ РґРѕСЃС‚СѓРїРѕРј."
+                  help="Учетные записи, роли и доступ к курсам."
                 />
                 <QuickAccessCard
                   href="/admin/enrollments"
-                  title="Р”РѕСЃС‚СѓРї"
+                  title="Доступ"
                   value={analytics.business.totalEnrollments}
-                  description="РђРєС‚РёРІРЅС‹Рµ Рё РѕС‚РѕР·РІР°РЅРЅС‹Рµ РґРѕСЃС‚СѓРїС‹ СЃ РїРѕРЅСЏС‚РЅС‹Рј РёСЃС‚РѕС‡РЅРёРєРѕРј."
+                  help="Активные и отозванные доступы с источником выдачи."
                 />
                 <QuickAccessCard
                   href="/admin/orders"
-                  title="Р—Р°РєР°Р·С‹"
+                  title="Заказы"
                   value={analytics.business.totalPaidOrders}
-                  description="РџР»Р°С‚РµР¶Рё, СЃС‚Р°С‚СѓСЃС‹ Рё СЃРІСЏР·Р°РЅРЅС‹Рµ РєСѓСЂСЃС‹."
+                  help="Оплаченные заказы и переход к деталям платежа."
                 />
               </SimpleGrid>
             </Stack>
@@ -58,11 +55,13 @@ export default async function AdminHomePage() {
           <Panel tone="muted" p="6">
             <Stack gap="4">
               <Text textStyle="overline" color="fg.subtle">
-                Р¤РѕРєСѓСЃ РґРЅСЏ
+                Сводка
               </Text>
-              <Text textStyle="body" color="fg.default">
-                Р•СЃР»Рё РЅСѓР¶РЅРѕ Р±С‹СЃС‚СЂРѕ РїРѕРЅСЏС‚СЊ РѕР±С‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РїР»Р°С‚С„РѕСЂРјС‹, РЅР°С‡РЅРёС‚Рµ СЃ Р°РЅР°Р»РёС‚РёРєРё РЅРёР¶Рµ. Р•СЃР»Рё РЅСѓР¶РЅРѕ РґРµР№СЃС‚РІРѕРІР°С‚СЊ, РѕС‚РєСЂС‹РІР°Р№С‚Рµ СЂР°Р·РґРµР» Рё СЂР°Р±РѕС‚Р°Р№С‚Рµ СѓР¶Рµ РІРЅСѓС‚СЂРё РЅРµРіРѕ.
-              </Text>
+              <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+                <MetricRow label="Пользователи" value={String(analytics.business.totalUsers)} />
+                <MetricRow label="Активные доступы" value={String(analytics.business.totalEnrollments)} />
+                <MetricRow label="Оплаченные заказы" value={String(analytics.business.totalPaidOrders)} />
+              </Stack>
             </Stack>
           </Panel>
         </GridItem>
@@ -77,34 +76,47 @@ function QuickAccessCard({
   href,
   title,
   value,
-  description,
+  help,
 }: {
   href: string;
   title: string;
   value: number;
-  description: string;
+  help: string;
 }) {
   return (
     <Panel tone="default" p="5">
       <Stack gap="4" h="full">
         <Stack gap="2">
-          <Text textStyle="overline" color="fg.subtle">
-            {title}
-          </Text>
+          <HStack gap="2" align="center">
+            <Text textStyle="overline" color="fg.subtle">
+              {title}
+            </Text>
+            <HelpTooltip content={help} label={`Пояснение для раздела ${title}`} />
+          </HStack>
           <HStack align="end" gap="3">
             <Heading as="h2" textStyle="pageTitle" fontSize={{ base: '2xl', md: '3xl' }}>
               {value}
             </Heading>
           </HStack>
-          <Text textStyle="bodyMuted" color="fg.muted" maxW="lg">
-            {description}
-          </Text>
         </Stack>
 
         <ActionLink href={href} variant="secondary" alignSelf="start" mt="auto">
-          РћС‚РєСЂС‹С‚СЊ СЂР°Р·РґРµР»
+          Открыть раздел
         </ActionLink>
       </Stack>
     </Panel>
+  );
+}
+
+function MetricRow({ label, value }: { label: string; value: string }) {
+  return (
+    <HStack justify="space-between" py="3" borderBottomWidth="1px" borderColor="border.subtle">
+      <Text textStyle="bodyMuted" color="fg.muted">
+        {label}
+      </Text>
+      <Text textStyle="bodyStrong" color="fg.default">
+        {value}
+      </Text>
+    </HStack>
   );
 }

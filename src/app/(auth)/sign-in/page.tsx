@@ -6,7 +6,7 @@ export default function SignInPage() {
     <AuthCard
       eyebrow="Вход"
       title="Войти в платформу"
-      description="Войдите, чтобы вернуться к своим курсам, прогрессу и личному кабинету без лишнего поиска."
+      description="Войдите, чтобы открыть курсы и продолжить обучение."
     >
       <SignInForm />
     </AuthCard>

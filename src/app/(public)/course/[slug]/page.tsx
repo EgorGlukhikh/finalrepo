@@ -79,15 +79,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
           <Sidebar>
             <Panel tone="muted">
               <Stack gap="4">
-                <Stack gap="1">
-                  <Text textStyle="overline" color="fg.subtle">
-                    О курсе
-                  </Text>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Здесь видны программа, формат доступа и следующий шаг: начать бесплатно, перейти к оплате или
-                    продолжить обучение.
-                  </Text>
-                </Stack>
+                <Text textStyle="overline" color="fg.subtle">
+                  О курсе
+                </Text>
 
                 <Stack gap="3">
                   <SummaryRow label="Модулей" value={tree.modules.length} />
@@ -134,7 +128,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         {course.title}
                       </Heading>
                       <Text textStyle="body" color="fg.muted" maxW="3xl">
-                        {course.description ?? course.shortDescription ?? 'На этой странице показаны программа курса, условия доступа и следующий шаг для пользователя.'}
+                        {course.description ?? course.shortDescription ?? 'Программа курса и условия доступа.'}
                       </Text>
                     </Stack>
                   </Stack>

@@ -36,7 +36,7 @@ export default async function AdminEnrollmentsPage({ searchParams }: AdminEnroll
       <HeaderBar
         eyebrow="Админка"
         title="Доступ и зачисления"
-        description="Здесь видно, почему пользователь имеет доступ: free, paid или manual. Отзыв не дублирует биллинг и не придумывает лишнюю permission-систему."
+        help="Источник доступа показывает, как курс был открыт: бесплатно, после оплаты или вручную. Отзыв вручную не заменяет платежные статусы."
       />
 
       <Panel tone="muted">
@@ -58,7 +58,7 @@ export default async function AdminEnrollmentsPage({ searchParams }: AdminEnroll
       </Panel>
 
       {enrollments.length === 0 ? (
-        <EmptyState title="Совпадений нет" description="Попробуйте снять фильтры или дождитесь первых enrollments." />
+        <EmptyState title="Совпадений нет" description="Измените фильтры или дождитесь новых доступов." />
       ) : (
         <Table>
           <TableHead>

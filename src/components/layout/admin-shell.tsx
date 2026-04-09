@@ -26,9 +26,6 @@ export function AdminShell({ children, headerActions }: AdminShellProps) {
                   Админка
                 </Text>
                 <Heading textStyle="sectionTitle">Операционный контур</Heading>
-                <Text textStyle="bodyMuted" color="fg.muted">
-                  Курсы, доступы, пользователи и оплаты в одной тихой рабочей зоне.
-                </Text>
               </Stack>
               <Box pt="1">
                 <AdminNav />

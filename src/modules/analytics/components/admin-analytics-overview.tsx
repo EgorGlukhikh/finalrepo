@@ -1,6 +1,7 @@
 import { Heading, SimpleGrid, Stack, Stat, Text } from '@chakra-ui/react';
 
 import { Panel } from '@/components/product';
+import { HelpTooltip } from '@/components/ui';
 import { formatAdminCurrency } from '@/modules/admin/format';
 
 import type { AdminDashboardAnalytics } from '../types';
@@ -42,10 +43,6 @@ export function AdminAnalyticsOverview({ analytics }: AdminAnalyticsOverviewProp
             <Heading as="h2" textStyle="sectionTitle">
               От первого доступа до завершённого урока
             </Heading>
-            <Text textStyle="bodyMuted" color="fg.muted">
-              Метрики считаются только из enrollments, orders и lesson progress. Без отдельной event-системы и без тяжёлого
-              аналитического слоя.
-            </Text>
           </Stack>
 
           <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
@@ -79,17 +76,19 @@ function MetricCard({
 
   return (
     <Panel tone="default" p="5">
-      <Stat.Root>
+          <Stat.Root>
         <Stack gap="3">
           <Stat.Label textStyle="label" color="fg.muted">
-            {label}
+            <SimpleGrid columns={2} gap="2" alignItems="center" w="fit-content">
+              <Text as="span" textStyle="label" color="fg.muted">
+                {label}
+              </Text>
+              <HelpTooltip content={description} label={`Пояснение к метрике ${label}`} placement="top-start" />
+            </SimpleGrid>
           </Stat.Label>
           <Stat.ValueText textStyle="pageTitle" fontSize="3xl" color={toneColorMap[tone]}>
             {value}
           </Stat.ValueText>
-          <Stat.HelpText textStyle="bodyMuted" color="fg.muted">
-            {description}
-          </Stat.HelpText>
         </Stack>
       </Stat.Root>
     </Panel>

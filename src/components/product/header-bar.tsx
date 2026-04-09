@@ -2,15 +2,18 @@ import type { ReactNode } from 'react';
 
 import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
+import { HelpTooltip } from '@/components/ui';
+
 type HeaderBarProps = {
   eyebrow?: string;
   title: string;
   description?: string;
+  help?: ReactNode;
   actions?: ReactNode;
   meta?: ReactNode;
 };
 
-export function HeaderBar({ eyebrow, title, description, actions, meta }: HeaderBarProps) {
+export function HeaderBar({ eyebrow, title, description, help, actions, meta }: HeaderBarProps) {
   return (
     <Stack gap="4">
       <HStack justify="space-between" align="start" gap="4" flexWrap="wrap">
@@ -20,9 +23,12 @@ export function HeaderBar({ eyebrow, title, description, actions, meta }: Header
               {eyebrow}
             </Text>
           ) : null}
-          <Heading textStyle="pageTitle" maxW="3xl">
-            {title}
-          </Heading>
+          <HStack align="center" gap="2" flexWrap="wrap">
+            <Heading textStyle="pageTitle" maxW="3xl">
+              {title}
+            </Heading>
+            {help ? <HelpTooltip content={help} label={`Пояснение к разделу ${title}`} /> : null}
+          </HStack>
           {description ? (
             <Text textStyle="body" color="fg.muted" maxW="3xl">
               {description}

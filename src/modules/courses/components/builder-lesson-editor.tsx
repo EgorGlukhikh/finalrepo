@@ -39,10 +39,7 @@ export function BuilderLessonEditor({
   if (!selectedLesson || !selectedModule) {
     return (
       <Stack minH={{ base: '26rem', xl: '60vh' }} justify="center">
-        <EmptyState
-          title="Выберите урок слева"
-          description="Рабочая область остаётся пустой, пока не выбран конкретный урок. Создайте его внутри нужного модуля."
-        />
+        <EmptyState title="Выберите урок" description="Откройте урок слева или создайте новый внутри модуля." />
       </Stack>
     );
   }
@@ -133,7 +130,11 @@ export function BuilderLessonEditor({
               </Stack>
 
               <Stack gap="4">
-                <FormField id="lessonType" label="Тип урока">
+                <FormField
+                  id="lessonType"
+                  label="Тип урока"
+                  help="Тип определяет формат материала: объяснение, практика, тестирование или вебинар."
+                >
                   <Select id="lessonType" name="lessonType" defaultValue={selectedLesson.lessonType}>
                     {Object.entries(lessonTypeLabels).map(([value, label]) => (
                       <option key={value} value={value}>
@@ -158,7 +159,7 @@ export function BuilderLessonEditor({
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Удалить урок?"
-        description="Это действие удалит урок из структуры курса. Продолжайте только если уверены."
+        description="Урок будет удален из структуры курса без возможности восстановления."
         actions={
           <>
             <Button variant="secondary" onClick={() => setDeleteDialogOpen(false)}>
@@ -175,7 +176,7 @@ export function BuilderLessonEditor({
         }
       >
         <Text textStyle="bodyMuted" color="fg.muted">
-          Если урок больше не нужен, удалите его здесь. Если хотите временно скрыть его от учеников, лучше снять урок с публикации.
+          Если урок нужно только скрыть, снимите его с публикации вместо удаления.
         </Text>
       </Dialog>
     </>

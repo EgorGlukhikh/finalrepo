@@ -5,6 +5,7 @@ export { Dialog } from './dialog';
 export { Divider } from './divider';
 export { EmptyState } from './empty-state';
 export { FormField } from './form-field';
+export { HelpTooltip } from './help-tooltip';
 export { Input } from './input';
 export { Label } from './label';
 export { Select } from './select';

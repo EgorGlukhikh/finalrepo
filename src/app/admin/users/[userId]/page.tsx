@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { DataList, Stack, Text } from '@chakra-ui/react';
+import { DataList, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
 import { ContentArea, HeaderBar, PageLayout, SettingsPanel, SplitPageLayout } from '@/components/product';
-import { Badge, Button, EmptyState, FormField, Select, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
+import { Badge, Button, EmptyState, FormField, HelpTooltip, Select, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui';
 import {
   formatAdminCurrency,
   formatAdminDate,
@@ -38,7 +38,7 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
       <HeaderBar
         eyebrow="Пользователи"
         title={user.name ?? user.email}
-        description="Точка для ручной выдачи доступа и проверки, какие курсы уже открыты пользователю."
+        help="Карточка пользователя показывает текущие доступы и позволяет выдать курс вручную."
         actions={
           <ActionLink href="/admin/users" variant="outline">
             К списку
@@ -116,12 +116,12 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
             <SettingsPanel>
               <Stack gap="4">
                 <Stack gap="1">
-                  <Text textStyle="sectionTitle" color="fg.default">
-                    Карточка пользователя
-                  </Text>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Базовая информация без попытки строить богатый профиль.
-                  </Text>
+                  <HStack gap="2" align="center">
+                    <Text textStyle="sectionTitle" color="fg.default">
+                      Карточка пользователя
+                    </Text>
+                    <HelpTooltip content="Основные данные учетной записи без отдельного профиля." label="Пояснение к карточке пользователя" />
+                  </HStack>
                 </Stack>
 
                 <DataList.Root orientation="horizontal" gap="3">
@@ -150,12 +150,15 @@ export default async function AdminUserDetailsPage({ params }: AdminUserDetailsP
             <SettingsPanel>
               <Stack gap="4">
                 <Stack gap="1">
-                  <Text textStyle="sectionTitle" color="fg.default">
-                    Выдать доступ вручную
-                  </Text>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Ручной доступ полезен для поддержки, тестирования и точечных договорённостей.
-                  </Text>
+                  <HStack gap="2" align="center">
+                    <Text textStyle="sectionTitle" color="fg.default">
+                      Выдать доступ вручную
+                    </Text>
+                    <HelpTooltip
+                      content="Используйте ручную выдачу для поддержки, тестирования и согласованных исключений."
+                      label="Пояснение к ручной выдаче доступа"
+                    />
+                  </HStack>
                 </Stack>
 
                 <form action={grantAccessAction}>

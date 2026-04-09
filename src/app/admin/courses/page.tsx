@@ -23,7 +23,7 @@ export default async function AdminCoursesPage() {
       <HeaderBar
         eyebrow="Админка"
         title="Курсы"
-        description="Админка остаётся точкой входа. Само редактирование идёт через конструктор курса, а не через длинную форму."
+        help="Раздел нужен для статуса, доступа и перехода в конструктор. Структура курса редактируется внутри builder."
       />
 
       <SplitPageLayout

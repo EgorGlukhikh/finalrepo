@@ -73,14 +73,14 @@ export default async function CoursesCatalogPage() {
       <HeaderBar
         eyebrow="Каталог"
         title="Курсы для риэлторов"
-        description="Здесь собраны программы, которые можно открыть сразу или после оплаты. Пользователь видит формат доступа, структуру курса и следующий шаг без лишних переходов."
+        description="Открывайте бесплатные курсы сразу, а платные — через страницу курса."
       />
 
       {courses.length === 0 ? (
         <Stack gap="4">
           <EmptyState
-            title="Каталог запускается поэтапно"
-            description="Первая подборка курсов появится здесь после публикации. Платформа уже готова к работе: личный кабинет, доступ к программам и прогресс обучения собраны в одной системе."
+            title="Каталог пока пуст"
+            description="Опубликованные курсы появятся здесь."
           />
           <HStack justify="center">
             <ActionLink href="/">Вернуться на главную</ActionLink>
@@ -114,8 +114,7 @@ export default async function CoursesCatalogPage() {
                             {featuredCourse.title}
                           </Heading>
                           <Text textStyle="body" color="fg.muted" maxW="2xl">
-                            {featuredCourse.shortDescription ??
-                              'На странице курса пользователь видит программу, формат доступа и понятный вход в обучение.'}
+                            {featuredCourse.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'}
                           </Text>
                         </Stack>
                         <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
@@ -149,16 +148,15 @@ export default async function CoursesCatalogPage() {
                     <IconChip icon={<SearchIcon size={17} />} tone="muted" />
                     <Stack gap="1">
                       <Text textStyle="overline" color="fg.subtle">
-                        Как читать каталог
+                        Доступ
                       </Text>
                       <Heading as="h2" textStyle="h4">
-                        Пользователь сразу понимает, что доступно и как начать
+                        Бесплатные курсы открываются сразу
                       </Heading>
                     </Stack>
                   </HStack>
                   <Text textStyle="bodyMuted" color="fg.muted">
-                    Бесплатные курсы можно открыть сразу. Платные программы ведут на страницу курса и к оплате только
-                    после явного решения пользователя продолжить.
+                    Для платных программ сначала откройте страницу курса и подтвердите покупку.
                   </Text>
                 </Stack>
               </Panel>
@@ -184,7 +182,7 @@ export default async function CoursesCatalogPage() {
                         featured={course.id === featuredCourse?.id}
                         title={course.title}
                         description={
-                          course.shortDescription ?? 'На отдельной странице курса видны программа, формат доступа и следующий шаг.'
+                          course.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'
                         }
                         status={accessLabel(course.accessType)}
                         meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
@@ -235,8 +233,7 @@ export default async function CoursesCatalogPage() {
                               {course.title}
                             </Heading>
                             <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                              {course.shortDescription ??
-                                'На странице курса пользователь видит программу, доступ и следующий шаг.'}
+                              {course.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'}
                             </Text>
                           </Stack>
 

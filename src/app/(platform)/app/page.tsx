@@ -29,10 +29,10 @@ export default async function PlatformHomePage() {
               Личный кабинет
             </Text>
             <Heading textStyle="pageTitle" maxW="2xl">
-              Всё обучение начнётся отсюда, когда вы откроете первый курс.
+              Здесь появятся ваши курсы после первого зачисления.
             </Heading>
             <Text textStyle="body" color="fg.muted" maxW="2xl">
-              Здесь появятся активные маршруты, прогресс и быстрый возврат к следующему уроку.
+              Откройте каталог, чтобы выбрать программу и начать обучение.
             </Text>
             <HStack>
               <ActionLink href="/courses">Открыть каталог</ActionLink>
@@ -42,7 +42,7 @@ export default async function PlatformHomePage() {
 
         <EmptyState
           title="Пока нет зачисленных курсов"
-          description="После зачисления курсы появятся здесь и будут собраны в спокойный рабочий список без перегруженного dashboard-поведения."
+          description="После зачисления курсы появятся здесь."
         />
       </Stack>
     );
@@ -58,10 +58,10 @@ export default async function PlatformHomePage() {
                 Личный кабинет
               </Text>
               <Heading textStyle="pageTitle" maxW="3xl">
-                Продолжайте обучение без лишнего поиска и второстепенных панелей.
+                Продолжайте обучение
               </Heading>
               <Text textStyle="body" color="fg.muted" maxW="2xl">
-                Главный фокус этого экрана — вернуть вас в текущий курс и сразу показать следующий шаг внутри учебного маршрута.
+                Текущий курс и прогресс собраны на одном экране.
               </Text>
 
               <Panel tone="default" p="6">
@@ -78,7 +78,7 @@ export default async function PlatformHomePage() {
                     {activeSummary.course.title}
                   </Heading>
                   <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                    {activeSummary.course.shortDescription ?? 'Рабочий учебный маршрут с понятной структурой уроков и устойчивым прогрессом.'}
+                    {activeSummary.course.shortDescription ?? 'Откройте курс и продолжайте с текущего урока.'}
                   </Text>
                   <HStack gap="3" flexWrap="wrap" pt="1">
                     <ActionLink href={activeSummary.continueLesson?.href ?? `/app/courses/${activeSummary.course.slug}`}>
@@ -148,7 +148,7 @@ export default async function PlatformHomePage() {
                       {summary.course.title}
                     </Heading>
                     <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                      {summary.course.shortDescription ?? 'Учебный маршрут без лишнего шума и вторичных панелей.'}
+                      {summary.course.shortDescription ?? 'Откройте курс и продолжайте обучение.'}
                     </Text>
                   </Stack>
 

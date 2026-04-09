@@ -2,14 +2,17 @@ import type { ReactNode } from 'react';
 
 import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
+import { HelpTooltip } from '@/components/ui';
+
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
   description?: string;
+  help?: ReactNode;
   actions?: ReactNode;
 };
 
-export function SectionHeading({ eyebrow, title, description, actions }: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, description, help, actions }: SectionHeadingProps) {
   return (
     <Stack
       direction={{ base: 'column', lg: 'row' }}
@@ -21,9 +24,12 @@ export function SectionHeading({ eyebrow, title, description, actions }: Section
         <Text textStyle="overline" color="fg.subtle">
           {eyebrow}
         </Text>
-        <Heading textStyle="sectionTitle" maxW="2xl">
-          {title}
-        </Heading>
+        <HStack align="center" gap="2" flexWrap="wrap">
+          <Heading textStyle="sectionTitle" maxW="2xl">
+            {title}
+          </Heading>
+          {help ? <HelpTooltip content={help} label={`Пояснение к разделу ${title}`} /> : null}
+        </HStack>
         {description ? (
           <Text textStyle="body" color="fg.muted" maxW="2xl">
             {description}

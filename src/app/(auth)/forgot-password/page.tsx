@@ -8,11 +8,11 @@ export default function ForgotPasswordPage() {
     <AuthCard
       eyebrow="Доступ"
       title="Сброс пароля"
-      description="Этот шаг мы подключим отдельно, когда будет согласован почтовый контур."
+      description="Сброс пароля временно недоступен."
     >
       <HStack justify="space-between" align="center" gap="3" flexWrap="wrap">
         <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
-          Сейчас здесь только честный заглушечный экран без лишней логики.
+          Используйте текущий пароль или обратитесь к администратору платформы.
         </Text>
         <ActionLink href="/sign-in" variant="secondary">
           Вернуться ко входу
