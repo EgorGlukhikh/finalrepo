@@ -2,51 +2,64 @@
 
 ## Принципы
 
-- Семантические токены вместо разрозненных значений
-- Единая шкала spacing
-- Единый набор радиусов
-- Единый ритм типографики
-- Минимум motion
-- Один акцентный brand color
+- Chakra UI — единственный UI engine проекта.
+- Визуальные решения идут из system theme, semantic tokens и product-layer, а не из локальных исключений.
+- Интерфейс строится через роли: `bg.*`, `fg.*`, `border.*`, `accent.*`, `status.*`.
+- Экран должен иметь иерархию, а не набор равновесных карточек.
+- Builder, learner и admin используют один и тот же композиционный язык.
 
-## Что считается источником правды
+## Источник правды
 
-- `src/styles/theme.css` — токены
-- `src/styles/globals.css` — глобальная база
-- `src/components/ui/*` — примитивы
+- `src/theme/system.ts` — токены, semantic tokens, recipes, global CSS
+- `src/theme/text-styles.ts` — типографическая иерархия
+- `src/theme/layer-styles.ts` — surface hierarchy
+- `src/theme/recipes.ts` — варианты компонентов
+- `src/components/ui/*` — тонкие Chakra-backed primitives
+- `src/components/product/*` — канонический product composition layer
 
-## Правила использования
+## Базовые правила
 
-- Не добавлять случайные `p-[13px]`, `rounded-[17px]`, произвольные hex-цвета в JSX.
-- Не создавать отдельный визуальный язык для одной страницы.
-- Не дублировать существующие primitives ради локальной вариации.
-- Если нужен новый компонент, он сначала оформляется как часть design system.
+- Не добавлять произвольные цвета, радиусы, тени и spacing вне theme.
+- Не писать layout через случайные `Box` и `Stack`, если для этого уже есть product-layer.
+- Все формы собираются через `Field` / `FormField`.
+- Все кнопки по умолчанию `size="md"`.
+- Для `Tabs`, `Dialog`, `Table`, `Accordion`, `Badge`, `Alert`, `Menu` использовать Chakra patterns, а не самописные аналоги.
 
-## Утвержденные группы компонентов
+## Канонические слои
 
-### Layout
-- `Container`
-- `Section`
-- `Stack`
-- `Inline`
-- `Grid`
-- `SectionHeader`
+### Theme
+- `system.ts`
+- `text-styles.ts`
+- `layer-styles.ts`
+- `recipes.ts`
 
-### UI
+### UI primitives
 - `Button`
 - `Input`
 - `Textarea`
-- `Label`
 - `Select`
-- `Card`
+- `FormField`
 - `Badge`
 - `Tabs`
 - `Dialog`
+- `Table`
 - `EmptyState`
 - `Skeleton`
 - `Separator`
-- `FormField`
 - `StatusPill`
+
+### Product compositions
+- `PageLayout`
+- `Panel`
+- `HeaderBar`
+- `ContentArea`
+- `Sidebar`
+- `ActionBar`
+- `SettingsPanel`
+- `DataPanel`
+- `EntityListItem`
+- `BuilderSidebar`
+- `ContentCanvas`
 
 ### LMS presentation
 - `CourseCard`
@@ -54,3 +67,11 @@
 - `ProgressPill`
 - `LessonListItem`
 - `InfoRow`
+
+## Запрещено
+
+- Tailwind utility styling в экранном слое
+- inline styles
+- локальные “ещё одни tabs/dialog/table”
+- одинаковые карточки без доминирующей зоны
+- визуальные one-off решения вне system theme
