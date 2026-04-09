@@ -5,6 +5,7 @@ import { Box } from '@chakra-ui/react';
 type IconChipProps = {
   icon: ReactNode;
   className?: string;
+  boxSize?: string | number;
   tone?: 'default' | 'primary' | 'muted';
 };
 
@@ -26,12 +27,12 @@ const toneStyles = {
   },
 } as const;
 
-export function IconChip({ icon, className, tone = 'default' }: IconChipProps) {
+export function IconChip({ icon, className, boxSize = '10', tone = 'default' }: IconChipProps) {
   return (
     <Box
       className={className}
       display="inline-flex"
-      boxSize="10"
+      boxSize={boxSize}
       alignItems="center"
       justifyContent="center"
       borderRadius="2xl"

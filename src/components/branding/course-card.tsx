@@ -36,7 +36,7 @@ export function CourseCard({
         <HStack align="start" justify="space-between" gap="4">
           <Stack gap="3">
             <HStack gap="3">
-              <IconChip icon={<BookOpenIcon size={16} />} tone={featured ? 'primary' : 'muted'} className="size-9" />
+              <IconChip icon={<BookOpenIcon size={16} />} tone={featured ? 'primary' : 'muted'} boxSize="9" />
               {status ? <Badge tone="secondary">{status}</Badge> : null}
             </HStack>
             <Heading
