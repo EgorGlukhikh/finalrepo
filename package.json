@@ -22,6 +22,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@chakra-ui/react": "^3.34.0",
+    "@emotion/react": "^11.14.0",
     "@prisma/client": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "next": "^15.0.0",
