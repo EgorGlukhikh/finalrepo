@@ -1,8 +1,11 @@
 import type { LabelHTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
+import { chakra } from '@chakra-ui/react';
 
-export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('text-sm font-medium text-foreground', className)} {...props} />;
+type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
+  className?: string;
+};
+
+export function Label({ className, ...props }: LabelProps) {
+  return <chakra.label className={className} textStyle="label" color="fg.default" display="block" {...props} />;
 }
-

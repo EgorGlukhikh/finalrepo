@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box, Button as ChakraButton, Stack, Text } from '@chakra-ui/react';
 
-import { Button } from './button';
 import { Card } from './card';
 
 type EmptyStateProps = {
@@ -15,24 +14,37 @@ type EmptyStateProps = {
 
 export function EmptyState({ title, description, action, icon, className }: EmptyStateProps) {
   return (
-    <Card className={cn('text-center', className)} padding="lg">
-      <div className="mx-auto flex max-w-sm flex-col items-center gap-4">
+    <Card className={className} padding="lg">
+      <Stack gap="4" align="center" textAlign="center" maxW="sm" mx="auto">
         {icon ? (
-          <div className="flex size-12 items-center justify-center rounded-xl bg-surface-muted text-muted-foreground">
+          <Box
+            display="flex"
+            boxSize="12"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="xl"
+            bg="bg.inset"
+            color="fg.muted"
+          >
             {icon}
-          </div>
+          </Box>
         ) : null}
-        <div className="space-y-2">
-          <h3 className="text-base font-semibold text-foreground">{title}</h3>
-          {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
-        </div>
+        <Stack gap="2" align="center">
+          <Text fontSize="lg" fontWeight="700" letterSpacing="-0.02em" color="fg.default">
+            {title}
+          </Text>
+          {description ? (
+            <Text textStyle="bodyMuted" color="fg.muted">
+              {description}
+            </Text>
+          ) : null}
+        </Stack>
         {action ? (
-          <Button variant="secondary" onClick={action.onClick}>
+          <ChakraButton variant="surface" onClick={action.onClick}>
             {action.label}
-          </Button>
+          </ChakraButton>
         ) : null}
-      </div>
+      </Stack>
     </Card>
   );
 }
-

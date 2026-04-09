@@ -1,6 +1,7 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
 import { layerStyles } from './layer-styles';
+import { badgeRecipe, buttonRecipe } from './recipes';
 import { textStyles } from './text-styles';
 
 const config = defineConfig({
@@ -20,11 +21,11 @@ const config = defineConfig({
       fontFamily: 'body',
       textRendering: 'optimizeLegibility',
       backgroundImage:
-        'radial-gradient(circle at top left, color-mix(in srgb, var(--chakra-colors-brand-100) 56%, transparent) 0, transparent 28%), linear-gradient(180deg, var(--chakra-colors-bg-canvas) 0%, color-mix(in srgb, var(--chakra-colors-bg-canvas) 84%, white) 100%)',
+        'radial-gradient(circle at top left, color-mix(in srgb, var(--chakra-colors-accent-secondary) 28%, transparent) 0, transparent 22%), radial-gradient(circle at top right, color-mix(in srgb, var(--chakra-colors-brand-100) 34%, transparent) 0, transparent 24%), linear-gradient(180deg, var(--chakra-colors-bg-canvas) 0%, color-mix(in srgb, var(--chakra-colors-bg-canvas) 90%, white) 100%)',
       backgroundAttachment: 'fixed',
     },
     '::selection': {
-      bg: 'brand.100',
+      bg: 'accent.secondary',
       color: 'fg.default',
     },
     'a, button': {
@@ -97,12 +98,12 @@ const config = defineConfig({
         sm: { value: '0.875rem' },
         md: { value: '1rem' },
         lg: { value: '1.125rem' },
-        xl: { value: '1.3125rem' },
-        '2xl': { value: '1.625rem' },
+        xl: { value: '1.25rem' },
+        '2xl': { value: '1.5rem' },
         '3xl': { value: '2rem' },
         '4xl': { value: '2.5rem' },
-        '5xl': { value: '3.5rem' },
-        '6xl': { value: '4.625rem' },
+        '5xl': { value: '3.375rem' },
+        '6xl': { value: '4.375rem' },
       },
       spacing: {
         1: { value: '0.25rem' },
@@ -124,10 +125,11 @@ const config = defineConfig({
         '3xl': { value: '2rem' },
       },
       shadows: {
-        xs: { value: '0 1px 2px rgba(15, 23, 42, 0.04)' },
-        sm: { value: '0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 32px -28px rgba(15, 23, 42, 0.24)' },
-        md: { value: '0 10px 28px -20px rgba(15, 23, 42, 0.24), 0 24px 64px -40px rgba(15, 23, 42, 0.22)' },
-        lg: { value: '0 28px 82px -46px rgba(15, 23, 42, 0.3)' },
+        xs: { value: '0 1px 2px rgba(21, 29, 41, 0.04)' },
+        sm: { value: '0 1px 2px rgba(21, 29, 41, 0.04), 0 16px 36px -30px rgba(21, 29, 41, 0.22)' },
+        md: { value: '0 12px 30px -22px rgba(21, 29, 41, 0.2), 0 28px 70px -42px rgba(21, 29, 41, 0.18)' },
+        lg: { value: '0 30px 90px -54px rgba(21, 29, 41, 0.28)' },
+        inner: { value: 'inset 0 1px 0 rgba(255,255,255,0.42)' },
       },
       sizes: {
         container: { value: '72rem' },
@@ -137,26 +139,41 @@ const config = defineConfig({
     },
     semanticTokens: {
       colors: {
-        'bg.canvas': { value: '{colors.slate.50}' },
-        'bg.subtle': { value: '#f8fafe' },
-        'bg.surface': { value: 'rgba(255, 255, 255, 0.9)' },
-        'bg.elevated': { value: 'rgba(255, 255, 255, 0.96)' },
-        'bg.inset': { value: 'rgba(239, 243, 251, 0.78)' },
-        'bg.brand': { value: '{colors.brand.500}' },
-        'fg.default': { value: '{colors.slate.900}' },
-        'fg.muted': { value: '{colors.slate.600}' },
-        'fg.subtle': { value: '{colors.slate.500}' },
-        'fg.brand': { value: '{colors.brand.600}' },
-        'border.subtle': { value: 'rgba(36, 44, 57, 0.09)' },
-        'border.strong': { value: 'rgba(36, 44, 57, 0.16)' },
-        'focus.ring': { value: 'rgba(47, 99, 241, 0.22)' },
-        'status.success': { value: '{colors.success.500}' },
-        'status.warning': { value: '{colors.warning.500}' },
-        'status.danger': { value: '{colors.danger.500}' },
+        'bg.canvas': { value: '#f3f1ec' },
+        'bg.subtle': { value: '#ece8df' },
+        'bg.surface': { value: 'rgba(255, 255, 252, 0.84)' },
+        'bg.surfaceMuted': { value: 'rgba(246, 243, 236, 0.92)' },
+        'bg.elevated': { value: 'rgba(255, 255, 253, 0.96)' },
+        'bg.inset': { value: 'rgba(232, 226, 214, 0.6)' },
+        'bg.brand': { value: '{colors.brand.600}' },
+        'fg.default': { value: '#18212f' },
+        'fg.muted': { value: '#5b6678' },
+        'fg.subtle': { value: '#7a8291' },
+        'fg.brand': { value: '{colors.brand.700}' },
+        'border.subtle': { value: 'rgba(24, 33, 47, 0.08)' },
+        'border.default': { value: 'rgba(24, 33, 47, 0.12)' },
+        'border.strong': { value: 'rgba(24, 33, 47, 0.18)' },
+        'accent.primary': { value: '{colors.brand.700}' },
+        'accent.primaryHover': { value: '{colors.brand.800}' },
+        'accent.primaryActive': { value: '{colors.brand.900}' },
+        'accent.secondary': { value: '#e8dcc6' },
+        'accent.secondaryHover': { value: '#e0d1b4' },
+        'accent.secondaryActive': { value: '#d4c29f' },
+        'focus.ring': { value: 'rgba(67, 109, 178, 0.24)' },
+        'status.success': { value: '{colors.success.600}' },
+        'status.successBg': { value: '#ddeee4' },
+        'status.warning': { value: '{colors.warning.600}' },
+        'status.warningBg': { value: '#f8ebd1' },
+        'status.danger': { value: '{colors.danger.600}' },
+        'status.dangerBg': { value: '#f8e1dd' },
       },
     },
     textStyles,
     layerStyles,
+    recipes: {
+      button: buttonRecipe,
+      badge: badgeRecipe,
+    },
   },
 });
 

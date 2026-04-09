@@ -2,7 +2,7 @@ import { defineLayerStyles } from '@chakra-ui/react';
 
 export const layerStyles = defineLayerStyles({
   shell: {
-    description: 'Sticky shell and framing surfaces',
+    description: 'Sticky framing shell with slight translucency',
     value: {
       bg: 'bg.surface',
       borderWidth: '1px',
@@ -12,7 +12,7 @@ export const layerStyles = defineLayerStyles({
     },
   },
   panel: {
-    description: 'Base product panel',
+    description: 'Base product surface',
     value: {
       bg: 'bg.surface',
       borderWidth: '1px',
@@ -20,32 +20,42 @@ export const layerStyles = defineLayerStyles({
       boxShadow: 'sm',
     },
   },
-  panelMuted: {
-    description: 'Secondary muted product panel',
+  panelElevated: {
+    description: 'Primary elevated surface for hero, active canvas, and key content',
     value: {
-      bg: 'bg.subtle',
+      bg: 'bg.elevated',
+      borderWidth: '1px',
+      borderColor: 'border.default',
+      boxShadow: 'md',
+    },
+  },
+  panelMuted: {
+    description: 'Grouped operational surface',
+    value: {
+      bg: 'bg.surfaceMuted',
       borderWidth: '1px',
       borderColor: 'border.subtle',
       boxShadow: 'xs',
     },
   },
   panelHighlight: {
-    description: 'Primary highlighted panel for hero and CTA moments',
+    description: 'High-attention but calm product panel',
     value: {
-      bg: 'bg.surface',
+      bg: 'bg.elevated',
       borderWidth: '1px',
       borderColor: 'border.strong',
       boxShadow: 'md',
       backgroundImage:
-        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-surface) 88%, white) 0%, var(--chakra-colors-bg-surface) 100%)',
+        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 92%, white) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 94%, var(--chakra-colors-accent-secondary) 6%) 100%)',
     },
   },
   inset: {
-    description: 'Inset nested surface for lists and compact details',
+    description: 'Inset nested surface for grouped data and sub-content',
     value: {
       bg: 'bg.inset',
       borderWidth: '1px',
       borderColor: 'border.subtle',
+      boxShadow: 'inner',
     },
   },
 });

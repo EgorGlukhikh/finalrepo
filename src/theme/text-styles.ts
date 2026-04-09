@@ -2,10 +2,10 @@ import { defineTextStyles } from '@chakra-ui/react';
 
 export const textStyles = defineTextStyles({
   display: {
-    description: 'Hero headlines for the public product layer',
+    description: 'Hero headlines for public and high-trust product moments',
     value: {
       fontFamily: 'heading',
-      fontSize: '6xl',
+      fontSize: { base: '5xl', md: '6xl' },
       lineHeight: '0.94',
       letterSpacing: '-0.06em',
       fontWeight: '700',
@@ -15,19 +15,29 @@ export const textStyles = defineTextStyles({
     description: 'Primary page headline',
     value: {
       fontFamily: 'heading',
-      fontSize: '4xl',
+      fontSize: { base: '3xl', md: '4xl' },
       lineHeight: '1.02',
       letterSpacing: '-0.05em',
       fontWeight: '700',
     },
   },
   sectionTitle: {
-    description: 'Large section title',
+    description: 'Section headline with strong but calm hierarchy',
     value: {
       fontFamily: 'heading',
-      fontSize: '2xl',
-      lineHeight: '1.14',
-      letterSpacing: '-0.04em',
+      fontSize: { base: '2xl', md: '3xl' },
+      lineHeight: '1.08',
+      letterSpacing: '-0.045em',
+      fontWeight: '700',
+    },
+  },
+  h4: {
+    description: 'Sub-section or entity heading',
+    value: {
+      fontFamily: 'heading',
+      fontSize: 'xl',
+      lineHeight: '1.2',
+      letterSpacing: '-0.03em',
       fontWeight: '700',
     },
   },
@@ -41,6 +51,16 @@ export const textStyles = defineTextStyles({
       fontWeight: '400',
     },
   },
+  bodyStrong: {
+    description: 'Dense body text for supporting operational content',
+    value: {
+      fontFamily: 'body',
+      fontSize: 'sm',
+      lineHeight: '1.7',
+      letterSpacing: '-0.01em',
+      fontWeight: '500',
+    },
+  },
   bodyMuted: {
     description: 'Secondary product copy',
     value: {
@@ -49,6 +69,16 @@ export const textStyles = defineTextStyles({
       lineHeight: '1.75',
       letterSpacing: '-0.01em',
       fontWeight: '400',
+    },
+  },
+  label: {
+    description: 'Field labels and short metadata',
+    value: {
+      fontFamily: 'body',
+      fontSize: 'sm',
+      lineHeight: '1.4',
+      letterSpacing: '-0.01em',
+      fontWeight: '600',
     },
   },
   overline: {

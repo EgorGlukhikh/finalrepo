@@ -1,16 +1,31 @@
 import type { SelectHTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
+import { chakra } from '@chakra-ui/react';
 
-export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  className?: string;
+};
+
+export function Select({ className, ...props }: SelectProps) {
   return (
-    <select
-      className={cn(
-        'h-10 w-full rounded-md border border-border bg-surface px-3 text-sm text-foreground shadow-none transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
-        className,
-      )}
+    <chakra.select
+      className={className}
+      h="11"
+      w="full"
+      borderRadius="2xl"
+      borderWidth="1px"
+      borderColor="border.default"
+      bg="bg.surface"
+      color="fg.default"
+      px="4"
+      fontSize="sm"
+      _hover={{ borderColor: 'border.strong' }}
+      _focusVisible={{
+        borderColor: 'accent.primary',
+        boxShadow: '0 0 0 3px var(--chakra-colors-focus-ring)',
+      }}
+      _disabled={{ opacity: 0.48, cursor: 'not-allowed' }}
       {...props}
     />
   );
 }
-

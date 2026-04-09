@@ -1,19 +1,33 @@
-import { forwardRef, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, type ComponentProps } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Textarea as ChakraTextarea } from '@chakra-ui/react';
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(function Textarea(
+type TextareaProps = ComponentProps<typeof ChakraTextarea>;
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
   { className, rows = 4, ...props },
   ref,
 ) {
   return (
-    <textarea
+    <ChakraTextarea
       ref={ref}
+      className={className}
       rows={rows}
-      className={cn(
-        'min-h-28 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground shadow-none transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--ease-standard)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
-        className,
-      )}
+      minH="28"
+      borderRadius="2xl"
+      borderColor="border.default"
+      bg="bg.surface"
+      color="fg.default"
+      px="4"
+      py="3"
+      fontSize="sm"
+      _placeholder={{ color: 'fg.subtle' }}
+      _hover={{ borderColor: 'border.strong' }}
+      _focusVisible={{
+        borderColor: 'accent.primary',
+        boxShadow: '0 0 0 3px var(--chakra-colors-focus-ring)',
+      }}
+      _disabled={{ opacity: 0.48, cursor: 'not-allowed' }}
       {...props}
     />
   );

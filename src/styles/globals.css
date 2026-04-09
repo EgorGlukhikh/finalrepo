@@ -12,12 +12,14 @@
     min-height: 100dvh;
     margin: 0;
     background:
-      radial-gradient(circle at top left, color-mix(in oklab, var(--color-background-accent) 70%, transparent) 0, transparent 32%),
+      radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent) 24%, transparent) 0, transparent 22%),
+      radial-gradient(circle at top right, color-mix(in oklab, var(--color-primary-soft) 26%, transparent) 0, transparent 24%),
       linear-gradient(180deg, color-mix(in oklab, var(--color-background) 92%, white) 0%, var(--color-background) 100%);
     color: var(--color-foreground);
     line-height: var(--text-body--line-height);
     text-rendering: optimizeLegibility;
     background-attachment: fixed;
+    font-family: var(--font-sans);
   }
 
   *,
@@ -57,7 +59,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-primary) 18%, white);
+    background: color-mix(in oklab, var(--color-accent) 44%, white);
     color: var(--color-foreground);
   }
 

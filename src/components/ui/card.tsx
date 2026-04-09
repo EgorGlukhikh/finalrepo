@@ -1,21 +1,21 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box } from '@chakra-ui/react';
 
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 type CardTone = 'default' | 'muted' | 'highlight';
 
-const paddingClasses: Record<CardPadding, string> = {
-  none: '',
-  sm: 'p-4',
-  md: 'p-5',
-  lg: 'p-6',
+const paddingMap: Record<CardPadding, string> = {
+  none: '0',
+  sm: '4',
+  md: '5',
+  lg: '6',
 };
 
-const toneClasses: Record<CardTone, string> = {
-  default: 'bg-surface',
-  muted: 'bg-surface-elevated/90',
-  highlight: 'bg-linear-to-br from-surface via-surface to-primary-soft/55',
+const layerStyleMap: Record<CardTone, string> = {
+  default: 'panel',
+  muted: 'panelMuted',
+  highlight: 'panelHighlight',
 };
 
 type CardProps = {
@@ -23,21 +23,19 @@ type CardProps = {
   className?: string;
   padding?: CardPadding;
   tone?: CardTone;
-} & HTMLAttributes<HTMLDivElement>;
+  [key: string]: unknown;
+};
 
 export function Card({ children, className, padding = 'md', tone = 'default', ...props }: CardProps) {
   return (
-    <div
-      className={cn(
-        'rounded-[1.5rem] border border-border/70 shadow-card ring-1 ring-white/55',
-        toneClasses[tone],
-        paddingClasses[padding],
-        className,
-      )}
+    <Box
+      className={className}
+      layerStyle={layerStyleMap[tone]}
+      borderRadius="3xl"
+      p={paddingMap[padding]}
       {...props}
     >
       {children}
-    </div>
+    </Box>
   );
 }
-

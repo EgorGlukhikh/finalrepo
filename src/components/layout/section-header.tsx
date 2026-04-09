@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 import { Inline } from './inline';
 import { Stack } from './stack';
@@ -15,17 +15,23 @@ type SectionHeaderProps = {
 
 export function SectionHeader({ eyebrow, title, description, actions, className }: SectionHeaderProps) {
   return (
-    <Inline className={cn('w-full gap-6', className)} justify="between" align="end" wrap>
-      <Stack gap="sm" className="max-w-content">
+    <Inline className={className} gap="lg" justify="between" align="end" wrap>
+      <Stack gap="sm" maxW="54rem">
         {eyebrow ? (
-          <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+          <Text textStyle="overline" color="fg.subtle">
             {eyebrow}
-          </div>
+          </Text>
         ) : null}
-        <h2 className="text-page-title font-semibold tracking-[-0.04em] text-foreground">{title}</h2>
-        {description ? <p className="max-w-prose text-sm leading-7 text-muted-foreground">{description}</p> : null}
+        <Heading textStyle="pageTitle" maxW="3xl">
+          {title}
+        </Heading>
+        {description ? (
+          <Text textStyle="bodyMuted" color="fg.muted" maxW="42rem">
+            {description}
+          </Text>
+        ) : null}
       </Stack>
-      {actions ? <div className="shrink-0">{actions}</div> : null}
+      {actions ? <Box flexShrink="0">{actions}</Box> : null}
     </Inline>
   );
 }

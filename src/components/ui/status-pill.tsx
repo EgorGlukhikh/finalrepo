@@ -1,32 +1,39 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { HStack, Text } from '@chakra-ui/react';
 
 type StatusTone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger';
 
-const toneClasses: Record<StatusTone, string> = {
-  neutral: 'bg-surface-muted text-foreground',
-  primary: 'bg-primary/10 text-primary',
-  success: 'bg-success/10 text-success',
-  warning: 'bg-warning/15 text-foreground',
-  danger: 'bg-danger/10 text-danger',
+const toneMap: Record<StatusTone, { bg: string; color: string }> = {
+  neutral: { bg: 'bg.inset', color: 'fg.default' },
+  primary: { bg: 'accent.secondary', color: 'fg.default' },
+  success: { bg: 'status.successBg', color: 'status.success' },
+  warning: { bg: 'status.warningBg', color: 'status.warning' },
+  danger: { bg: 'status.dangerBg', color: 'status.danger' },
 };
 
 type StatusPillProps = {
   children: ReactNode;
   className?: string;
   tone?: StatusTone;
-} & HTMLAttributes<HTMLSpanElement>;
+};
 
-export function StatusPill({ children, className, tone = 'neutral', ...props }: StatusPillProps) {
+export function StatusPill({ children, className, tone = 'neutral', ...props }: StatusPillProps & Record<string, unknown>) {
   return (
-    <span
-      className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium leading-none', toneClasses[tone], className)}
+    <HStack
+      className={className}
+      gap="1.5"
+      borderRadius="full"
+      px="2.5"
+      py="1"
+      fontSize="xs"
+      fontWeight="600"
+      lineHeight="1"
+      {...toneMap[tone]}
       {...props}
     >
-      <span className="size-1.5 rounded-full bg-current/70" />
-      {children}
-    </span>
+      <Text as="span" boxSize="1.5" borderRadius="full" bg="currentColor" opacity="0.72" />
+      <Text as="span">{children}</Text>
+    </HStack>
   );
 }
-

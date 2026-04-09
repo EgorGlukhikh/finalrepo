@@ -1,21 +1,16 @@
-import type { ElementType, HTMLAttributes, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box } from '@chakra-ui/react';
 
 import { Container } from './container';
 
 type SectionTone = 'default' | 'muted';
 type SectionPadding = 'sm' | 'md' | 'lg';
 
-const toneClasses: Record<SectionTone, string> = {
-  default: 'bg-transparent',
-  muted: 'bg-surface-muted/45',
-};
-
-const paddingClasses: Record<SectionPadding, string> = {
-  sm: 'py-10 sm:py-12',
-  md: 'py-14 sm:py-18',
-  lg: 'py-18 sm:py-24',
+const paddingMap: Record<SectionPadding, { base: string; md: string }> = {
+  sm: { base: '10', md: '12' },
+  md: { base: '12', md: '16' },
+  lg: { base: '16', md: '24' },
 };
 
 type SectionProps<T extends ElementType = 'section'> = {
@@ -24,7 +19,7 @@ type SectionProps<T extends ElementType = 'section'> = {
   className?: string;
   tone?: SectionTone;
   padding?: SectionPadding;
-} & Omit<HTMLAttributes<HTMLElement>, 'children'>;
+};
 
 export function Section<T extends ElementType = 'section'>({
   as,
@@ -34,12 +29,18 @@ export function Section<T extends ElementType = 'section'>({
   padding = 'md',
   ...props
 }: SectionProps<T>) {
-  const Comp = (as ?? 'section') as ElementType;
-
   return (
-    <Comp className={cn(toneClasses[tone], paddingClasses[padding], className)} {...props}>
+    <Box
+      as={(as ?? 'section') as ElementType}
+      className={className}
+      py={paddingMap[padding]}
+      bg={tone === 'muted' ? 'bg.subtle' : 'transparent'}
+      borderTopWidth={tone === 'muted' ? '1px' : undefined}
+      borderBottomWidth={tone === 'muted' ? '1px' : undefined}
+      borderColor={tone === 'muted' ? 'border.subtle' : undefined}
+      {...props}
+    >
       <Container>{children}</Container>
-    </Comp>
+    </Box>
   );
 }
-

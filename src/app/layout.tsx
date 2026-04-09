@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { Inter, Manrope } from 'next/font/google';
+import { Instrument_Sans, Manrope } from 'next/font/google';
 
 import { ChakraAppProvider } from '@/components/ui/chakra-provider';
 import { env } from '@/lib/env';
@@ -8,8 +8,8 @@ import { env } from '@/lib/env';
 import '../styles/globals.css';
 
 const metadataBase = env.NEXTAUTH_URL ? new URL(env.NEXTAUTH_URL) : undefined;
-const bodyFont = Inter({
-  subsets: ['latin', 'cyrillic'],
+const bodyFont = Instrument_Sans({
+  subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
 });

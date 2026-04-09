@@ -1,18 +1,28 @@
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef, type ComponentProps } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Input as ChakraInput } from '@chakra-ui/react';
 
-export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input(
-  { className, ...props },
-  ref,
-) {
+type InputProps = ComponentProps<typeof ChakraInput>;
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ className, ...props }, ref) {
   return (
-    <input
+    <ChakraInput
       ref={ref}
-      className={cn(
-        'h-10 w-full rounded-md border border-border bg-surface px-3 text-sm text-foreground shadow-none transition-[background-color,border-color,box-shadow] duration-200 ease-[var(--ease-standard)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
-        className,
-      )}
+      className={className}
+      h="11"
+      borderRadius="2xl"
+      borderColor="border.default"
+      bg="bg.surface"
+      color="fg.default"
+      px="4"
+      fontSize="sm"
+      _placeholder={{ color: 'fg.subtle' }}
+      _hover={{ borderColor: 'border.strong' }}
+      _focusVisible={{
+        borderColor: 'accent.primary',
+        boxShadow: '0 0 0 3px var(--chakra-colors-focus-ring)',
+      }}
+      _disabled={{ opacity: 0.48, cursor: 'not-allowed' }}
       {...props}
     />
   );

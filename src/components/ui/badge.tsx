@@ -1,33 +1,31 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Badge as ChakraBadge } from '@chakra-ui/react';
 
 type BadgeTone = 'default' | 'secondary' | 'outline' | 'primary' | 'success' | 'warning' | 'danger';
 
-const toneClasses: Record<BadgeTone, string> = {
-  default: 'bg-surface-muted text-foreground',
-  secondary: 'bg-secondary text-secondary-foreground',
-  outline: 'border border-border bg-transparent text-foreground',
-  primary: 'bg-primary/10 text-primary',
-  success: 'bg-success/10 text-success',
-  warning: 'bg-warning/15 text-foreground',
-  danger: 'bg-danger/10 text-danger',
+const variantMap: Record<
+  BadgeTone,
+  { variant: 'subtle' | 'outline' | 'solid'; bg?: string; color?: string; borderColor?: string }
+> = {
+  default: { variant: 'subtle' },
+  secondary: { variant: 'subtle', bg: 'accent.secondary', color: 'fg.default' },
+  outline: { variant: 'outline', borderColor: 'border.default' },
+  primary: { variant: 'solid' },
+  success: { variant: 'subtle', bg: 'status.successBg', color: 'status.success' },
+  warning: { variant: 'subtle', bg: 'status.warningBg', color: 'status.warning' },
+  danger: { variant: 'subtle', bg: 'status.dangerBg', color: 'status.danger' },
 };
 
 type BadgeProps = {
   children: ReactNode;
-  className?: string;
   tone?: BadgeTone;
-} & HTMLAttributes<HTMLSpanElement>;
+} & Omit<ComponentProps<typeof ChakraBadge>, 'variant' | 'children'>;
 
 export function Badge({ children, className, tone = 'default', ...props }: BadgeProps) {
   return (
-    <span
-      className={cn('inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium leading-none', toneClasses[tone], className)}
-      {...props}
-    >
+    <ChakraBadge className={className} {...variantMap[tone]} {...props}>
       {children}
-    </span>
+    </ChakraBadge>
   );
 }
-

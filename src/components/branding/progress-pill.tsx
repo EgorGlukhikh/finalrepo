@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { HStack, Text } from '@chakra-ui/react';
 
 type ProgressPillProps = {
   value: number;
@@ -12,15 +12,19 @@ export function ProgressPill({ value, label, className }: ProgressPillProps) {
   const safeValue = Math.max(0, Math.min(100, value));
 
   return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary',
-        className,
-      )}
+    <HStack
+      className={className}
+      gap="1.5"
+      borderRadius="full"
+      bg="accent.secondary"
+      px="2.5"
+      py="1"
+      fontSize="xs"
+      fontWeight="600"
+      color="fg.default"
     >
-      <span className="size-1.5 rounded-full bg-current/70" />
-      {label ?? `${safeValue}%`}
-    </span>
+      <Text as="span" boxSize="1.5" borderRadius="full" bg="currentColor" opacity="0.72" />
+      <Text as="span">{label ?? `${safeValue}%`}</Text>
+    </HStack>
   );
 }
-

@@ -1,13 +1,13 @@
-import type { ElementType, HTMLAttributes, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Container as ChakraContainer } from '@chakra-ui/react';
 
 type ContainerSize = 'content' | 'page' | 'wide';
 
-const sizeClasses: Record<ContainerSize, string> = {
-  content: 'max-w-content',
-  page: 'max-w-page',
-  wide: 'max-w-wide',
+const maxWBySize: Record<ContainerSize, string> = {
+  content: '54rem',
+  page: '72rem',
+  wide: '80rem',
 };
 
 type ContainerProps<T extends ElementType = 'div'> = {
@@ -15,7 +15,7 @@ type ContainerProps<T extends ElementType = 'div'> = {
   children: ReactNode;
   className?: string;
   size?: ContainerSize;
-} & Omit<HTMLAttributes<HTMLElement>, 'children'>;
+};
 
 export function Container<T extends ElementType = 'div'>({
   as,
@@ -24,11 +24,16 @@ export function Container<T extends ElementType = 'div'>({
   size = 'page',
   ...props
 }: ContainerProps<T>) {
-  const Comp = (as ?? 'div') as ElementType;
-
   return (
-    <Comp className={cn('mx-auto w-full px-4 sm:px-6 lg:px-8', sizeClasses[size], className)} {...props}>
+    <ChakraContainer
+      as={(as ?? 'div') as ElementType}
+      className={className}
+      maxW={maxWBySize[size]}
+      px={{ base: 4, md: 6, lg: 8 }}
+      w="full"
+      {...props}
+    >
       {children}
-    </Comp>
+    </ChakraContainer>
   );
 }
