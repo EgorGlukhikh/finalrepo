@@ -1,3 +1,5 @@
+import { Box, Grid, Stack } from '@chakra-ui/react';
+
 import type { LessonAnalytics } from '@/modules/analytics';
 import type { CourseStructure } from '@/modules/courses';
 
@@ -30,7 +32,11 @@ export function CourseBuilderWorkspace({
   const selectedLessonMetrics = lessonMetrics.find((item) => item.lessonId === selection?.lesson.id) ?? null;
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(18rem,35%)_minmax(0,1fr)]">
+    <Grid
+      gap={{ base: '8', xl: '10' }}
+      templateColumns={{ base: '1fr', xl: 'minmax(19rem, 34%) minmax(0, 1fr)' }}
+      alignItems="start"
+    >
       <BuilderStructurePanel
         course={course}
         selectedLessonId={selection?.lesson.id ?? null}
@@ -38,18 +44,24 @@ export function CourseBuilderWorkspace({
         createLessonDraftAction={createLessonDraftAction}
       />
 
-      <div className="xl:border-l xl:border-border/70 xl:pl-8">
-        <BuilderLessonEditor
-          courseId={course.id}
-          courseTitle={course.title}
-          selectedLesson={selection?.lesson ?? null}
-          selectedModule={selection?.module ?? null}
-          selectedLessonMetrics={selectedLessonMetrics}
-          updateLessonAction={updateLessonAction}
-          setLessonStatusAction={setLessonStatusAction}
-          deleteLessonAction={deleteLessonAction}
-        />
-      </div>
-    </div>
+      <Box
+        pl={{ base: '0', xl: '10' }}
+        borderLeftWidth={{ base: '0', xl: '1px' }}
+        borderColor="border.subtle"
+      >
+        <Stack gap="8">
+          <BuilderLessonEditor
+            courseId={course.id}
+            courseTitle={course.title}
+            selectedLesson={selection?.lesson ?? null}
+            selectedModule={selection?.module ?? null}
+            selectedLessonMetrics={selectedLessonMetrics}
+            updateLessonAction={updateLessonAction}
+            setLessonStatusAction={setLessonStatusAction}
+            deleteLessonAction={deleteLessonAction}
+          />
+        </Stack>
+      </Box>
+    </Grid>
   );
 }

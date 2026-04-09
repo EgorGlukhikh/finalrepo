@@ -1,4 +1,6 @@
-import { ActionLink, Grid, Section, SectionHeader, Stack } from '@/components/layout';
+import { Box, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+
+import { ActionLink, Section, SectionHeader } from '@/components/layout';
 import { Card } from '@/components/ui';
 import { getAdminDashboardAnalytics } from '@/modules/analytics';
 import { AdminAnalyticsOverview } from '@/modules/analytics/components';
@@ -18,41 +20,77 @@ export default async function AdminHomePage() {
 
   return (
     <Section padding="lg">
-      <Stack gap="xl">
-        <SectionHeader
-          eyebrow="Админка"
-          title="Операционная панель"
-          description="Рабочий контур для управления курсами, доступами, пользователями и оплатами. Аналитика остается легкой и не превращает админку в BI-систему."
-        />
+      <Stack gap="12">
+        <Stack gap="8">
+          <SectionHeader
+            eyebrow="Админка"
+            title="Операционный контур платформы"
+            description="Курсы, доступы, пользователи и оплаты собраны в одном спокойном рабочем экране. Аналитика помогает ориентироваться, но не превращает админку в BI-систему."
+          />
+
+          <Box
+            layerStyle="panelHighlight"
+            borderRadius="3xl"
+            px={{ base: '6', md: '8' }}
+            py={{ base: '7', md: '8' }}
+          >
+            <SimpleGrid columns={{ base: 1, xl: 2 }} gap="8">
+              <Stack gap="5" maxW="2xl">
+                <Text textStyle="overline" color="fg.subtle">
+                  Рабочая зона
+                </Text>
+                <Heading textStyle="pageTitle" maxW="xl">
+                  Всё, что влияет на доступ, выручку и публикацию курсов.
+                </Heading>
+                <Text textStyle="body" color="fg.muted" maxW="2xl">
+                  На этой панели важнее ясность, чем плотность. Сначала ключевые сигналы по системе, затем прямые
+                  входы в операционные разделы.
+                </Text>
+              </Stack>
+
+              <Card tone="muted" padding="lg">
+                <Stack gap="4">
+                  <Text textStyle="overline" color="fg.subtle">
+                    Фокус дня
+                  </Text>
+                  <Text textStyle="body" color="fg.default">
+                    Если нужно быстро понять состояние продукта, начните с аналитики ниже. Если нужно действовать —
+                    откройте нужный раздел и работайте уже внутри него.
+                  </Text>
+                </Stack>
+              </Card>
+            </SimpleGrid>
+          </Box>
+        </Stack>
 
         <AdminAnalyticsOverview analytics={analytics} />
 
-        <Grid cols={2} gap="lg" className="xl:grid-cols-2">
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap="6">
           <OverviewCard
             href="/admin/courses"
             title="Курсы"
             value={courses.length}
-            description="Список курсов, публикация и переход в конструктор."
+            description="Публикация, доступ и вход в course workspace без лишних промежуточных форм."
           />
           <OverviewCard
             href="/admin/users"
             title="Пользователи"
             value={users.length}
-            description="Роли, пользователи и ручная выдача доступа."
+            description="Роли, просмотры профилей и ручное управление доступом."
           />
           <OverviewCard
             href="/admin/enrollments"
             title="Доступ"
             value={enrollments.length}
-            description="Активные и отозванные доступы с понятным источником."
+            description="Активные и отозванные доступы с понятным источником: free, paid или manual."
           />
           <OverviewCard
             href="/admin/orders"
             title="Заказы"
             value={orders.length}
-            description="Статусы платежей и базовый операционный обзор."
+            description="Статусы оплат, связанные курсы и короткий платежный обзор без бухгалтерской перегрузки."
           />
-        </Grid>
+        </SimpleGrid>
       </Stack>
     </Section>
   );
@@ -70,16 +108,25 @@ function OverviewCard({
   description: string;
 }) {
   return (
-    <Card padding="lg">
-      <Stack gap="md">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{title}</p>
-          <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>
-          <p className="text-sm leading-6 text-muted-foreground">{description}</p>
-        </div>
-        <ActionLink href={href} variant="secondary">
-          Открыть раздел
-        </ActionLink>
+    <Card padding="lg" tone="default" minH="15rem">
+      <Stack gap="5" h="full">
+        <Stack gap="3">
+          <Text textStyle="overline" color="fg.subtle">
+            {title}
+          </Text>
+          <Heading as="h2" textStyle="pageTitle" fontSize={{ base: '2xl', md: '3xl' }}>
+            {value}
+          </Heading>
+          <Text textStyle="bodyMuted" color="fg.muted" maxW="lg">
+            {description}
+          </Text>
+        </Stack>
+
+        <Box pt="2" mt="auto">
+          <ActionLink href={href} variant="secondary">
+            Открыть раздел
+          </ActionLink>
+        </Box>
       </Stack>
     </Card>
   );

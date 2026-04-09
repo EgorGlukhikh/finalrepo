@@ -1,5 +1,7 @@
 'use client';
 
+import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+
 import { ActionLink } from '@/components/layout';
 import { Badge, Button, EmptyState, Input, Select, Textarea } from '@/components/ui';
 import type { LessonAnalytics } from '@/modules/analytics';
@@ -31,34 +33,36 @@ export function BuilderLessonEditor({
 }: BuilderLessonEditorProps) {
   if (!selectedLesson || !selectedModule) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <Stack minH={{ base: '26rem', xl: '60vh' }} justify="center">
         <EmptyState
           title="Выберите урок слева"
-          description="Рабочая область остается пустой, пока не выбран конкретный урок. Создайте его внутри нужного модуля."
+          description="Рабочая область остаётся пустой, пока не выбран конкретный урок. Создайте его внутри нужного модуля."
         />
-      </div>
+      </Stack>
     );
   }
 
   const returnPath = `/admin/courses/${courseId}?lessonId=${selectedLesson.id}`;
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/70 pb-5">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Редактор урока</p>
-          <div className="space-y-1">
-            <h1 className="text-page-title font-semibold tracking-tight text-foreground">{selectedLesson.title}</h1>
-            <p className="text-sm text-muted-foreground">
-              {courseTitle} / {selectedModule.title}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Начали {selectedLessonMetrics?.startsCount ?? 0} • Завершили {selectedLessonMetrics?.completionsCount ?? 0}
-            </p>
-          </div>
-        </div>
+    <Stack gap="8">
+      <HStack justify="space-between" align="start" gap="4" pb="5" borderBottomWidth="1px" borderColor="border.subtle" flexWrap="wrap">
+        <Stack gap="2">
+          <Text textStyle="overline" color="fg.subtle">
+            Редактор урока
+          </Text>
+          <Heading textStyle="pageTitle" fontSize={{ base: '2xl', md: '3xl' }}>
+            {selectedLesson.title}
+          </Heading>
+          <Text textStyle="bodyMuted" color="fg.muted">
+            {courseTitle} / {selectedModule.title}
+          </Text>
+          <Text textStyle="caption" color="fg.subtle">
+            Начали {selectedLessonMetrics?.startsCount ?? 0} · Завершили {selectedLessonMetrics?.completionsCount ?? 0}
+          </Text>
+        </Stack>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <HStack gap="2" flexWrap="wrap">
           <ActionLink href="/admin/courses" variant="outline">
             К списку
           </ActionLink>
@@ -77,58 +81,66 @@ export function BuilderLessonEditor({
               Удалить
             </Button>
           </form>
-        </div>
-      </div>
+        </HStack>
+      </HStack>
 
-      <form action={updateLessonAction} className="space-y-8">
-        <input type="hidden" name="courseId" value={courseId} />
-        <input type="hidden" name="lessonId" value={selectedLesson.id} />
-        <input type="hidden" name="returnPath" value={returnPath} />
-        <input type="hidden" name="status" value={selectedLesson.status} />
+      <form action={updateLessonAction}>
+        <Stack gap="8">
+          <input type="hidden" name="courseId" value={courseId} />
+          <input type="hidden" name="lessonId" value={selectedLesson.id} />
+          <input type="hidden" name="returnPath" value={returnPath} />
+          <input type="hidden" name="status" value={selectedLesson.status} />
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge tone={selectedLesson.status === 'PUBLISHED' ? 'secondary' : 'outline'}>
-            {selectedLesson.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}
-          </Badge>
-          {selectedLesson.preview ? <Badge tone="secondary">Превью</Badge> : null}
-        </div>
+          <HStack gap="2" flexWrap="wrap">
+            <Badge tone={selectedLesson.status === 'PUBLISHED' ? 'secondary' : 'outline'}>
+              {selectedLesson.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}
+            </Badge>
+            {selectedLesson.preview ? <Badge tone="secondary">Превью</Badge> : null}
+          </HStack>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_16rem]">
-          <div className="space-y-3">
-            <label className="space-y-2">
-              <span className="text-sm font-medium text-foreground">Название урока</span>
-              <Input name="title" defaultValue={selectedLesson.title} placeholder="Название урока" required />
-            </label>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap="6" alignItems="start">
+            <Stack gap="4">
+              <Stack gap="2">
+                <Text textStyle="label" color="fg.default">
+                  Название урока
+                </Text>
+                <Input name="title" defaultValue={selectedLesson.title} placeholder="Название урока" required />
+              </Stack>
 
-            <label className="space-y-2">
-              <span className="text-sm font-medium text-foreground">Краткое описание</span>
-              <Textarea
-                name="summary"
-                rows={4}
-                defaultValue={selectedLesson.summary ?? ''}
-                placeholder="Короткий контекст для автора и ученика"
-              />
-            </label>
-          </div>
+              <Stack gap="2">
+                <Text textStyle="label" color="fg.default">
+                  Краткое описание
+                </Text>
+                <Textarea
+                  name="summary"
+                  rows={4}
+                  defaultValue={selectedLesson.summary ?? ''}
+                  placeholder="Короткий контекст для автора и ученика"
+                />
+              </Stack>
+            </Stack>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-foreground">Тип урока</span>
-            <Select name="lessonType" defaultValue={selectedLesson.lessonType}>
-              {Object.entries(lessonTypeLabels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Select>
-          </label>
-        </div>
+            <Stack gap="2">
+              <Text textStyle="label" color="fg.default">
+                Тип урока
+              </Text>
+              <Select name="lessonType" defaultValue={selectedLesson.lessonType}>
+                {Object.entries(lessonTypeLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </Select>
+            </Stack>
+          </SimpleGrid>
 
-        <LessonBlockEditor name="content" defaultValue={selectedLesson.content} />
+          <LessonBlockEditor name="content" defaultValue={selectedLesson.content} />
 
-        <div className="flex justify-end border-t border-border/70 pt-4">
-          <Button type="submit">Сохранить изменения</Button>
-        </div>
+          <HStack justify="end" pt="4" borderTopWidth="1px" borderColor="border.subtle">
+            <Button type="submit">Сохранить изменения</Button>
+          </HStack>
+        </Stack>
       </form>
-    </div>
+    </Stack>
   );
 }

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+
 import { BookOpenIcon, IconChip } from '@/components/branding';
-import { ActionLink, Section, Stack } from '@/components/layout';
+import { ActionLink, Section } from '@/components/layout';
 import { Badge, Button, Card } from '@/components/ui';
 import { getAuthSession } from '@/modules/auth/session';
 import { isRobokassaConfigured, purchasePaidCourseAction } from '@/modules/billing';
@@ -31,8 +33,7 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
 
   return {
     title: course.title,
-    description:
-      course.shortDescription ?? course.description ?? 'Программа курса, структура модулей и условия доступа.',
+    description: course.shortDescription ?? course.description ?? 'Программа курса, структура модулей и условия доступа.',
     alternates: {
       canonical: buildPublicCoursePath(course.slug),
     },
@@ -72,126 +73,165 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   return (
     <Section padding="lg">
-      <Stack gap="xl">
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_22rem] xl:items-start">
-          <Stack gap="lg">
+      <Stack gap="12">
+        <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6" alignItems="start">
+          <Stack gap="6">
             <Card padding="lg" tone="highlight">
-              <Stack gap="lg">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
+              <Stack gap="6">
+                <HStack align="start" justify="space-between" gap="4">
+                  <Stack gap="4" maxW="3xl">
+                    <HStack gap="2" flexWrap="wrap">
+                      <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>
+                        {accessLabel(course.accessType)}
+                      </Badge>
                       <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
                       <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Курс</div>
-                      <h1 className="text-display font-semibold tracking-[-0.06em] text-foreground">{course.title}</h1>
-                      <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                        {course.description ?? course.shortDescription ?? 'Подробности курса и программа показаны ниже.'}
-                      </p>
-                    </div>
-                  </div>
-                  <IconChip icon={<BookOpenIcon size={18} />} tone="primary" className="hidden sm:inline-flex" />
-                </div>
+                    </HStack>
 
-                <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                    <Stack gap="3">
+                      <Text textStyle="overline" color="fg.subtle">
+                        Курс
+                      </Text>
+                      <Heading textStyle="pageTitle" maxW="3xl">
+                        {course.title}
+                      </Heading>
+                      <Text textStyle="body" color="fg.muted" maxW="3xl">
+                        {course.description ?? course.shortDescription ?? 'Подробности курса и программа показаны ниже.'}
+                      </Text>
+                    </Stack>
+                  </Stack>
+
+                  <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
+                </HStack>
+
+                <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
                   <Card padding="sm" tone="muted">
-                    <div className="text-sm text-muted-foreground">Формат доступа</div>
-                    <div className="mt-2 text-sm font-medium text-foreground">{accessLabel(course.accessType)}</div>
+                    <Stack gap="2">
+                      <Text textStyle="caption" color="fg.muted">
+                        Формат доступа
+                      </Text>
+                      <Text textStyle="bodyStrong" color="fg.default">
+                        {accessLabel(course.accessType)}
+                      </Text>
+                    </Stack>
                   </Card>
                   <Card padding="sm" tone="muted">
-                    <div className="text-sm text-muted-foreground">Стоимость</div>
-                    <div className="mt-2 text-sm font-medium text-foreground">{moneyLabel(course.priceAmount)}</div>
+                    <Stack gap="2">
+                      <Text textStyle="caption" color="fg.muted">
+                        Стоимость
+                      </Text>
+                      <Text textStyle="bodyStrong" color="fg.default">
+                        {moneyLabel(course.priceAmount)}
+                      </Text>
+                    </Stack>
                   </Card>
-                </div>
+                </SimpleGrid>
 
                 {isEnrolled ? (
-                  <div className="flex flex-wrap items-center gap-3">
+                  <HStack gap="3" flexWrap="wrap">
                     <ActionLink href={buildAppCoursePath(course.slug)}>Продолжить обучение</ActionLink>
-                    <span className="text-sm text-muted-foreground">У вас уже есть доступ к этому курсу.</span>
-                  </div>
+                    <Text textStyle="bodyMuted" color="fg.muted">
+                      У вас уже есть доступ к этому курсу.
+                    </Text>
+                  </HStack>
                 ) : session?.user ? (
                   course.accessType === 'FREE' ? (
-                    <form action={enrollFreeCourseAction} className="flex flex-wrap items-center gap-3">
-                      <input type="hidden" name="courseId" value={course.id} />
-                      <input type="hidden" name="courseSlug" value={course.slug} />
-                      <Button type="submit">Начать обучение</Button>
-                      <span className="text-sm text-muted-foreground">
-                        Бесплатный курс откроет личный маршрут обучения сразу после зачисления.
-                      </span>
+                    <form action={enrollFreeCourseAction}>
+                      <Stack gap="3" align="start">
+                        <input type="hidden" name="courseId" value={course.id} />
+                        <input type="hidden" name="courseSlug" value={course.slug} />
+                        <Button type="submit">Начать обучение</Button>
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          Бесплатный курс откроет личный маршрут обучения сразу после зачисления.
+                        </Text>
+                      </Stack>
                     </form>
                   ) : (
-                    <form action={purchasePaidCourseAction} className="flex flex-wrap items-center gap-3">
-                      <input type="hidden" name="courseId" value={course.id} />
-                      <input type="hidden" name="courseSlug" value={course.slug} />
-                      <Button type="submit" disabled={!billingAvailable}>
-                        Купить курс
-                      </Button>
-                      <span className="text-sm text-muted-foreground">
-                        {billingAvailable
-                          ? 'После оплаты доступ откроется автоматически.'
-                          : 'Оплата временно недоступна. Проверьте Robokassa-конфигурацию перед запуском платного доступа.'}
-                      </span>
+                    <form action={purchasePaidCourseAction}>
+                      <Stack gap="3" align="start">
+                        <input type="hidden" name="courseId" value={course.id} />
+                        <input type="hidden" name="courseSlug" value={course.slug} />
+                        <Button type="submit" disabled={!billingAvailable}>
+                          Купить курс
+                        </Button>
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          {billingAvailable
+                            ? 'После оплаты доступ откроется автоматически.'
+                            : 'Оплата временно недоступна. Проверьте Robokassa-конфигурацию перед запуском платного доступа.'}
+                        </Text>
+                      </Stack>
                     </form>
                   )
                 ) : (
-                  <div className="flex flex-wrap items-center gap-3">
+                  <HStack gap="3" flexWrap="wrap">
                     <ActionLink href={signInHref}>Войти и продолжить</ActionLink>
-                    <span className="text-sm text-muted-foreground">
+                    <Text textStyle="bodyMuted" color="fg.muted">
                       После входа вы сможете начать бесплатный курс или перейти к оплате платного.
-                    </span>
-                  </div>
+                    </Text>
+                  </HStack>
                 )}
               </Stack>
             </Card>
 
             <CourseCurriculum
               title="Программа курса"
-              description="На публичной странице видны модули и уроки, но содержимое защищенных уроков остается скрытым."
+              description="На публичной странице видны модули и уроки, но содержимое защищённых уроков остаётся скрытым."
               modules={tree.modules}
               mode="preview"
             />
           </Stack>
 
-          <Stack gap="md">
-            <Card padding="md" tone="muted" className="space-y-4">
-              <div className="space-y-1">
-                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Сводка</p>
-                <p className="text-sm leading-7 text-muted-foreground">Короткий ориентир перед стартом или покупкой курса.</p>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-muted-foreground">Модулей</span>
-                  <span className="text-sm font-medium text-foreground">{tree.modules.length}</span>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-muted-foreground">Уроков</span>
-                  <span className="text-sm font-medium text-foreground">{tree.totalLessonsCount}</span>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-muted-foreground">Статус</span>
-                  <span className="text-sm font-medium text-foreground">
-                    {course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'}
-                  </span>
-                </div>
-              </div>
-              <ActionLink href={buildCatalogPath()} variant="outline" className="w-full">
-                Вернуться в каталог
-              </ActionLink>
+          <Stack gap="4">
+            <Card padding="lg" tone="muted">
+              <Stack gap="4">
+                <Stack gap="1">
+                  <Text textStyle="overline" color="fg.subtle">
+                    Сводка
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    Короткий ориентир перед стартом или покупкой курса.
+                  </Text>
+                </Stack>
+
+                <Stack gap="3">
+                  <SummaryRow label="Модулей" value={tree.modules.length} />
+                  <SummaryRow label="Уроков" value={tree.totalLessonsCount} />
+                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'} />
+                </Stack>
+
+                <ActionLink href={buildCatalogPath()} variant="outline" w="full">
+                  Вернуться в каталог
+                </ActionLink>
+              </Stack>
             </Card>
 
-            <Card padding="md">
-              <Stack gap="sm">
-                <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Что дальше</div>
-                <p className="text-sm leading-7 text-muted-foreground">
-                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после подтвержденной оплаты.
-                </p>
+            <Card padding="lg">
+              <Stack gap="3">
+                <Text textStyle="overline" color="fg.subtle">
+                  Что дальше
+                </Text>
+                <Text textStyle="bodyMuted" color="fg.muted">
+                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после
+                  подтверждённой оплаты.
+                </Text>
               </Stack>
             </Card>
           </Stack>
-        </div>
+        </SimpleGrid>
       </Stack>
     </Section>
+  );
+}
+
+function SummaryRow({ label, value }: { label: string; value: number | string }) {
+  return (
+    <HStack justify="space-between" gap="4">
+      <Text textStyle="bodyMuted" color="fg.muted">
+        {label}
+      </Text>
+      <Text textStyle="bodyStrong" color="fg.default">
+        {value}
+      </Text>
+    </HStack>
   );
 }

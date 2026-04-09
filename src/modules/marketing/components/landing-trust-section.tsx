@@ -1,4 +1,4 @@
-import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
+import { Accordion, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { PageSection, SectionHeading, SurfacePanel } from '@/components/compositions';
 
@@ -33,24 +33,34 @@ export function LandingTrustSection() {
               <Text textStyle="overline" color="fg.subtle">
                 FAQ
               </Text>
-              <Stack gap="4">
-                {marketingFaq.map((item, index) => (
-                  <Stack
-                    key={item.question}
-                    gap="2"
-                    pt={index === 0 ? '0' : '4'}
-                    borderTopWidth={index === 0 ? '0' : '1px'}
-                    borderColor="border.subtle"
-                  >
-                    <Heading as="h3" fontSize="md" lineHeight="1.35" letterSpacing="-0.02em">
-                      {item.question}
-                    </Heading>
-                    <Text textStyle="bodyMuted" color="fg.muted">
-                      {item.answer}
-                    </Text>
-                  </Stack>
-                ))}
-              </Stack>
+              <Accordion.Root collapsible defaultValue={[marketingFaq[0]?.question ?? '']} variant="plain">
+                <Stack gap="0">
+                  {marketingFaq.map((item, index) => (
+                    <Accordion.Item
+                      key={item.question}
+                      value={item.question}
+                      borderTopWidth={index === 0 ? '0' : '1px'}
+                      borderColor="border.subtle"
+                    >
+                      <Accordion.ItemTrigger py="4">
+                        <HStack justify="space-between" gap="4" w="full" align="start">
+                          <Heading as="h3" fontSize="md" lineHeight="1.35" letterSpacing="-0.02em" textAlign="left">
+                            {item.question}
+                          </Heading>
+                          <Accordion.ItemIndicator color="fg.subtle" />
+                        </HStack>
+                      </Accordion.ItemTrigger>
+                      <Accordion.ItemContent>
+                        <Accordion.ItemBody px="0" pt="0" pb="4">
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            {item.answer}
+                          </Text>
+                        </Accordion.ItemBody>
+                      </Accordion.ItemContent>
+                    </Accordion.Item>
+                  ))}
+                </Stack>
+              </Accordion.Root>
             </Stack>
           </SurfacePanel>
         </GridItem>

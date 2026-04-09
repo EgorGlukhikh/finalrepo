@@ -1,5 +1,6 @@
 'use client';
 
+import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
@@ -54,7 +55,7 @@ export function SignUpForm() {
   }
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Stack gap="md">
         <FormField id="sign-up-name" label="Имя">
           <Input
@@ -65,6 +66,7 @@ export function SignUpForm() {
             onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))}
           />
         </FormField>
+
         <FormField id="sign-up-email" label="Email" required error={error ?? undefined}>
           <Input
             id="sign-up-email"
@@ -76,6 +78,7 @@ export function SignUpForm() {
             required
           />
         </FormField>
+
         <FormField id="sign-up-password" label="Пароль" required description="Минимум 8 символов">
           <Input
             id="sign-up-password"
@@ -88,14 +91,15 @@ export function SignUpForm() {
           />
         </FormField>
       </Stack>
-      <div className="flex flex-wrap items-center justify-between gap-3">
+
+      <HStack justify="space-between" align="center" gap="3" flexWrap="wrap" mt="6">
         <ActionLink href="/sign-in" variant="ghost">
           Уже есть аккаунт
         </ActionLink>
-        <Button type="submit" loading={loading}>
+        <Button type="submit" loading={loading} loadingText="Создаём">
           Создать аккаунт
         </Button>
-      </div>
+      </HStack>
     </form>
   );
 }

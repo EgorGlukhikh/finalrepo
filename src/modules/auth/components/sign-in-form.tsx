@@ -1,5 +1,6 @@
 'use client';
 
+import { HStack, Text } from '@chakra-ui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState, type FormEvent } from 'react';
@@ -49,13 +50,14 @@ export function SignInForm() {
   }
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Stack gap="md">
         {registered ? (
-          <p className="rounded-lg border border-border bg-surface-muted px-4 py-3 text-sm text-foreground">
+          <Text layerStyle="panelMuted" borderRadius="xl" px="4" py="3" textStyle="bodyMuted" color="fg.default">
             Аккаунт создан. Теперь войдите в систему.
-          </p>
+          </Text>
         ) : null}
+
         <FormField id="sign-in-email" label="Email" required error={error ?? undefined}>
           <Input
             id="sign-in-email"
@@ -67,6 +69,7 @@ export function SignInForm() {
             required
           />
         </FormField>
+
         <FormField id="sign-in-password" label="Пароль" required>
           <Input
             id="sign-in-password"
@@ -79,14 +82,15 @@ export function SignInForm() {
           />
         </FormField>
       </Stack>
-      <div className="flex flex-wrap items-center justify-between gap-3">
+
+      <HStack justify="space-between" align="center" gap="3" flexWrap="wrap" mt="6">
         <ActionLink href="/forgot-password" variant="ghost">
           Забыл пароль
         </ActionLink>
-        <Button type="submit" loading={loading}>
+        <Button type="submit" loading={loading} loadingText="Входим">
           Войти
         </Button>
-      </div>
+      </HStack>
     </form>
   );
 }

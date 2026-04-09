@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 
+import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+
 import { BookOpenIcon, CourseCard, IconChip, SearchIcon } from '@/components/branding';
-import { ActionLink, Section, SectionHeader, Stack } from '@/components/layout';
+import { ActionLink, Section, SectionHeader } from '@/components/layout';
 import { Badge, Card, EmptyState } from '@/components/ui';
 import { getAuthSession } from '@/modules/auth/session';
 import { listPublishedCourses } from '@/modules/courses';
@@ -27,6 +29,34 @@ function accessLabel(accessType: string) {
   }
 }
 
+function buildCourseCta({
+  courseId,
+  slug,
+  accessType,
+  sessionUserId,
+  enrolledCourseIds,
+}: {
+  courseId: string;
+  slug: string;
+  accessType: string;
+  sessionUserId?: string;
+  enrolledCourseIds: Set<string>;
+}) {
+  const isEnrolled = enrolledCourseIds.has(courseId);
+  const isFree = accessType === 'FREE';
+
+  return {
+    isEnrolled,
+    isFree,
+    href: isEnrolled
+      ? buildAppCoursePath(slug)
+      : isFree && sessionUserId
+        ? buildAppCoursePath(slug)
+        : buildPublicCoursePath(slug),
+    label: isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс',
+  };
+}
+
 export default async function CoursesCatalogPage() {
   const session = await getAuthSession();
   const courses = await listPublishedCourses();
@@ -39,145 +69,158 @@ export default async function CoursesCatalogPage() {
 
   return (
     <Section padding="lg">
-      <Stack gap="xl">
+      <Stack gap="12">
         <SectionHeader
           eyebrow="Каталог"
           title="Курсы для риэлторов"
-          description="Публичный каталог доступных программ. Бесплатные курсы можно начать сразу, а платные открываются после подтвержденной оплаты."
+          description="Публичный каталог доступных программ. Бесплатные курсы можно начать сразу, а платные открываются после подтверждённой оплаты."
         />
 
         {courses.length === 0 ? (
-          <Stack gap="md">
+          <Stack gap="4">
             <EmptyState
               title="Пока нет опубликованных курсов"
-              description="Когда курсы появятся, они отобразятся здесь в спокойном и структурированном виде."
+              description="Когда программы появятся, каталог соберёт их в спокойный и понятный список без лишнего шума."
             />
-            <div className="flex justify-center">
+            <HStack justify="center">
               <ActionLink href="/">Вернуться на главную</ActionLink>
-            </div>
+            </HStack>
           </Stack>
         ) : (
-          <>
+          <Stack gap="8">
             {featuredCourse ? (
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_23rem]">
-                <Card padding="lg" tone="highlight" className="min-h-72">
+              <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6">
+                <Card padding="lg" tone="highlight" minH={{ base: 'auto', xl: '24rem' }}>
                   {(() => {
-                    const isEnrolled = enrolledCourseIds.has(featuredCourse.id);
-                    const isFree = featuredCourse.accessType === 'FREE';
-                    const ctaHref = isEnrolled
-                      ? buildAppCoursePath(featuredCourse.slug)
-                      : isFree && session?.user
-                        ? buildAppCoursePath(featuredCourse.slug)
-                        : buildPublicCoursePath(featuredCourse.slug);
-                    const ctaLabel = isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс';
+                    const cta = buildCourseCta({
+                      courseId: featuredCourse.id,
+                      slug: featuredCourse.slug,
+                      accessType: featuredCourse.accessType,
+                      sessionUserId: session?.user?.id,
+                      enrolledCourseIds,
+                    });
 
                     return (
-                      <Stack gap="lg" className="h-full">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="space-y-3">
-                            <div className="flex flex-wrap items-center gap-2">
+                      <Stack gap="6" h="full">
+                        <HStack align="start" justify="space-between" gap="4">
+                          <Stack gap="4" maxW="2xl">
+                            <HStack gap="2" flexWrap="wrap">
                               <Badge tone={featuredCourse.accessType === 'FREE' ? 'success' : 'secondary'}>
                                 {accessLabel(featuredCourse.accessType)}
                               </Badge>
                               <Badge tone="outline">{featuredCourse.modulesCount} модулей</Badge>
-                            </div>
-                            <h2 className="text-page-title font-semibold tracking-[-0.05em] text-foreground">
+                            </HStack>
+                            <Heading as="h2" textStyle="pageTitle" maxW="2xl">
                               {featuredCourse.title}
-                            </h2>
-                          </div>
+                            </Heading>
+                            <Text textStyle="body" color="fg.muted" maxW="2xl">
+                              {featuredCourse.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                            </Text>
+                          </Stack>
                           <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
-                        </div>
-                        <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                          {featuredCourse.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
-                        </p>
-                        <div className="flex flex-wrap gap-2.5">
+                        </HStack>
+
+                        <HStack gap="2.5" flexWrap="wrap">
                           <Badge tone="outline">{featuredCourse.lessonsCount} уроков</Badge>
                           <Badge tone="outline">
-                            {isFree ? 'Бесплатно' : featuredCourse.priceAmount !== null ? `${featuredCourse.priceAmount} ₽` : 'Цена уточняется'}
+                            {cta.isFree
+                              ? 'Бесплатно'
+                              : featuredCourse.priceAmount !== null
+                                ? `${featuredCourse.priceAmount} ₽`
+                                : 'Цена уточняется'}
                           </Badge>
-                        </div>
-                        <div className="mt-auto flex flex-wrap items-center gap-3">
-                          <ActionLink href={ctaHref}>{ctaLabel}</ActionLink>
+                        </HStack>
+
+                        <HStack gap="3" flexWrap="wrap" mt="auto">
+                          <ActionLink href={cta.href}>{cta.label}</ActionLink>
                           <ActionLink href={buildPublicCoursePath(featuredCourse.slug)} variant="secondary">
                             Открыть страницу курса
                           </ActionLink>
-                        </div>
+                        </HStack>
                       </Stack>
                     );
                   })()}
                 </Card>
-                <Card padding="lg" tone="muted" className="h-fit">
-                  <Stack gap="md">
-                    <div className="flex items-center gap-3">
-                      <IconChip icon={<SearchIcon size={17} />} tone="muted" className="size-9" />
-                      <div>
-                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+
+                <Card padding="lg" tone="muted">
+                  <Stack gap="5">
+                    <HStack align="start" gap="3">
+                      <IconChip icon={<SearchIcon size={17} />} tone="muted" />
+                      <Stack gap="1">
+                        <Text textStyle="overline" color="fg.subtle">
                           Как выбирать
-                        </div>
-                        <div className="text-sm font-semibold text-foreground">Ориентир по каталогу</div>
-                      </div>
-                    </div>
-                    <p className="text-sm leading-7 text-muted-foreground">
-                      Бесплатные курсы можно начать сразу, а платные открываются после подтвержденной оплаты. Если доступ уже открыт,
-                      каталог сразу ведет обратно в обучение.
-                    </p>
+                        </Text>
+                        <Heading as="h2" textStyle="h4">
+                          Короткий ориентир по каталогу
+                        </Heading>
+                      </Stack>
+                    </HStack>
+                    <Text textStyle="bodyMuted" color="fg.muted">
+                      Бесплатные курсы можно начать сразу, а платные открываются после подтверждённой оплаты. Если
+                      доступ уже есть, каталог ведёт не к покупке, а сразу обратно в обучение.
+                    </Text>
                   </Stack>
                 </Card>
-              </div>
+              </SimpleGrid>
             ) : null}
 
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-              <div className="space-y-4">
+            <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6" alignItems="start">
+              <Stack gap="4">
                 {remainingCourses.map((course) => {
-                  const isEnrolled = enrolledCourseIds.has(course.id);
-                  const isFree = course.accessType === 'FREE';
-                  const ctaHref = isEnrolled
-                    ? buildAppCoursePath(course.slug)
-                    : isFree && session?.user
-                      ? buildAppCoursePath(course.slug)
-                      : buildPublicCoursePath(course.slug);
-                  const ctaLabel = isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс';
+                  const cta = buildCourseCta({
+                    courseId: course.id,
+                    slug: course.slug,
+                    accessType: course.accessType,
+                    sessionUserId: session?.user?.id,
+                    enrolledCourseIds,
+                  });
 
                   return (
                     <Card key={course.id} padding="lg">
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-                        <Stack gap="sm">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
+                      <SimpleGrid columns={{ base: 1, lg: 2 }} gap="5" alignItems="center">
+                        <Stack gap="3" minW="0">
+                          <HStack gap="2" flexWrap="wrap">
+                            <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>
+                              {accessLabel(course.accessType)}
+                            </Badge>
                             <Badge tone="outline">{course.modulesCount} модулей</Badge>
                             <Badge tone="outline">{course.lessonsCount} уроков</Badge>
-                          </div>
-                          <div className="space-y-2">
-                            <h3 className="text-lg font-semibold tracking-[-0.04em] text-foreground">{course.title}</h3>
-                            <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                              {course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
-                            </p>
-                          </div>
+                          </HStack>
+                          <Heading as="h3" textStyle="h4">
+                            {course.title}
+                          </Heading>
+                          <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
+                            {course.shortDescription ?? 'Подробности курса доступны на отдельной странице.'}
+                          </Text>
                         </Stack>
-                        <div className="flex flex-col items-start gap-3 lg:items-end">
-                          <span className="text-sm text-muted-foreground">
-                            {isFree ? 'Бесплатно' : course.priceAmount !== null ? `${course.priceAmount} ₽` : 'Цена уточняется'}
-                          </span>
-                          <ActionLink href={ctaHref} variant="secondary">
-                            {ctaLabel}
+
+                        <Stack gap="3" align={{ base: 'start', lg: 'end' }}>
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {cta.isFree
+                              ? 'Бесплатно'
+                              : course.priceAmount !== null
+                                ? `${course.priceAmount} ₽`
+                                : 'Цена уточняется'}
+                          </Text>
+                          <ActionLink href={cta.href} variant="secondary">
+                            {cta.label}
                           </ActionLink>
-                        </div>
-                      </div>
+                        </Stack>
+                      </SimpleGrid>
                     </Card>
                   );
                 })}
-              </div>
+              </Stack>
 
-              <Stack gap="md">
+              <Stack gap="4">
                 {courses.slice(0, 2).map((course) => {
-                  const isEnrolled = enrolledCourseIds.has(course.id);
-                  const isFree = course.accessType === 'FREE';
-                  const ctaHref = isEnrolled
-                    ? buildAppCoursePath(course.slug)
-                    : isFree && session?.user
-                      ? buildAppCoursePath(course.slug)
-                      : buildPublicCoursePath(course.slug);
-                  const ctaLabel = isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Купить курс';
+                  const cta = buildCourseCta({
+                    courseId: course.id,
+                    slug: course.slug,
+                    accessType: course.accessType,
+                    sessionUserId: session?.user?.id,
+                    enrolledCourseIds,
+                  });
 
                   return (
                     <CourseCard
@@ -188,21 +231,25 @@ export default async function CoursesCatalogPage() {
                       status={accessLabel(course.accessType)}
                       meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
                       footer={
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                          <span className="text-sm text-muted-foreground">
-                            {isFree ? 'Бесплатно' : course.priceAmount !== null ? `${course.priceAmount} ₽` : 'Цена уточняется'}
-                          </span>
-                          <ActionLink href={ctaHref} variant="secondary">
-                            {ctaLabel}
+                        <HStack justify="space-between" gap="3" flexWrap="wrap">
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            {cta.isFree
+                              ? 'Бесплатно'
+                              : course.priceAmount !== null
+                                ? `${course.priceAmount} ₽`
+                                : 'Цена уточняется'}
+                          </Text>
+                          <ActionLink href={cta.href} variant="secondary">
+                            {cta.label}
                           </ActionLink>
-                        </div>
+                        </HStack>
                       }
                     />
                   );
                 })}
               </Stack>
-            </div>
-          </>
+            </SimpleGrid>
+          </Stack>
         )}
       </Stack>
     </Section>

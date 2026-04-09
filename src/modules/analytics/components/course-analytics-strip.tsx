@@ -9,7 +9,7 @@ type CourseAnalyticsStripProps = {
 
 export function CourseAnalyticsStrip({ analytics }: CourseAnalyticsStripProps) {
   return (
-    <Grid cols={3} gap="lg">
+    <Grid cols={3} gap="md">
       <StatCard
         label="Студенты"
         value={analytics.studentsCount}
