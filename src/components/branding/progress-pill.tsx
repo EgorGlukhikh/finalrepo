@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { HStack, Text } from '@chakra-ui/react';
+import { HStack, Progress, Text } from '@chakra-ui/react';
 
 type ProgressPillProps = {
   value: number;
@@ -14,16 +14,22 @@ export function ProgressPill({ value, label, className }: ProgressPillProps) {
   return (
     <HStack
       className={className}
-      gap="1.5"
+      gap="2"
       borderRadius="full"
-      bg="accent.secondary"
-      px="2.5"
-      py="1"
+      bg="bg.inset"
+      px="3"
+      py="1.5"
+      borderWidth="1px"
+      borderColor="border.subtle"
       fontSize="xs"
       fontWeight="600"
       color="fg.default"
     >
-      <Text as="span" boxSize="1.5" borderRadius="full" bg="currentColor" opacity="0.72" />
+      <Progress.Root value={safeValue} size="xs" width="14" colorPalette="blue" borderRadius="full" bg="bg.surfaceMuted">
+        <Progress.Track borderRadius="full">
+          <Progress.Range borderRadius="full" bg="accent.primary" />
+        </Progress.Track>
+      </Progress.Root>
       <Text as="span">{label ?? `${safeValue}%`}</Text>
     </HStack>
   );

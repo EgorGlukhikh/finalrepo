@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { Box, Stack, Text } from '@chakra-ui/react';
+
 import { BookIcon, BookOpenIcon, EyeIcon } from '@/components/branding';
 
 import { NavLink } from './nav-link';
@@ -32,15 +34,17 @@ const items: Array<{
 
 export function PlatformNav() {
   return (
-    <nav className="space-y-1">
-      <p className="px-3 pb-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+    <Box as="nav">
+      <Text px="1" pb="3" textStyle="overline" color="fg.subtle">
         Личный кабинет
-      </p>
-      {items.map((item) => (
-        <NavLink key={item.label} href={item.href} exact={item.exact} disabled={item.disabled} icon={item.icon}>
-          {item.label}
-        </NavLink>
-      ))}
-    </nav>
+      </Text>
+      <Stack gap="1">
+        {items.map((item) => (
+          <NavLink key={item.label} href={item.href} exact={item.exact} disabled={item.disabled} icon={item.icon}>
+            {item.label}
+          </NavLink>
+        ))}
+      </Stack>
+    </Box>
   );
 }

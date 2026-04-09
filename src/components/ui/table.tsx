@@ -1,38 +1,41 @@
 import type { HTMLAttributes, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Table as ChakraTable } from '@chakra-ui/react';
 
 export function Table({ className, ...props }: TableHTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-card">
-      <div className="overflow-x-auto">
-        <table className={cn('min-w-full border-collapse text-left', className)} {...props} />
-      </div>
-    </div>
+    <ChakraTable.ScrollArea borderWidth="1px" borderColor="border.subtle" borderRadius="3xl" bg="bg.elevated" boxShadow="sm">
+      <ChakraTable.Root native className={className} size="md" {...props} />
+    </ChakraTable.ScrollArea>
   );
 }
 
 export function TableHead({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className={cn('bg-surface-muted/70', className)} {...props} />;
+  return <ChakraTable.Header className={className} bg="bg.surfaceMuted" {...props} />;
 }
 
 export function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>) {
-  return <tbody className={cn('[&_tr:last-child]:border-b-0', className)} {...props} />;
+  return <ChakraTable.Body className={className} {...props} />;
 }
 
 export function TableRow({ className, ...props }: HTMLAttributes<HTMLTableRowElement>) {
-  return <tr className={cn('border-b border-border align-top', className)} {...props} />;
+  return <ChakraTable.Row className={className} borderColor="border.subtle" {...props} />;
 }
 
 export function TableHeaderCell({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) {
   return (
-    <th
-      className={cn('px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground', className)}
+    <ChakraTable.ColumnHeader
+      className={className}
+      px="4"
+      py="3.5"
+      textStyle="overline"
+      color="fg.subtle"
+      borderColor="border.subtle"
       {...props}
     />
   );
 }
 
 export function TableCell({ className, ...props }: TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn('px-4 py-4 text-sm text-foreground', className)} {...props} />;
+  return <ChakraTable.Cell className={className} px="4" py="4" fontSize="sm" color="fg.default" borderColor="border.subtle" {...props} />;
 }

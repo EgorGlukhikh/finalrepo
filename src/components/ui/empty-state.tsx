@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Box, Button as ChakraButton, Stack, Text } from '@chakra-ui/react';
+import { EmptyState as ChakraEmptyState } from '@chakra-ui/react';
 
-import { Card } from './card';
+import { Button } from './button';
 
 type EmptyStateProps = {
   title: string;
@@ -14,37 +14,41 @@ type EmptyStateProps = {
 
 export function EmptyState({ title, description, action, icon, className }: EmptyStateProps) {
   return (
-    <Card className={className} padding="lg">
-      <Stack gap="4" align="center" textAlign="center" maxW="sm" mx="auto">
+    <ChakraEmptyState.Root
+      className={className}
+      bg="bg.elevated"
+      borderWidth="1px"
+      borderColor="border.subtle"
+      borderRadius="3xl"
+      boxShadow="sm"
+      px={{ base: '6', md: '8' }}
+      py={{ base: '7', md: '8' }}
+    >
+      <ChakraEmptyState.Content maxW="sm">
         {icon ? (
-          <Box
-            display="flex"
+          <ChakraEmptyState.Indicator
             boxSize="12"
-            alignItems="center"
-            justifyContent="center"
             borderRadius="xl"
             bg="bg.inset"
             color="fg.muted"
           >
             {icon}
-          </Box>
+          </ChakraEmptyState.Indicator>
         ) : null}
-        <Stack gap="2" align="center">
-          <Text fontSize="lg" fontWeight="700" letterSpacing="-0.02em" color="fg.default">
-            {title}
-          </Text>
-          {description ? (
-            <Text textStyle="bodyMuted" color="fg.muted">
-              {description}
-            </Text>
-          ) : null}
-        </Stack>
+        <ChakraEmptyState.Title textStyle="sectionTitle" color="fg.default">
+          {title}
+        </ChakraEmptyState.Title>
+        {description ? (
+          <ChakraEmptyState.Description textStyle="bodyMuted" color="fg.muted">
+            {description}
+          </ChakraEmptyState.Description>
+        ) : null}
         {action ? (
-          <ChakraButton variant="surface" onClick={action.onClick}>
+          <Button variant="secondary" onClick={action.onClick}>
             {action.label}
-          </ChakraButton>
+          </Button>
         ) : null}
-      </Stack>
-    </Card>
+      </ChakraEmptyState.Content>
+    </ChakraEmptyState.Root>
   );
 }

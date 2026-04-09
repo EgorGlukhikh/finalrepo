@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Stack } from '@/components/layout';
-import { cn } from '@/lib/cn';
-
-import { Label } from './label';
+import { Field, Stack } from '@chakra-ui/react';
 
 type FormFieldProps = {
   id: string;
@@ -22,23 +19,22 @@ export function FormField({
   description,
   error,
   required,
-  className,
 }: FormFieldProps) {
   return (
-    <Stack gap="xs" className={cn(className)}>
-      <Label htmlFor={id}>
-        {label}
-        {required ? <span className="ml-1 text-danger">*</span> : null}
-      </Label>
-      {children}
-      {error ? (
-        <p className="text-sm text-danger" role="alert">
-          {error}
-        </p>
-      ) : description ? (
-        <p className="text-sm text-muted-foreground">{description}</p>
-      ) : null}
-    </Stack>
+    <Field.Root id={id} required={required} invalid={Boolean(error)}>
+      <Stack gap="3" align="stretch">
+        <Field.Label color="fg.default" fontSize="sm" fontWeight="600" letterSpacing="-0.01em">
+          {label}
+          <Field.RequiredIndicator />
+        </Field.Label>
+        {children}
+        {error ? (
+          <Field.ErrorText>{error}</Field.ErrorText>
+        ) : description ? (
+          <Field.HelperText color="fg.muted">{description}</Field.HelperText>
+        ) : null}
+      </Stack>
+    </Field.Root>
   );
 }
 
