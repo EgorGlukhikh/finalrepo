@@ -1,7 +1,7 @@
-import { Box, Grid, Stack } from '@chakra-ui/react';
-
 import type { LessonAnalytics } from '@/modules/analytics';
 import type { CourseStructure } from '@/modules/courses';
+import { BuilderSidebar, ContentArea, ContentCanvas } from '@/components/product';
+import { Grid } from '@chakra-ui/react';
 
 import { getBuilderSelection } from '../builder';
 import { BuilderLessonEditor } from './builder-lesson-editor';
@@ -37,19 +37,22 @@ export function CourseBuilderWorkspace({
       templateColumns={{ base: '1fr', xl: 'minmax(19rem, 34%) minmax(0, 1fr)' }}
       alignItems="start"
     >
-      <BuilderStructurePanel
-        course={course}
-        selectedLessonId={selection?.lesson.id ?? null}
-        createModuleAction={createModuleAction}
-        createLessonDraftAction={createLessonDraftAction}
-      />
-
-      <Box
-        pl={{ base: '0', xl: '10' }}
-        borderLeftWidth={{ base: '0', xl: '1px' }}
-        borderColor="border.subtle"
+      <BuilderSidebar
+        position={{ xl: 'sticky' }}
+        top={{ xl: '24' }}
+        maxH={{ xl: 'calc(100vh - 8rem)' }}
+        overflowY={{ xl: 'auto' }}
       >
-        <Stack gap="8">
+        <BuilderStructurePanel
+          course={course}
+          selectedLessonId={selection?.lesson.id ?? null}
+          createModuleAction={createModuleAction}
+          createLessonDraftAction={createLessonDraftAction}
+        />
+      </BuilderSidebar>
+
+      <ContentArea gap="8">
+        <ContentCanvas>
           <BuilderLessonEditor
             courseId={course.id}
             courseTitle={course.title}
@@ -60,8 +63,8 @@ export function CourseBuilderWorkspace({
             setLessonStatusAction={setLessonStatusAction}
             deleteLessonAction={deleteLessonAction}
           />
-        </Stack>
-      </Box>
+        </ContentCanvas>
+      </ContentArea>
     </Grid>
   );
 }

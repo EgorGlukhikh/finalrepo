@@ -4,14 +4,15 @@ import { notFound } from 'next/navigation';
 import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
 import { BookOpenIcon, IconChip } from '@/components/branding';
-import { ActionLink, Section } from '@/components/layout';
-import { Badge, Button, Card } from '@/components/ui';
+import { ActionLink } from '@/components/layout';
+import { ActionBar, ContentArea, PageLayout, Panel, Sidebar, SplitPageLayout } from '@/components/product';
+import { Badge, Button } from '@/components/ui';
 import { getAuthSession } from '@/modules/auth/session';
 import { isRobokassaConfigured, purchasePaidCourseAction } from '@/modules/billing';
 import { getCourseBySlug } from '@/modules/courses';
 import { buildAppCoursePath, buildCatalogPath, buildPublicCoursePath } from '@/modules/courses/paths';
-import { enrollFreeCourseAction } from '@/modules/learning/actions';
 import { getCourseLearningTree } from '@/modules/learning';
+import { enrollFreeCourseAction } from '@/modules/learning/actions';
 import { CourseCurriculum } from '@/modules/learning/components';
 
 type CoursePageProps = {
@@ -72,11 +73,48 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const signInHref = `/sign-in?callbackUrl=${encodeURIComponent(buildPublicCoursePath(slug))}`;
 
   return (
-    <Section padding="lg">
-      <Stack gap="12">
-        <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6" alignItems="start">
-          <Stack gap="6">
-            <Card padding="lg" tone="highlight">
+    <PageLayout>
+      <SplitPageLayout
+        sidebar={
+          <Sidebar>
+            <Panel tone="muted">
+              <Stack gap="4">
+                <Stack gap="1">
+                  <Text textStyle="overline" color="fg.subtle">
+                    Сводка
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    Короткий ориентир перед стартом или покупкой курса.
+                  </Text>
+                </Stack>
+
+                <Stack gap="3">
+                  <SummaryRow label="Модулей" value={tree.modules.length} />
+                  <SummaryRow label="Уроков" value={tree.totalLessonsCount} />
+                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'} />
+                </Stack>
+
+                <ActionLink href={buildCatalogPath()} variant="outline" w="full">
+                  Вернуться в каталог
+                </ActionLink>
+              </Stack>
+            </Panel>
+
+            <Panel>
+              <Stack gap="3">
+                <Text textStyle="overline" color="fg.subtle">
+                  Что дальше
+                </Text>
+                <Text textStyle="bodyMuted" color="fg.muted">
+                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после подтверждённой оплаты.
+                </Text>
+              </Stack>
+            </Panel>
+          </Sidebar>
+        }
+        content={
+          <ContentArea>
+            <Panel tone="highlight">
               <Stack gap="6">
                 <HStack align="start" justify="space-between" gap="4">
                   <Stack gap="4" maxW="3xl">
@@ -105,7 +143,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </HStack>
 
                 <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
-                  <Card padding="sm" tone="muted">
+                  <Panel tone="muted" p="4">
                     <Stack gap="2">
                       <Text textStyle="caption" color="fg.muted">
                         Формат доступа
@@ -114,8 +152,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         {accessLabel(course.accessType)}
                       </Text>
                     </Stack>
-                  </Card>
-                  <Card padding="sm" tone="muted">
+                  </Panel>
+                  <Panel tone="muted" p="4">
                     <Stack gap="2">
                       <Text textStyle="caption" color="fg.muted">
                         Стоимость
@@ -124,16 +162,16 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         {moneyLabel(course.priceAmount)}
                       </Text>
                     </Stack>
-                  </Card>
+                  </Panel>
                 </SimpleGrid>
 
                 {isEnrolled ? (
-                  <HStack gap="3" flexWrap="wrap">
+                  <ActionBar>
                     <ActionLink href={buildAppCoursePath(course.slug)}>Продолжить обучение</ActionLink>
                     <Text textStyle="bodyMuted" color="fg.muted">
                       У вас уже есть доступ к этому курсу.
                     </Text>
-                  </HStack>
+                  </ActionBar>
                 ) : session?.user ? (
                   course.accessType === 'FREE' ? (
                     <form action={enrollFreeCourseAction}>
@@ -171,7 +209,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   </HStack>
                 )}
               </Stack>
-            </Card>
+            </Panel>
 
             <CourseCurriculum
               title="Программа курса"
@@ -179,47 +217,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
               modules={tree.modules}
               mode="preview"
             />
-          </Stack>
-
-          <Stack gap="4">
-            <Card padding="lg" tone="muted">
-              <Stack gap="4">
-                <Stack gap="1">
-                  <Text textStyle="overline" color="fg.subtle">
-                    Сводка
-                  </Text>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Короткий ориентир перед стартом или покупкой курса.
-                  </Text>
-                </Stack>
-
-                <Stack gap="3">
-                  <SummaryRow label="Модулей" value={tree.modules.length} />
-                  <SummaryRow label="Уроков" value={tree.totalLessonsCount} />
-                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к просмотру' : 'Черновик'} />
-                </Stack>
-
-                <ActionLink href={buildCatalogPath()} variant="outline" w="full">
-                  Вернуться в каталог
-                </ActionLink>
-              </Stack>
-            </Card>
-
-            <Card padding="lg">
-              <Stack gap="3">
-                <Text textStyle="overline" color="fg.subtle">
-                  Что дальше
-                </Text>
-                <Text textStyle="bodyMuted" color="fg.muted">
-                  Бесплатный курс можно начать сразу после зачисления. Платный курс открывается только после
-                  подтверждённой оплаты.
-                </Text>
-              </Stack>
-            </Card>
-          </Stack>
-        </SimpleGrid>
-      </Stack>
-    </Section>
+          </ContentArea>
+        }
+      />
+    </PageLayout>
   );
 }
 
