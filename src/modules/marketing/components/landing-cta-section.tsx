@@ -19,10 +19,10 @@ export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCt
                 Начать
               </Text>
               <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
-                Выберите курс и откройте личный кабинет для спокойного обучения по шагам.
+                Выберите курс и начните обучение.
               </Heading>
               <Text textStyle="bodyMuted" color="fg.muted">
-                Сначала вход, затем каталог и выбранная программа. Интерфейс не перегружает вас лишними действиями между этими шагами.
+                Войдите в аккаунт, откройте каталог и переходите к нужной программе.
               </Text>
             </Stack>
           </GridItem>

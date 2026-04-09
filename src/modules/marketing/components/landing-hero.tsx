@@ -12,8 +12,8 @@ type LandingHeroProps = {
 
 const keyPoints = [
   { label: 'Каталог', value: 'Бесплатные и платные программы в одном месте' },
-  { label: 'Кабинет', value: 'Прогресс, доступ и возврат к урокам без поиска' },
-  { label: 'Формат', value: 'Курс -> модуль -> урок, без запутанной навигации' },
+  { label: 'Кабинет', value: 'Прогресс, доступ и быстрый возврат к урокам' },
+  { label: 'Формат', value: 'Курс, модули и уроки в понятной структуре' },
 ];
 
 export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref }: LandingHeroProps) {
@@ -29,11 +29,10 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
 
               <Stack gap="5">
                 <Heading textStyle="display" maxW="4xl">
-                  Курсы, доступ и личный кабинет собраны в одной спокойной рабочей системе.
+                  Онлайн-обучение для риэлторов без хаоса и перегруженных кабинетов.
                 </Heading>
                 <Text textStyle="body" color="fg.muted" maxW="2xl">
-                  Пользователь выбирает программу, открывает курс, проходит уроки по шагам и возвращается к материалам без
-                  лишних экранов, декоративных блоков и потери прогресса.
+                  Выберите курс, проходите уроки в своем темпе и возвращайтесь к материалам с сохраненным прогрессом.
                 </Text>
               </Stack>
 
@@ -55,10 +54,10 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
                       Что получает пользователь
                     </Text>
                     <Heading textStyle="sectionTitle" maxW="2xl">
-                      Не витрину из одинаковых карточек, а понятную среду: где открыть курс, где продолжить урок и где увидеть прогресс.
+                      Все, что нужно для обучения, собрано в одном месте.
                     </Heading>
                     <Text textStyle="bodyMuted" color="fg.muted" maxW="xl">
-                      Важное действие здесь одно: начать или продолжить обучение. Всё остальное подчинено этой задаче и не спорит за внимание.
+                      Каталог, курсы и прогресс всегда под рукой, поэтому можно сразу продолжать обучение.
                     </Text>
                   </Stack>
                 </GridItem>

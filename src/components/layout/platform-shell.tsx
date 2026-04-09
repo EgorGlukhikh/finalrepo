@@ -23,12 +23,9 @@ export function PlatformShell({ children, headerActions }: PlatformShellProps) {
             <Stack gap="6" position={{ xl: 'sticky' }} top={{ xl: '24' }}>
               <Stack gap="3">
                 <Text textStyle="overline" color="fg.subtle">
-                  Рабочая зона
+                  Кабинет
                 </Text>
                 <Heading textStyle="sectionTitle">Личный кабинет</Heading>
-                <Text textStyle="bodyMuted" color="fg.muted">
-                  Курсы, прогресс и точки возврата в обучение собраны в одном спокойном месте.
-                </Text>
               </Stack>
               <Box pt="1">
                 <PlatformNav />

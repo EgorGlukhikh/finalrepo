@@ -39,7 +39,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
       <HeaderBar
         eyebrow="Урок"
         title={tree.course.title}
-        description="Урок открыт внутри курса: слева структура, в центре материалы, внизу переход к следующему шагу."
+        description="Материалы урока и переход к следующему шагу."
         actions={<ProgressPill value={tree.progressPercent} />}
       />
       <LearningWorkspace view={lessonView} />

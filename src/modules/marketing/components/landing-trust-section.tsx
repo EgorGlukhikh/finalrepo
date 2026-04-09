@@ -12,8 +12,8 @@ export function LandingTrustSection() {
           <Stack gap="8">
             <SectionHeading
               eyebrow="Что получает пользователь"
-              title="После регистрации всё важное уже собрано в одном месте"
-              description="Пользователь не прыгает между экранами в поиске доступа, уроков и прогресса. Каталог, кабинет и сам курс продолжают друг друга."
+              title="После регистрации все нужное уже под рукой"
+              description="Каталог, курсы и прогресс доступны в одном кабинете."
             />
 
             <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">

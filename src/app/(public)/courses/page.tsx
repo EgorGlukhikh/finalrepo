@@ -13,8 +13,7 @@ import { getUserEnrollments } from '@/modules/enrollments';
 
 export const metadata: Metadata = {
   title: 'Каталог курсов',
-  description:
-    'Каталог Академии риэлторов: бесплатные и платные курсы с понятным доступом, программой обучения и прямым входом в занятия.',
+  description: 'Каталог курсов Академии риэлторов: бесплатные и платные программы для обучения.',
 };
 
 function accessLabel(accessType: string) {
@@ -114,7 +113,7 @@ export default async function CoursesCatalogPage() {
                             {featuredCourse.title}
                           </Heading>
                           <Text textStyle="body" color="fg.muted" maxW="2xl">
-                            {featuredCourse.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'}
+                            {featuredCourse.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
                           </Text>
                         </Stack>
                         <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
@@ -182,7 +181,7 @@ export default async function CoursesCatalogPage() {
                         featured={course.id === featuredCourse?.id}
                         title={course.title}
                         description={
-                          course.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'
+                          course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'
                         }
                         status={accessLabel(course.accessType)}
                         meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
@@ -233,7 +232,7 @@ export default async function CoursesCatalogPage() {
                               {course.title}
                             </Heading>
                             <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                              {course.shortDescription ?? 'Откройте страницу курса, чтобы посмотреть программу и условия доступа.'}
+                              {course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
                             </Text>
                           </Stack>
 

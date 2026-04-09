@@ -14,11 +14,11 @@ export default async function AdminUsersPage() {
       <HeaderBar
         eyebrow="Админка"
         title="Пользователи"
-        help="Здесь собраны учетные записи, роли и количество доступов к курсам."
+        help="Пользователи, роли и доступ к курсам."
       />
 
       {users.length === 0 ? (
-        <EmptyState title="Пользователей пока нет" description="Когда в системе появятся пользователи, они появятся здесь." />
+        <EmptyState title="Пользователей пока нет" description="Зарегистрированные пользователи появятся здесь." />
       ) : (
         <Table>
           <TableHead>

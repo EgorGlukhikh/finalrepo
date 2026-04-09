@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
 
   return {
     title: course.title,
-    description: course.shortDescription ?? course.description ?? 'Программа курса, структура модулей и условия доступа.',
+    description: course.shortDescription ?? course.description ?? 'Программа курса и условия доступа.',
     alternates: {
       canonical: buildPublicCoursePath(course.slug),
     },

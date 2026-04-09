@@ -40,7 +40,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
         <SectionHeading
           eyebrow="Каталог"
           title="Программы, которые можно открыть сейчас"
-          description="Если программа бесплатная, пользователь начинает сразу. Если курс платный, это обозначено честно и не прячется внутри интерфейса."
+          description="Бесплатные курсы открываются сразу, платные — после покупки."
           actions={
             <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
               Открыть каталог
@@ -68,7 +68,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                     </Heading>
                     <Text textStyle="body" color="fg.muted" maxW="2xl">
                       {featuredCourse.shortDescription ??
-                        'На странице курса пользователь видит программу, условия доступа и понятный путь к началу обучения.'}
+                        'Откройте курс, чтобы посмотреть программу и условия доступа.'}
                     </Text>
                   </Stack>
 
@@ -115,7 +115,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                           {course.title}
                         </Heading>
                         <Text textStyle="bodyMuted" color="fg.muted">
-                          {course.shortDescription ?? 'Курс открывается на отдельной странице с программой и следующим шагом для старта.'}
+                          {course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
                         </Text>
                       </Stack>
 
@@ -133,11 +133,11 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
             <Grid gap="6" templateColumns={{ base: '1fr', lg: 'minmax(0,1fr) auto' }} alignItems="end">
               <Stack gap="3" maxW="2xl">
                 <Text textStyle="overline" color="fg.subtle">
-                  Поэтапный запуск
+                  Каталог
                 </Text>
-                <Heading textStyle="sectionTitle">Каталог наполняется постепенно, но сама система обучения уже готова к работе.</Heading>
+                <Heading textStyle="sectionTitle">Опубликованные курсы появятся здесь.</Heading>
                 <Text textStyle="bodyMuted" color="fg.muted">
-                  Когда первые программы будут опубликованы, они появятся здесь без переработки интерфейса: личный кабинет, доступ к курсам и сохранённый прогресс уже работают как единая среда.
+                  Как только программа будет опубликована, она появится в каталоге.
                 </Text>
               </Stack>
               <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">

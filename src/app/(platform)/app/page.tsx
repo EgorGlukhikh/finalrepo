@@ -85,7 +85,7 @@ export default async function PlatformHomePage() {
                       {activeSummary.isCompleted ? 'Открыть курс' : 'Продолжить обучение'}
                     </ActionLink>
                     <Text textStyle="bodyMuted" color="fg.muted">
-                      {activeSummary.progressPercent}% маршрута уже пройдено
+                      Пройдено {activeSummary.progressPercent}%
                     </Text>
                   </HStack>
                 </Stack>
