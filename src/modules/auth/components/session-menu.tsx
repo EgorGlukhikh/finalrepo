@@ -1,9 +1,9 @@
 'use client';
 
+import { Badge, Box, Button, HStack, Text } from '@chakra-ui/react';
 import { signOut } from 'next-auth/react';
 
-import { ActionLink } from '@/components/layout';
-import { Button } from '@/components/ui';
+import { ButtonLink } from '@/components/compositions';
 
 export type SessionMenuView = {
   displayName: string;
@@ -19,31 +19,54 @@ type SessionMenuProps = {
 
 export function SessionMenu({ view }: SessionMenuProps) {
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2">
-      <div className="hidden items-center gap-3 rounded-full border border-border bg-surface px-3 py-1.5 text-sm text-muted-foreground sm:inline-flex">
-        <span className="size-2 rounded-full bg-primary" />
-        <span className="max-w-40 truncate">{view.displayName}</span>
-        <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+    <HStack gap="2" align="center" flexWrap="wrap" justify="flex-end">
+      <HStack
+        display={{ base: 'none', sm: 'inline-flex' }}
+        gap="3"
+        borderRadius="full"
+        borderWidth="1px"
+        borderColor="border.subtle"
+        bg="bg.surface"
+        px="3"
+        py="1.5"
+        color="fg.muted"
+      >
+        <Box boxSize="2" borderRadius="full" bg="bg.brand" />
+        <Text maxW="9rem" truncate fontSize="sm">
+          {view.displayName}
+        </Text>
+        <Badge
+          borderRadius="full"
+          px="2"
+          py="0.5"
+          textStyle="overline"
+          colorPalette={view.roleLabel === 'Админ' ? 'brand' : 'gray'}
+          variant="subtle"
+        >
           {view.roleLabel}
-        </span>
-      </div>
-      <ActionLink href={view.homeHref} variant="secondary">
+        </Badge>
+      </HStack>
+
+      <ButtonLink href={view.homeHref} variant="subtle" colorPalette="brand">
         {view.homeLabel}
-      </ActionLink>
+      </ButtonLink>
+
       {view.showAdminLink ? (
-        <ActionLink href="/admin" variant="outline">
+        <ButtonLink href="/admin" variant="outline" borderColor="border.strong">
           Админка
-        </ActionLink>
+        </ButtonLink>
       ) : null}
+
       <Button
         variant="ghost"
-        size="sm"
+        color="fg.muted"
+        _hover={{ bg: 'bg.inset', color: 'fg.default' }}
         onClick={() => {
           void signOut({ callbackUrl: '/' });
         }}
       >
         Выйти
       </Button>
-    </div>
+    </HStack>
   );
 }

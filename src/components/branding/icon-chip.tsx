@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/cn';
+import { Box } from '@chakra-ui/react';
 
 type IconChipProps = {
   icon: ReactNode;
@@ -8,22 +8,40 @@ type IconChipProps = {
   tone?: 'default' | 'primary' | 'muted';
 };
 
-const toneClasses = {
-  default: 'bg-surface text-foreground ring-1 ring-border/80',
-  primary: 'bg-primary-soft text-primary ring-1 ring-primary/12',
-  muted: 'bg-surface-muted text-muted-foreground ring-1 ring-border/60',
+const toneStyles = {
+  default: {
+    bg: 'bg.surface',
+    color: 'fg.default',
+    borderColor: 'border.subtle',
+  },
+  primary: {
+    bg: 'brand.100',
+    color: 'fg.brand',
+    borderColor: 'transparent',
+  },
+  muted: {
+    bg: 'bg.inset',
+    color: 'fg.muted',
+    borderColor: 'border.subtle',
+  },
 } as const;
 
 export function IconChip({ icon, className, tone = 'default' }: IconChipProps) {
   return (
-    <span
-      className={cn(
-        'inline-flex size-10 items-center justify-center rounded-2xl shadow-card transition-colors duration-fast ease-[var(--ease-standard)]',
-        toneClasses[tone],
-        className,
-      )}
+    <Box
+      className={className}
+      display="inline-flex"
+      boxSize="10"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="2xl"
+      borderWidth="1px"
+      boxShadow="sm"
+      transitionProperty="common"
+      transitionDuration="normal"
+      {...toneStyles[tone]}
     >
       {icon}
-    </span>
+    </Box>
   );
 }

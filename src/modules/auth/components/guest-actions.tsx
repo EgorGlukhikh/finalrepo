@@ -1,14 +1,16 @@
-import { ActionLink } from '@/components/layout';
+import { HStack } from '@chakra-ui/react';
+
+import { ButtonLink } from '@/components/compositions';
 
 export function GuestActions() {
   return (
-    <div className="flex items-center gap-2">
-      <ActionLink href="/sign-in" variant="ghost">
+    <HStack gap="2">
+      <ButtonLink href="/sign-in" variant="ghost" color="fg.muted" _hover={{ bg: 'bg.inset', color: 'fg.default' }}>
         Войти
-      </ActionLink>
-      <ActionLink href="/sign-up" variant="primary">
+      </ButtonLink>
+      <ButtonLink href="/sign-up" colorPalette="brand" variant="solid">
         Создать аккаунт
-      </ActionLink>
-    </div>
+      </ButtonLink>
+    </HStack>
   );
 }

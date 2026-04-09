@@ -1,15 +1,29 @@
-import { Container } from './container';
-import { Inline } from './inline';
+import Link from 'next/link';
+import { Box, Container, HStack, Link as ChakraLink, Stack, Text } from '@chakra-ui/react';
 
 export function PublicFooter() {
   return (
-    <footer className="border-t border-border/70">
-      <Container size="wide" className="py-6 sm:py-8">
-        <Inline justify="between" align="center" wrap className="gap-3 text-sm text-muted-foreground">
-          <span>Академия риэлторов</span>
-          <span>Платформа для обучения, каталога курсов и личного маршрута обучения.</span>
-        </Inline>
+    <Box as="footer" borderTopWidth="1px" borderColor="border.subtle">
+      <Container maxW="80rem" py={{ base: 8, md: 10 }}>
+        <Stack gap={{ base: 6, md: 3 }} direction={{ base: 'column', md: 'row' }} justify="space-between">
+          <Stack gap="2" maxW="md">
+            <Text textStyle="overline" color="fg.subtle">
+              Академия риэлторов
+            </Text>
+            <Text textStyle="bodyMuted" color="fg.muted">
+              Платформа для обучения, каталога курсов и личного маршрута обучения без лишнего интерфейсного шума.
+            </Text>
+          </Stack>
+          <HStack gap="4" align="start" color="fg.muted">
+            <ChakraLink asChild _hover={{ color: 'fg.default', textDecoration: 'none' }}>
+              <Link href="/courses">Каталог</Link>
+            </ChakraLink>
+            <ChakraLink asChild _hover={{ color: 'fg.default', textDecoration: 'none' }}>
+              <Link href="/sign-in">Войти</Link>
+            </ChakraLink>
+          </HStack>
+        </Stack>
       </Container>
-    </footer>
+    </Box>
   );
 }
