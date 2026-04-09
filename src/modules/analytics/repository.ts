@@ -4,6 +4,10 @@ export async function countUsersForAnalytics() {
   return db.user.count();
 }
 
+export async function countCoursesForAnalytics() {
+  return db.course.count();
+}
+
 export async function countActiveEnrollmentRowsForAnalytics() {
   return db.enrollment.count({
     where: {

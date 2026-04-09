@@ -28,6 +28,7 @@ export function calculateAdminDashboardAnalytics(source: DashboardAnalyticsSourc
 
   return {
     business: {
+      totalCourses: source.totalCourses,
       totalUsers: source.totalUsers,
       totalEnrollments: source.totalEnrollments,
       totalPaidOrders: source.totalPaidOrders,

@@ -6,6 +6,7 @@ import { calculateAdminDashboardAnalytics, calculateCourseAnalytics } from './ca
 describe('calculateAdminDashboardAnalytics', () => {
   it('builds a simple funnel from existing enrollment and progress data', () => {
     const analytics = calculateAdminDashboardAnalytics({
+      totalCourses: 4,
       totalUsers: 12,
       totalEnrollments: 5,
       totalPaidOrders: 3,
@@ -24,6 +25,7 @@ describe('calculateAdminDashboardAnalytics', () => {
       lessonCompletedCount: 5,
     });
 
+    expect(analytics.business.totalCourses).toBe(4);
     expect(analytics.business.totalUsers).toBe(12);
     expect(analytics.funnel.courseOpened).toBe(3);
     expect(analytics.funnel.courseStarted).toBe(1);

@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
 
 import { getUserByEmail } from '@/modules/users';
 import { db } from '@/lib/db';
@@ -21,14 +21,22 @@ export async function registerUser(input: SignUpInput) {
     throw new AuthError('EMAIL_TAKEN', 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј email СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚', 409);
   }
 
-  return db.user.create({
-    data: {
-      email,
-      name: parsed.data.name ?? null,
-      passwordHash: await hashPassword(parsed.data.password),
-      role: UserRole.USER,
-    },
-  });
+  try {
+    return await db.user.create({
+      data: {
+        email,
+        name: parsed.data.name ?? null,
+        passwordHash: await hashPassword(parsed.data.password),
+        role: UserRole.USER,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      throw new AuthError('EMAIL_TAKEN', 'Пользователь с таким email уже существует', 409);
+    }
+
+    throw error;
+  }
 }
 
 export async function validateCredentials(input: SignInInput) {

@@ -2,6 +2,7 @@ import { calculateAdminDashboardAnalytics, calculateCourseAnalytics } from './ca
 import {
   countActiveEnrollmentRowsForAnalytics,
   countCompletedLessonsForAnalytics,
+  countCoursesForAnalytics,
   countPaidOrdersForAnalytics,
   countStartedLessonsForAnalytics,
   countUsersForAnalytics,
@@ -15,6 +16,7 @@ import type { CourseAnalytics } from './types';
 
 export async function getAdminDashboardAnalytics() {
   const [
+    totalCourses,
     totalUsers,
     totalEnrollments,
     totalPaidOrders,
@@ -24,6 +26,7 @@ export async function getAdminDashboardAnalytics() {
     lessonStartedCount,
     lessonCompletedCount,
   ] = await Promise.all([
+    countCoursesForAnalytics(),
     countUsersForAnalytics(),
     countActiveEnrollmentRowsForAnalytics(),
     countPaidOrdersForAnalytics(),
@@ -35,6 +38,7 @@ export async function getAdminDashboardAnalytics() {
   ]);
 
   return calculateAdminDashboardAnalytics({
+    totalCourses,
     totalUsers,
     totalEnrollments,
     totalPaidOrders,

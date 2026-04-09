@@ -40,3 +40,6 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Check generated drift
+        run: git diff --exit-code -- . ':(exclude)pnpm-lock.yaml'
+

@@ -6,6 +6,7 @@ export type EnrollmentCoursePair = {
 };
 
 export type DashboardAnalyticsSource = {
+  totalCourses: number;
   totalUsers: number;
   totalEnrollments: number;
   totalPaidOrders: number;
@@ -30,6 +31,7 @@ export type CourseAnalyticsSource = {
 };
 
 export type BusinessMetrics = {
+  totalCourses: number;
   totalUsers: number;
   totalEnrollments: number;
   totalPaidOrders: number;

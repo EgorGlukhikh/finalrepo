@@ -81,7 +81,14 @@ export async function getCourseLearningTree(
   const accessSummary = viewerId ? await getCourseAccessForUser(viewerId, course.id) : null;
   let enrollmentSummary = viewerId ? await getEnrollmentForUser(viewerId, course.id) : null;
 
-  if (viewerId && options.view !== 'public' && course.accessType === 'FREE' && accessSummary?.hasAccess && !enrollmentSummary) {
+  if (
+    viewerId &&
+    options.view !== 'public' &&
+    viewer?.role !== UserRole.ADMIN &&
+    course.accessType === 'FREE' &&
+    accessSummary?.hasAccess &&
+    !enrollmentSummary
+  ) {
     await enrollUserInFreeCourse(viewerId, course.id);
     enrollmentSummary = await getEnrollmentForUser(viewerId, course.id);
   }
