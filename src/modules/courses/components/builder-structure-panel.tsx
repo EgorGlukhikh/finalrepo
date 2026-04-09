@@ -1,12 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 
-import { Accordion, Box, HStack, Stack, Text } from '@chakra-ui/react';
+import { Accordion, Box, HStack, Menu, Portal, Stack, Text } from '@chakra-ui/react';
 
 import { ActionLink } from '@/components/layout';
-import { Badge, Button, Dialog, Input } from '@/components/ui';
+import { Badge, Button, Input } from '@/components/ui';
 import type { CourseStructure } from '@/modules/courses';
 
 import { buildBuilderLessonHref } from '../builder';
@@ -46,11 +45,12 @@ export function BuilderStructurePanel({
           </ActionLink>
         </HStack>
         <Text textStyle="bodyMuted" color="fg.muted">
-          Левая панель остаётся навигацией и точкой создания. Метаданные курса вынесены из builder в отдельные настройки.
+          Слева остаётся только структура и создание нового материала. Метаданные курса вынесены отдельно, чтобы редактор не
+          превращался в перегруженную форму.
         </Text>
       </Stack>
 
-      <Box layerStyle="panelMuted" borderRadius="3xl" p="6">
+      <Box layerStyle="panelMuted" borderRadius="2xl" p="6">
         <form action={createModuleAction}>
           <Stack gap="3">
             <input type="hidden" name="courseId" value={course.id} />
@@ -66,7 +66,7 @@ export function BuilderStructurePanel({
       </Box>
 
       {course.modules.length === 0 ? (
-        <Box layerStyle="panel" borderRadius="3xl" p="6">
+        <Box layerStyle="panel" borderRadius="2xl" p="6">
           <Text textStyle="bodyMuted" color="fg.muted">
             Начните со структуры: создайте первый модуль, а затем добавьте урок внутри него.
           </Text>
@@ -161,38 +161,41 @@ function LessonTypeChooser({
   moduleId: string;
   createLessonDraftAction: (formData: FormData) => void | Promise<void>;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <Stack gap="3" pt="2">
-      <Button type="button" variant="ghost" alignSelf="start" onClick={() => setOpen(true)}>
-        + Урок
-      </Button>
-
-      <Dialog open={open} onOpenChange={setOpen} title="Сначала выберите тип" description="Lesson creation остаётся type-first: это помогает не ломать структуру конструктора.">
-        <Stack gap="2">
-          {Object.entries(lessonTypeLabels).map(([value, label]) => (
-            <form key={value} action={createLessonDraftAction}>
-              <input type="hidden" name="courseId" value={courseId} />
-              <input type="hidden" name="moduleId" value={moduleId} />
-              <input type="hidden" name="lessonType" value={value} />
-              <Button type="submit" variant="ghost" justifyContent="start" h="auto" py="3" px="3" w="full" onClick={() => setOpen(false)}>
-                <HStack align="start" gap="3" w="full">
-                  <Badge tone="outline">{lessonTypeMarkers[value as keyof typeof lessonTypeMarkers]}</Badge>
-                  <Stack gap="1" align="start" textAlign="left">
-                    <Text textStyle="bodyStrong" color="fg.default">
-                      {label}
-                    </Text>
-                    <Text textStyle="bodyMuted" color="fg.muted">
-                      {lessonTypeDescriptions[value as keyof typeof lessonTypeDescriptions]}
-                    </Text>
-                  </Stack>
-                </HStack>
-              </Button>
-            </form>
-          ))}
-        </Stack>
-      </Dialog>
-    </Stack>
+    <Menu.Root positioning={{ placement: 'bottom-start' }}>
+      <Menu.Trigger asChild>
+        <Button type="button" variant="ghost" alignSelf="start">
+          + Урок
+        </Button>
+      </Menu.Trigger>
+      <Portal>
+        <Menu.Positioner>
+          <Menu.Content minW={{ base: '18rem', md: '22rem' }} p="2">
+            <Stack gap="1">
+              {Object.entries(lessonTypeLabels).map(([value, label]) => (
+                <form key={value} action={createLessonDraftAction}>
+                  <input type="hidden" name="courseId" value={courseId} />
+                  <input type="hidden" name="moduleId" value={moduleId} />
+                  <input type="hidden" name="lessonType" value={value} />
+                  <Button type="submit" variant="ghost" justifyContent="start" h="auto" py="3" px="3" w="full">
+                    <HStack align="start" gap="3" w="full">
+                      <Badge tone="outline">{lessonTypeMarkers[value as keyof typeof lessonTypeMarkers]}</Badge>
+                      <Stack gap="1" align="start" textAlign="left">
+                        <Text textStyle="bodyStrong" color="fg.default">
+                          {label}
+                        </Text>
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          {lessonTypeDescriptions[value as keyof typeof lessonTypeDescriptions]}
+                        </Text>
+                      </Stack>
+                    </HStack>
+                  </Button>
+                </form>
+              ))}
+            </Stack>
+          </Menu.Content>
+        </Menu.Positioner>
+      </Portal>
+    </Menu.Root>
   );
 }

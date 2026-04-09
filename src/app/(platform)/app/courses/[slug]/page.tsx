@@ -54,7 +54,7 @@ export default async function CourseLearningPage({ params }: CourseLearningPageP
       <HeaderBar
         eyebrow="Обучение"
         title={tree.course.title}
-        description="Плеер собран для спокойного прохождения уроков без лишнего интерфейсного шума."
+        description="Здесь видно, что вы уже прошли, какой урок открыт сейчас и куда идти дальше."
         actions={<ProgressPill value={tree.progressPercent} />}
       />
       <LearningWorkspace view={lessonView} />

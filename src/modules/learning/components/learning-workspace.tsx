@@ -1,8 +1,7 @@
-import { HStack, Heading, Stack, Text } from '@chakra-ui/react';
+import { HStack, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
-import { InfoRow } from '@/components/branding';
 import { ContentArea, Panel, Sidebar, SplitPageLayout } from '@/components/product';
-import { Badge, StatusPill } from '@/components/ui';
+import { Badge } from '@/components/ui';
 
 import type { LearningLessonView } from '../types';
 
@@ -44,12 +43,13 @@ export function LearningWorkspace({ view }: LearningWorkspaceProps) {
               <Stack gap="4">
                 <HStack gap="2" flexWrap="wrap">
                   <Badge tone="secondary">{lessonTypeLabels[lesson.lessonType] ?? lesson.lessonType}</Badge>
-                  <StatusPill tone={lesson.isCompleted ? 'success' : lesson.isCurrent ? 'primary' : 'neutral'}>
+                  <Badge tone={lesson.isCompleted ? 'success' : lesson.isCurrent ? 'primary' : 'default'}>
                     {lesson.isCompleted ? 'Завершён' : lesson.isCurrent ? 'Текущий' : 'В процессе'}
-                  </StatusPill>
+                  </Badge>
                   <Badge tone={lesson.status === 'PUBLISHED' ? 'secondary' : 'outline'}>
                     {lessonStatusLabels[lesson.status] ?? lesson.status}
                   </Badge>
+                  <Badge tone="outline">{tree.progressPercent}% курса завершено</Badge>
                 </HStack>
 
                 <Stack gap="2">
@@ -64,14 +64,34 @@ export function LearningWorkspace({ view }: LearningWorkspaceProps) {
                 </Stack>
               </Stack>
 
-              <HStack gap="4" align="stretch" flexWrap="wrap">
-                <Panel tone="muted" flex="1 1 18rem" p="4">
-                  <InfoRow label="Курс" value={course.title} />
-                </Panel>
-                <Panel tone="muted" flex="1 1 18rem" p="4">
-                  <InfoRow label="Урок" value={lesson.title} />
-                </Panel>
-              </HStack>
+              <Panel tone="inset" p="5">
+                <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
+                  <Stack gap="1">
+                    <Text textStyle="overline" color="fg.subtle">
+                      Курс
+                    </Text>
+                    <Text textStyle="bodyStrong" color="fg.default">
+                      {course.title}
+                    </Text>
+                  </Stack>
+                  <Stack gap="1">
+                    <Text textStyle="overline" color="fg.subtle">
+                      Текущий урок
+                    </Text>
+                    <Text textStyle="bodyStrong" color="fg.default">
+                      {lesson.title}
+                    </Text>
+                  </Stack>
+                  <Stack gap="1">
+                    <Text textStyle="overline" color="fg.subtle">
+                      Следующий шаг
+                    </Text>
+                    <Text textStyle="bodyStrong" color="fg.default">
+                      {nextLesson?.title ?? 'Завершите этот урок'}
+                    </Text>
+                  </Stack>
+                </SimpleGrid>
+              </Panel>
 
               <LessonContent content={lesson.content} summary={lesson.summary} />
             </Stack>

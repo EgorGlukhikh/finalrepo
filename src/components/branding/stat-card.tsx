@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack, Stat, Text } from '@chakra-ui/react';
 
 import { Card } from '@/components/ui/card';
 
@@ -24,26 +24,28 @@ const toneColorMap = {
 export function StatCard({ label, value, description, tone = 'default', className, eyebrow }: StatCardProps) {
   return (
     <Card tone="muted" className={className}>
-      <Stack gap="3">
-        <Stack gap="1">
-          {eyebrow ? (
-            <Text textStyle="overline" color="fg.subtle">
-              {eyebrow}
-            </Text>
+      <Stat.Root>
+        <Stack gap="3">
+          <Stack gap="1">
+            {eyebrow ? (
+              <Text textStyle="overline" color="fg.subtle">
+                {eyebrow}
+              </Text>
+            ) : null}
+            <Stat.Label textStyle="label" color="fg.muted">
+              {label}
+            </Stat.Label>
+          </Stack>
+          <Stat.ValueText textStyle="pageTitle" fontSize="3xl" color={toneColorMap[tone]}>
+            {value}
+          </Stat.ValueText>
+          {description ? (
+            <Stat.HelpText textStyle="bodyMuted" color="fg.muted">
+              {description}
+            </Stat.HelpText>
           ) : null}
-          <Text fontSize="sm" color="fg.muted">
-            {label}
-          </Text>
         </Stack>
-        <Text textStyle="pageTitle" fontSize="3xl" color={toneColorMap[tone]}>
-          {value}
-        </Text>
-        {description ? (
-          <Text textStyle="bodyMuted" color="fg.muted">
-            {description}
-          </Text>
-        ) : null}
-      </Stack>
+      </Stat.Root>
     </Card>
   );
 }

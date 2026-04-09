@@ -1,7 +1,7 @@
 import { AspectRatio, Box, List, Stack, Text, chakra } from '@chakra-ui/react';
 
+import { Panel } from '@/components/product';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { normalizeLessonBlocks } from '../mappers';
@@ -33,7 +33,7 @@ function renderBlock(block: LessonBlock) {
       const isDirectVideo = /\.(mp4|webm|ogg)$/i.test(block.url);
 
       return (
-        <Card padding="sm">
+        <Panel tone="default" p="5">
           <Stack gap="3">
             {block.title ? (
               <Text textStyle="bodyStrong" color="fg.default">
@@ -64,12 +64,12 @@ function renderBlock(block: LessonBlock) {
               </Text>
             ) : null}
           </Stack>
-        </Card>
+        </Panel>
       );
     }
     case 'file':
       return (
-        <Card padding="sm">
+        <Panel tone="default" p="5">
           <Stack gap="2">
             <Text textStyle="bodyStrong" color="fg.default">
               {block.title}
@@ -85,12 +85,12 @@ function renderBlock(block: LessonBlock) {
               </Text>
             </chakra.a>
           </Stack>
-        </Card>
+        </Panel>
       );
     case 'image':
       return (
         <Stack as="figure" gap="2">
-          <Box overflow="hidden" borderRadius="2xl" borderWidth="1px" borderColor="border.subtle" bg="bg.surface">
+          <Box overflow="hidden" borderRadius="xl" borderWidth="1px" borderColor="border.subtle" bg="bg.surface">
             <chakra.img alt={block.alt} src={block.url} display="block" width="100%" height="auto" />
           </Box>
           {block.caption ? (
@@ -102,7 +102,7 @@ function renderBlock(block: LessonBlock) {
       );
     case 'embed':
       return (
-        <Card padding="sm">
+        <Panel tone="default" p="5">
           <Stack gap="2">
             {block.title ? (
               <Text textStyle="bodyStrong" color="fg.default">
@@ -125,12 +125,12 @@ function renderBlock(block: LessonBlock) {
               />
             </AspectRatio>
           </Stack>
-        </Card>
+        </Panel>
       );
     case 'callout':
       return (
-        <Card
-          padding="sm"
+        <Panel
+          p="5"
           borderColor={block.tone === 'success' ? 'status.success' : block.tone === 'warning' ? 'status.warning' : 'accent.primary'}
           bg={block.tone === 'success' ? 'status.successBg' : block.tone === 'warning' ? 'status.warningBg' : 'bg.inset'}
         >
@@ -144,11 +144,11 @@ function renderBlock(block: LessonBlock) {
               {block.text}
             </Text>
           </Stack>
-        </Card>
+        </Panel>
       );
     case 'checklist':
       return (
-        <Card padding="sm">
+        <Panel tone="default" p="5">
           <Stack gap="3">
             <Text textStyle="bodyStrong" color="fg.default">
               Чеклист
@@ -177,7 +177,7 @@ function renderBlock(block: LessonBlock) {
               ))}
             </List.Root>
           </Stack>
-        </Card>
+        </Panel>
       );
     default:
       return null;
@@ -189,7 +189,7 @@ export function LessonContent({ content, summary }: LessonContentProps) {
 
   if (blocks.length === 0) {
     return (
-      <Card padding="lg">
+      <Panel tone="inset" p="6">
         <Stack gap="4">
           <Stack gap="2">
             <Text textStyle="sectionTitle" color="fg.default">
@@ -206,21 +206,21 @@ export function LessonContent({ content, summary }: LessonContentProps) {
             Пока у этого урока нет добавленных блоков.
           </Text>
         </Stack>
-      </Card>
+      </Panel>
     );
   }
 
   return (
     <Stack gap="4">
       {summary ? (
-        <Card padding="sm">
+        <Panel tone="inset" p="5">
           <Stack gap="3">
             <Badge tone="secondary">Кратко</Badge>
             <Text textStyle="bodyMuted" color="fg.muted" maxW="prose">
               {summary}
             </Text>
           </Stack>
-        </Card>
+        </Panel>
       ) : null}
       <Stack gap="4">{blocks.map((block, index) => <Box key={index}>{renderBlock(block)}</Box>)}</Stack>
     </Stack>

@@ -1,3 +1,5 @@
+import { Text } from '@chakra-ui/react';
+
 import { ActionLink } from '@/components/layout';
 import { ActionBar, Panel } from '@/components/product';
 import { Button } from '@/components/ui';
@@ -23,22 +25,30 @@ export function LessonActions({
   isCompleted,
 }: LessonActionsProps) {
   return (
-    <Panel tone="muted" p="4">
-      <ActionBar justifyContent="space-between">
-        <ActionBar>
-          {previousLesson ? <ActionLink href={previousLesson.href}>Предыдущий урок</ActionLink> : null}
+    <Panel tone="inset" p="4">
+      <ActionBar justifyContent="space-between" gap="4">
+        <ActionBar gap="3">
+          {previousLesson ? (
+            <ActionLink href={previousLesson.href} variant="ghost">
+              Предыдущий урок
+            </ActionLink>
+          ) : null}
           {nextLesson ? (
             <ActionLink href={nextLesson.href} variant="secondary">
               Следующий урок
             </ActionLink>
-          ) : null}
+          ) : (
+            <Text textStyle="bodyMuted" color="fg.muted">
+              Это последний урок в текущем маршруте.
+            </Text>
+          )}
         </ActionBar>
         <form action={completeLessonAction}>
           <input type="hidden" name="courseId" value={courseId} />
           <input type="hidden" name="courseSlug" value={courseSlug} />
           <input type="hidden" name="lessonId" value={lessonId} />
           <Button type="submit" variant={isCompleted ? 'secondary' : 'primary'}>
-            {isCompleted ? 'Уже завершён' : 'Отметить как завершённый'}
+            {isCompleted ? 'Урок уже завершён' : 'Отметить как завершённый'}
           </Button>
         </form>
       </ActionBar>
