@@ -10,7 +10,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ c
       ref={ref}
       className={className}
       h="11"
-      borderRadius="2xl"
+      borderRadius="lg"
       borderColor="border.default"
       bg="bg.surface"
       color="fg.default"
@@ -21,6 +21,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ c
       _focusVisible={{
         borderColor: 'accent.primary',
         boxShadow: '0 0 0 3px var(--chakra-colors-focus-ring)',
+      }}
+      _autofill={{
+        boxShadow: '0 0 0px 1000px var(--chakra-colors-bg-surface) inset',
+        WebkitTextFillColor: 'var(--chakra-colors-fg-default)',
       }}
       _disabled={{ opacity: 0.48, cursor: 'not-allowed' }}
       {...props}

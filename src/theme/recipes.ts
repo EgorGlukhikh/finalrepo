@@ -3,7 +3,7 @@ import { defineRecipe } from '@chakra-ui/react';
 export const buttonRecipe = defineRecipe({
   base: {
     fontWeight: '600',
-    borderRadius: 'lg',
+    borderRadius: 'sm',
     letterSpacing: '-0.015em',
     transitionProperty: 'common',
     transitionDuration: 'normal',
@@ -41,6 +41,7 @@ export const buttonRecipe = defineRecipe({
         borderColor: 'border.subtle',
         _hover: {
           bg: 'accent.secondaryHover',
+          borderColor: 'border.strong',
         },
         _active: {
           bg: 'accent.secondaryActive',
@@ -54,6 +55,7 @@ export const buttonRecipe = defineRecipe({
         boxShadow: 'sm',
         _hover: {
           bg: 'bg.elevated',
+          borderColor: 'border.strong',
           transform: 'translateY(-1px)',
         },
         _active: {
@@ -67,6 +69,7 @@ export const buttonRecipe = defineRecipe({
         borderColor: 'border.default',
         _hover: {
           bg: 'bg.surface',
+          borderColor: 'border.strong',
         },
         _active: {
           bg: 'bg.surfaceMuted',
@@ -117,7 +120,7 @@ export const buttonRecipe = defineRecipe({
 
 export const badgeRecipe = defineRecipe({
   base: {
-    borderRadius: 'full',
+    borderRadius: 'sm',
     px: '2.5',
     py: '1',
     fontSize: '2xs',

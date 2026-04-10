@@ -1,4 +1,4 @@
-import { Badge, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Badge, Grid, GridItem, Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
 import { ButtonLink, PageSection, SurfacePanel } from '@/components/compositions';
 
@@ -11,9 +11,18 @@ type LandingHeroProps = {
 };
 
 const keyPoints = [
-  { label: 'Каталог', value: 'Бесплатные и платные программы в одном месте' },
-  { label: 'Кабинет', value: 'Прогресс, доступ и быстрый возврат к урокам' },
-  { label: 'Формат', value: 'Курс, модули и уроки в понятной структуре' },
+  {
+    label: 'Каталог',
+    value: 'Все программы в одном месте: видно, что можно открыть сейчас, а что доступно после оплаты.',
+  },
+  {
+    label: 'Кабинет',
+    value: 'Курс, прогресс и следующий урок всегда под рукой, без лишних переходов и поиска.',
+  },
+  {
+    label: 'Формат',
+    value: 'Каждая программа разбита на модули и уроки, поэтому легко держать темп и не теряться.',
+  },
 ];
 
 export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref }: LandingHeroProps) {
@@ -29,10 +38,10 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
 
               <Stack gap="5">
                 <Heading textStyle="display" maxW="4xl">
-                  Онлайн-обучение для риэлторов без хаоса и перегруженных кабинетов.
+                  Учитесь в спокойном ритме и сразу видите, куда двигаться дальше.
                 </Heading>
                 <Text textStyle="body" color="fg.muted" maxW="2xl">
-                  Выберите курс, проходите уроки в своем темпе и возвращайтесь к материалам с сохраненным прогрессом.
+                  Выбирайте курс, проходите уроки по шагам и возвращайтесь к материалам без поиска. Платформа помнит прогресс и не перегружает лишним.
                 </Text>
               </Stack>
 
@@ -47,34 +56,36 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
             </Stack>
 
             <SurfacePanel tone="highlight" p={{ base: 6, md: 7 }}>
-              <Grid gap="5" templateColumns={{ base: '1fr', lg: '1.2fr 0.8fr' }}>
+              <Grid gap="6" templateColumns={{ base: '1fr', lg: '1.1fr 0.9fr' }}>
                 <GridItem>
                   <Stack gap="4" maxW="2xl">
                     <Text textStyle="overline" color="fg.subtle">
-                      Что получает пользователь
+                      Что здесь удобно
                     </Text>
                     <Heading textStyle="sectionTitle" maxW="2xl">
-                      Все, что нужно для обучения, собрано в одном месте.
+                      Курсы, кабинет и прогресс собраны так, чтобы можно было просто учиться, а не разбираться в интерфейсе.
                     </Heading>
                     <Text textStyle="bodyMuted" color="fg.muted" maxW="xl">
-                      Каталог, курсы и прогресс всегда под рукой, поэтому можно сразу продолжать обучение.
+                      На первом экране видно, что открыть сейчас, где вы остановились и какой шаг идет следующим.
                     </Text>
                   </Stack>
                 </GridItem>
 
                 <GridItem>
-                  <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+                  <SimpleGrid columns={{ base: 1, md: 3, lg: 1 }} gap="3">
                     {keyPoints.map((item) => (
-                      <Stack key={item.label} gap="2" py="4" borderBottomWidth="1px" borderColor="border.subtle">
-                        <Text textStyle="overline" color="fg.subtle">
-                          {item.label}
-                        </Text>
-                        <Text textStyle="bodyStrong" color="fg.default">
-                          {item.value}
-                        </Text>
-                      </Stack>
+                      <SurfacePanel key={item.label} tone="muted" p="4">
+                        <Stack gap="2">
+                          <Text textStyle="overline" color="fg.subtle">
+                            {item.label}
+                          </Text>
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {item.value}
+                          </Text>
+                        </Stack>
+                      </SurfacePanel>
                     ))}
-                  </Stack>
+                  </SimpleGrid>
                 </GridItem>
               </Grid>
             </SurfacePanel>
@@ -95,19 +106,21 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
 
               <Stack gap="4">
                 {marketingSteps.map((item) => (
-                  <Grid key={item.step} templateColumns="2rem minmax(0,1fr)" gap="3">
-                    <Text textStyle="overline" color="fg.subtle">
-                      {item.step}
-                    </Text>
-                    <Stack gap="1.5">
-                      <Text textStyle="bodyStrong" color="fg.default">
-                        {item.title}
+                  <SurfacePanel key={item.step} tone="inset" p="4">
+                    <Grid templateColumns="2.5rem minmax(0,1fr)" gap="3">
+                      <Text textStyle="overline" color="fg.brand" pt="1">
+                        {item.step}
                       </Text>
-                      <Text textStyle="bodyMuted" color="fg.muted">
-                        {item.description}
-                      </Text>
-                    </Stack>
-                  </Grid>
+                      <Stack gap="1.5">
+                        <Text textStyle="bodyStrong" color="fg.default">
+                          {item.title}
+                        </Text>
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          {item.description}
+                        </Text>
+                      </Stack>
+                    </Grid>
+                  </SurfacePanel>
                 ))}
               </Stack>
             </Stack>

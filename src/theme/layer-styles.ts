@@ -40,7 +40,7 @@ export const layerStyles = defineLayerStyles({
       borderColor: 'border.strong',
       boxShadow: 'sm',
       backgroundImage:
-        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 96%, white) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 98%, var(--chakra-colors-accent-secondary) 2%) 100%)',
+        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 88%, var(--chakra-colors-accent-primary) 12%) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 96%, #05070b) 100%)',
     },
   },
   inset: {

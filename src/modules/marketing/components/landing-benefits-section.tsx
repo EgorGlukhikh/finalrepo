@@ -1,6 +1,6 @@
-import { Grid, GridItem, Stack, Text } from '@chakra-ui/react';
+import { Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
-import { PageSection, SectionHeading } from '@/components/compositions';
+import { PageSection, SectionHeading, SurfacePanel } from '@/components/compositions';
 
 import { marketingBenefits } from '../content';
 
@@ -10,32 +10,30 @@ export function LandingBenefitsSection() {
       <Grid gap={{ base: 8, xl: 12 }} templateColumns={{ base: '1fr', xl: 'minmax(0,0.9fr) minmax(0,1.1fr)' }}>
         <GridItem>
           <SectionHeading
-            eyebrow="Преимущества"
-            title="Обучение, к которому легко возвращаться"
-            description="Курсы собраны так, чтобы не терять прогресс и не тратить время на поиск нужного урока."
+            eyebrow="Почему это удобно"
+            title="Обучение устроено так, чтобы не терять темп и не тратить силы на лишние переходы."
+            description="Каждый блок здесь работает на простую задачу: быстро открыть нужный курс, пройти следующий урок и без труда вернуться позже."
           />
         </GridItem>
 
         <GridItem>
-          <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
             {marketingBenefits.map((item, index) => (
-              <Grid
-                key={item.title}
-                templateColumns={{ base: '1fr', md: '10rem minmax(0,1fr)' }}
-                gap="5"
-                py="5"
-                borderBottomWidth="1px"
-                borderColor="border.subtle"
-              >
-                <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
-                  {item.title}
-                </Text>
-                <Text textStyle="body" color={index === 0 ? 'fg.default' : 'fg.muted'} maxW="2xl">
-                  {item.description}
-                </Text>
-              </Grid>
+              <SurfacePanel key={item.title} tone={index === 0 ? 'highlight' : 'muted'} h="full" p={{ base: 5, md: 6 }}>
+                <Stack gap="3">
+                  <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
+                    {index + 1 < 10 ? `0${index + 1}` : index + 1}
+                  </Text>
+                  <Heading as="h3" textStyle="h4" color="fg.default" maxW="18rem">
+                    {item.title}
+                  </Heading>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    {item.description}
+                  </Text>
+                </Stack>
+              </SurfacePanel>
             ))}
-          </Stack>
+          </SimpleGrid>
         </GridItem>
       </Grid>
     </PageSection>

@@ -12,7 +12,7 @@ export function PublicFooter() {
               Академия риэлторов
             </Text>
             <Text textStyle="bodyMuted" color="fg.muted">
-              Курсы для риэлторов с каталогом, личным кабинетом и сохраненным прогрессом.
+              Курсы для риэлторов, к которым удобно возвращаться и которыми реально хочется пользоваться каждый день.
             </Text>
           </Stack>
           <HStack gap="5" align="start" color="fg.muted">

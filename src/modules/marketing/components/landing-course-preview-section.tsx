@@ -39,8 +39,8 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
       <Stack gap="8">
         <SectionHeading
           eyebrow="Каталог"
-          title="Программы, которые можно открыть сейчас"
-          description="Бесплатные курсы открываются сразу, платные — после покупки."
+          title="Выберите программу, с которой удобно начать прямо сейчас"
+          description="Бесплатные курсы открываются сразу. На платных заранее видно программу, стоимость и что откроется после покупки."
           actions={
             <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">
               Открыть каталог
@@ -68,7 +68,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                     </Heading>
                     <Text textStyle="body" color="fg.muted" maxW="2xl">
                       {featuredCourse.shortDescription ??
-                        'Откройте курс, чтобы посмотреть программу и условия доступа.'}
+                        'Откройте страницу курса, чтобы посмотреть программу, формат и условия доступа.'}
                     </Text>
                   </Stack>
 
@@ -79,7 +79,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
 
                   <HStack gap="3" flexWrap="wrap" pt="1">
                     <ButtonLink href={buildPublicCoursePath(featuredCourse.slug)} colorPalette="brand">
-                      Открыть курс
+                      Посмотреть курс
                     </ButtonLink>
                     <ButtonLink href={buildCatalogPath()} variant="ghost">
                       Все программы
@@ -91,38 +91,33 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
 
             <GridItem>
               <SurfacePanel tone="muted" p={{ base: 5, md: 6 }}>
-                <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+                <Stack gap="4">
                   {secondaryCourses.map((course) => (
-                    <Grid
-                      key={course.id}
-                      templateColumns={{ base: '1fr', md: 'minmax(0,1fr) auto' }}
-                      gap="4"
-                      py="4"
-                      borderBottomWidth="1px"
-                      borderColor="border.subtle"
-                      alignItems="start"
-                    >
-                      <Stack gap="2">
-                        <HStack gap="2" flexWrap="wrap">
-                          <Badge colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
-                            {accessLabel(course.accessType)}
-                          </Badge>
-                          <Text textStyle="caption" color="fg.muted">
-                            {priceLabel(course)}
+                    <SurfacePanel key={course.id} tone="inset" p="4">
+                      <Grid templateColumns={{ base: '1fr', md: 'minmax(0,1fr) auto' }} gap="4" alignItems="start">
+                        <Stack gap="2">
+                          <HStack gap="2" flexWrap="wrap">
+                            <Badge colorPalette={course.accessType === 'FREE' ? 'green' : 'brand'} variant="subtle">
+                              {accessLabel(course.accessType)}
+                            </Badge>
+                            <Text textStyle="caption" color="fg.muted">
+                              {priceLabel(course)}
+                            </Text>
+                          </HStack>
+                          <Heading as="h3" textStyle="h4">
+                            {course.title}
+                          </Heading>
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            {course.shortDescription ??
+                              'На странице курса можно спокойно посмотреть программу и понять, подходит ли вам этот формат.'}
                           </Text>
-                        </HStack>
-                        <Heading as="h3" textStyle="h4">
-                          {course.title}
-                        </Heading>
-                        <Text textStyle="bodyMuted" color="fg.muted">
-                          {course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
-                        </Text>
-                      </Stack>
+                        </Stack>
 
-                      <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong">
-                        Открыть
-                      </ButtonLink>
-                    </Grid>
+                        <ButtonLink href={buildPublicCoursePath(course.slug)} variant="outline" borderColor="border.strong">
+                          Подробнее
+                        </ButtonLink>
+                      </Grid>
+                    </SurfacePanel>
                   ))}
                 </Stack>
               </SurfacePanel>
@@ -137,7 +132,7 @@ export function LandingCoursePreviewSection({ courses }: LandingCoursePreviewSec
                 </Text>
                 <Heading textStyle="sectionTitle">Опубликованные курсы появятся здесь.</Heading>
                 <Text textStyle="bodyMuted" color="fg.muted">
-                  Как только программа будет опубликована, она появится в каталоге.
+                  Как только программа будет опубликована, она сразу появится в каталоге.
                 </Text>
               </Stack>
               <ButtonLink href={buildCatalogPath()} variant="outline" borderColor="border.strong">

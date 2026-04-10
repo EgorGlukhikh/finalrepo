@@ -6,8 +6,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: { base: '5xl', md: '6xl' },
-      lineHeight: '0.94',
-      letterSpacing: '-0.06em',
+      lineHeight: '1.02',
+      letterSpacing: '-0.05em',
       fontWeight: '700',
     },
   },
@@ -16,8 +16,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: { base: '3xl', md: '4xl' },
-      lineHeight: '1.02',
-      letterSpacing: '-0.05em',
+      lineHeight: '1.08',
+      letterSpacing: '-0.04em',
       fontWeight: '700',
     },
   },
@@ -26,8 +26,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: { base: '2xl', md: '3xl' },
-      lineHeight: '1.08',
-      letterSpacing: '-0.045em',
+      lineHeight: '1.14',
+      letterSpacing: '-0.035em',
       fontWeight: '700',
     },
   },
@@ -36,7 +36,7 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: 'xl',
-      lineHeight: '1.2',
+      lineHeight: '1.3',
       letterSpacing: '-0.03em',
       fontWeight: '700',
     },
@@ -85,11 +85,11 @@ export const textStyles = defineTextStyles({
     description: 'Uppercase metadata and section eyebrow',
     value: {
       fontFamily: 'body',
-      fontSize: '2xs',
-      lineHeight: '1.2',
-      letterSpacing: '0.22em',
+      fontSize: 'xs',
+      lineHeight: '1.35',
+      letterSpacing: '0.14em',
       textTransform: 'uppercase',
-      fontWeight: '700',
+      fontWeight: '600',
     },
   },
   caption: {

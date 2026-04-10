@@ -15,7 +15,7 @@ export function Select({ children, className, placeholder, ...props }: SelectPro
         className={className}
         h="11"
         w="full"
-        borderRadius="xl"
+        borderRadius="lg"
         borderWidth="1px"
         borderColor="border.default"
         bg="bg.surface"

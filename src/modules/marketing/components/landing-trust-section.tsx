@@ -1,4 +1,4 @@
-import { Accordion, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Accordion, Grid, GridItem, Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
 import { PageSection, SectionHeading, SurfacePanel } from '@/components/compositions';
 
@@ -11,30 +11,25 @@ export function LandingTrustSection() {
         <GridItem>
           <Stack gap="8">
             <SectionHeading
-              eyebrow="Что получает пользователь"
-              title="После регистрации все нужное уже под рукой"
-              description="Каталог, курсы и прогресс доступны в одном кабинете."
+              eyebrow="После регистрации"
+              title="Вы сразу понимаете, что открыто, где вы остановились и куда идти дальше."
+              description="Никаких служебных экранов и лишней путаницы. Только каталог, курсы и понятный следующий шаг."
             />
 
-            <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
               {marketingTrustPoints.map((item, index) => (
-                <Grid
-                  key={item}
-                  templateColumns={{ base: '1fr', md: '2.5rem minmax(0,1fr)' }}
-                  gap="4"
-                  py="4"
-                  borderBottomWidth="1px"
-                  borderColor="border.subtle"
-                >
-                  <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
-                    0{index + 1}
-                  </Text>
-                  <Text textStyle={index === 0 ? 'body' : 'bodyMuted'} color={index === 0 ? 'fg.default' : 'fg.muted'} maxW="2xl">
-                    {item}
-                  </Text>
-                </Grid>
+                <SurfacePanel key={item} tone={index === 0 ? 'highlight' : 'muted'} p={{ base: 5, md: 6 }} h="full">
+                  <Stack gap="3">
+                    <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
+                      0{index + 1}
+                    </Text>
+                    <Text textStyle={index === 0 ? 'body' : 'bodyMuted'} color={index === 0 ? 'fg.default' : 'fg.muted'}>
+                      {item}
+                    </Text>
+                  </Stack>
+                </SurfacePanel>
               ))}
-            </Stack>
+            </SimpleGrid>
           </Stack>
         </GridItem>
 
@@ -55,7 +50,7 @@ export function LandingTrustSection() {
                     >
                       <Accordion.ItemTrigger py="4">
                         <HStack justify="space-between" gap="4" w="full" align="start">
-                          <Heading as="h3" fontSize="md" lineHeight="1.35" letterSpacing="-0.02em" textAlign="left">
+                          <Heading as="h3" fontSize="md" lineHeight="1.4" letterSpacing="-0.02em" textAlign="left">
                             {item.question}
                           </Heading>
                           <Accordion.ItemIndicator color="fg.subtle" />
