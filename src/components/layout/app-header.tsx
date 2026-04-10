@@ -16,13 +16,14 @@ export function AppHeader({ brand, navigation, actions }: AppHeaderProps) {
       top="0"
       zIndex="40"
       borderBottomWidth="1px"
-      borderColor="border.subtle"
-      bg="color-mix(in srgb, var(--chakra-colors-bg-canvas) 90%, transparent)"
-      backdropFilter="blur(14px)"
+      borderColor="rgba(148, 163, 184, 0.18)"
+      bg="color-mix(in srgb, var(--chakra-colors-bg-canvas) 86%, transparent)"
+      backdropFilter="blur(18px)"
+      boxShadow="0 1px 0 rgba(255, 255, 255, 0.03)"
     >
-      <Container maxW="wide" px={{ base: '4', md: '6', lg: '8' }} py="4">
+      <Container maxW="wide" px={{ base: '4', md: '6', lg: '8' }} py="3.5">
         <Flex align="center" justify="space-between" gap="6">
-          <HStack gap={{ base: '4', md: '8' }} align="center" minW="0">
+          <HStack gap={{ base: '4', md: '7' }} align="center" minW="0">
             {brand}
             {navigation ? <Box display={{ base: 'none', md: 'block' }}>{navigation}</Box> : null}
           </HStack>

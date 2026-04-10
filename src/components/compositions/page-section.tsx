@@ -11,7 +11,7 @@ export function PageSection({ children, tone = 'default' }: PageSectionProps) {
   return (
     <Box
       as="section"
-      py={{ base: 12, md: 16 }}
+      py={{ base: 16, md: 20 }}
       bg={tone === 'muted' ? 'bg.subtle' : 'transparent'}
       borderTopWidth={tone === 'muted' ? '1px' : undefined}
       borderBottomWidth={tone === 'muted' ? '1px' : undefined}

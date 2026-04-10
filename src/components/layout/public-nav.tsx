@@ -9,7 +9,7 @@ const navItems = [
 
 export function PublicNav() {
   return (
-    <HStack as="nav" gap="5" align="center">
+    <HStack as="nav" gap="4" align="center">
       {navItems.map((item) => (
         <ChakraLink
           key={item.href}
@@ -18,7 +18,7 @@ export function PublicNav() {
           _hover={{ color: 'fg.default', textDecoration: 'none' }}
         >
           <Link href={item.href}>
-            <Text fontSize="sm" fontWeight="600" letterSpacing="-0.02em">
+            <Text fontSize="xs" fontWeight="700" letterSpacing="0.14em" textTransform="uppercase">
               {item.label}
             </Text>
           </Link>

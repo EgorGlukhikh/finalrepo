@@ -10,13 +10,13 @@ export function BrandMark({ href = '/' }: BrandMarkProps) {
   return (
     <ChakraLink asChild _hover={{ textDecoration: 'none' }} aria-label="Академия риэлторов">
       <Link href={href}>
-        <HStack gap="3.5" align="center">
+        <HStack gap="3" align="center">
           <Box
-            boxSize="10"
+            boxSize="9"
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
-            borderRadius="xl"
+            borderRadius="sm"
             borderWidth="1px"
             borderColor="border.subtle"
             bg="bg.elevated"
@@ -31,7 +31,7 @@ export function BrandMark({ href = '/' }: BrandMarkProps) {
             <Text textStyle="overline" color="fg.subtle">
               Академия
             </Text>
-            <Text fontSize="sm" fontWeight="700" letterSpacing="-0.02em" color="fg.default">
+            <Text fontSize="sm" fontWeight="700" letterSpacing="-0.03em" color="fg.default">
               риэлторов
             </Text>
           </VStack>

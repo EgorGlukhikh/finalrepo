@@ -25,14 +25,13 @@ export const metadata: Metadata = {
     default: 'Академия риэлторов',
     template: '%s | Академия риэлторов',
   },
-  description:
-    'Академия риэлторов — курсы для риэлторов с личным кабинетом, прогрессом обучения и доступом к бесплатным и платным программам.',
+  description: 'Академия риэлторов: курсы, личный кабинет и админка в одной рабочей системе.',
   applicationName: 'Академия риэлторов',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <body className={`${bodyFont.variable} ${headingFont.variable}`}>
         <ChakraAppProvider>{children}</ChakraAppProvider>
       </body>

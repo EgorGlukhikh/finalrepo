@@ -18,7 +18,7 @@ export function SurfacePanel({ children, tone = 'default', ...props }: SurfacePa
   return (
     <Box
       layerStyle={layerStyleByTone[tone]}
-      borderRadius="xl"
+      borderRadius="md"
       p={{ base: 5, md: 6 }}
       {...props}
     >
