@@ -17,7 +17,7 @@ Academy Realtors is a learning platform for realtors. The interface should feel 
 ## Color Roles
 - Canvas: near-black blue surface
 - Surface: dark slate panels with soft elevation
-- Primary action: vivid cyan-blue accent
+- Primary action: vivid teal accent (#0FC2B2)
 - Secondary action: dark bordered buttons with bright hover edges
 - Text primary: high-contrast off-white
 - Text secondary: cool muted gray-blue
@@ -47,7 +47,7 @@ Academy Realtors is a learning platform for realtors. The interface should feel 
 - Keep promises concrete and believable
 
 ## Components
-- Buttons: bright primary fill, dark outline secondary, small radius
+- Buttons: bright primary fill (#0FC2B2), dark outline secondary, small radius
 - Panels: dark, layered, restrained glow only on highlighted blocks
 - Feature blocks: title above description, never side-by-side like a spreadsheet
 - Course previews: should read like program choices, not registry rows

@@ -3,317 +3,328 @@
 <html class="dark" lang="ru"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Academy Realtors Admin Terminal</title>
+<title>Academy Realtors | Админка</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@200;300;400;600&amp;family=Inter:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "surface-container": "#1c2026",
-                        "on-tertiary": "#243142",
-                        "on-primary-fixed-variant": "#004f58",
-                        "on-primary-container": "#00626e",
-                        "outline-variant": "#3b494c",
-                        "on-surface": "#dfe2eb",
-                        "tertiary-fixed": "#d6e3fa",
-                        "on-tertiary-container": "#4d5a6c",
-                        "background": "#10141a",
-                        "inverse-surface": "#dfe2eb",
-                        "on-tertiary-fixed-variant": "#3b485a",
-                        "secondary-container": "#384858",
-                        "on-tertiary-fixed": "#0f1c2c",
-                        "surface-container-lowest": "#0a0e14",
-                        "on-secondary": "#223241",
-                        "on-error": "#690005",
-                        "on-surface-variant": "#bac9cc",
-                        "primary-fixed-dim": "#00daf3",
-                        "primary-container": "#00e5ff",
-                        "on-secondary-container": "#a6b7ca",
-                        "surface-variant": "#31353c",
-                        "on-primary-fixed": "#001f24",
-                        "secondary-fixed-dim": "#b7c8db",
-                        "tertiary-fixed-dim": "#bac7dd",
-                        "surface-dim": "#10141a",
-                        "surface-tint": "#00daf3",
-                        "secondary": "#b7c8db",
-                        "primary-fixed": "#9cf0ff",
-                        "on-secondary-fixed": "#0c1d2b",
-                        "on-primary": "#00363d",
-                        "tertiary": "#e3edff",
-                        "surface-container-low": "#181c22",
-                        "outline": "#849396",
-                        "inverse-primary": "#006875",
-                        "error": "#ffb4ab",
-                        "secondary-fixed": "#d3e4f8",
-                        "surface": "#10141a",
-                        "error-container": "#93000a",
-                        "surface-container-highest": "#31353c",
-                        "surface-container-high": "#262a31",
-                        "on-error-container": "#ffdad6",
-                        "tertiary-container": "#c4d1e7",
-                        "surface-bright": "#353940",
-                        "on-background": "#dfe2eb",
-                        "inverse-on-surface": "#2d3137",
-                        "primary": "#c3f5ff",
-                        "on-secondary-fixed-variant": "#384858"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Manrope", "sans-serif"],
-                        "body": ["Manrope", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    }
-                }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#005049",
+                    "on-tertiary-container": "#752705",
+                    "on-primary": "#003732",
+                    "surface-container-lowest": "#0a0e14",
+                    "on-primary-fixed": "#00201d",
+                    "error": "#ffb4ab",
+                    "surface-container": "#1c2026",
+                    "surface-dim": "#10141a",
+                    "surface-bright": "#353940",
+                    "on-surface-variant": "#bbcac6",
+                    "tertiary-fixed": "#ffdbcf",
+                    "background": "#10141a",
+                    "secondary-fixed": "#d3e4f8",
+                    "secondary-container": "#384858",
+                    "secondary-fixed-dim": "#b7c8db",
+                    "on-error": "#690005",
+                    "tertiary-container": "#ff8f66",
+                    "primary-fixed-dim": "#43dccb",
+                    "surface": "#10141a",
+                    "surface-container-highest": "#31353c",
+                    "on-tertiary": "#5c1a00",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "on-surface": "#dfe2eb",
+                    "surface-container-high": "#262a31",
+                    "inverse-on-surface": "#2d3137",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#b7c8db",
+                    "on-tertiary-fixed-variant": "#7d2d0b",
+                    "on-background": "#dfe2eb",
+                    "on-secondary-fixed": "#0c1d2b",
+                    "tertiary": "#ffb89f",
+                    "outline-variant": "#3c4947",
+                    "outline": "#859491",
+                    "on-secondary": "#223241",
+                    "primary-fixed": "#67f9e7",
+                    "primary": "#47decd",
+                    "surface-container-low": "#181c22",
+                    "on-secondary-fixed-variant": "#384858",
+                    "surface-variant": "#31353c",
+                    "on-secondary-container": "#a6b7ca",
+                    "on-primary-container": "#004a43",
+                    "on-tertiary-fixed": "#380d00",
+                    "inverse-primary": "#006a61",
+                    "inverse-surface": "#dfe2eb",
+                    "primary-container": "#0fc2b2",
+                    "surface-tint": "#43dccb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
             }
-        }
+          },
+        },
+      }
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         body {
             background-color: #0a0e14;
-            color: #f0f4f8;
-            font-family: 'Manrope', sans-serif;
-            overflow-x: hidden;
+            color: #dfe2eb;
         }
-        .editorial-grid {
-            display: grid;
-            grid-template-columns: 256px 1fr;
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-surface-container-lowest text-on-surface">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 w-full bg-[#0a0e14] border-b border-[#3b494c]/20 font-manrope tracking-tight">
-<div class="flex items-center gap-8">
-<span class="text-xl font-bold text-[#f0f4f8] tracking-wider uppercase">Админка</span>
-<div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/10">
-<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-64 placeholder:text-on-surface-variant/50" placeholder="Поиск по терминалу..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<button class="bg-primary-container text-on-primary px-5 py-2 rounded text-xs font-bold tracking-widest uppercase transition-all active:opacity-80 active:scale-95">
-                Создать курс
-            </button>
-<button class="bg-transparent border border-outline/30 text-on-surface-variant px-5 py-2 rounded text-xs font-bold tracking-widest uppercase hover:text-primary-container hover:border-primary-container transition-colors">
-                Открыть отчёты
-            </button>
-<div class="flex items-center gap-4 ml-4 border-l border-outline-variant/20 pl-6">
-<span class="material-symbols-outlined text-on-surface-variant hover:text-[#00e5ff] transition-colors cursor-pointer">notifications</span>
-<span class="material-symbols-outlined text-on-surface-variant hover:text-[#00e5ff] transition-colors cursor-pointer">settings</span>
-<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant/20">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a senior administrator in a dark studio setting with soft rim lighting and a serious expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAcAYYRzNizA3Bsx9SyE-DI0FyPfixlAjYOP3iUQ14ET89YcrOl_VULdufOXSqz03FOk5B2Gj5fb6wPVdO1TU5Q-XE4cNuIIHZL5aAQZbqK2RdXrZX9fWKtZN6TZgLQzJCSBgPTcZYsRkBXWFpgnMClffvHFIyuJRq2pfnueqktl8ZYOrScKuIpMMHN73pFgTyQLVPaCSxNQKRyy48CvVLGUnCNeg8hqbEAS_4qGh0vtZMOLM1Ud826e2AMcH41AnmKHHU0P5HAlRF"/>
-</div>
-</div>
-</div>
-</header>
-<div class="editorial-grid min-h-screen pt-[72px]">
-<!-- SideNavBar -->
-<aside class="fixed left-0 top-0 h-full w-64 bg-[#0a0e14] border-r border-[#3b494c]/20 flex flex-col pt-24 pb-8 z-40">
-<div class="px-8 mb-10">
-<h2 class="text-lg font-black text-[#f0f4f8]">Academy Realtors</h2>
-<p class="font-manrope text-[10px] font-medium uppercase tracking-[0.2em] text-cyan-400 mt-1">Admin Terminal</p>
+<body class="font-body selection:bg-primary-container/30">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#0a0e14] flex flex-col py-10 gap-8 z-50">
+<div class="px-8">
+<h1 class="font-['Newsreader'] text-lg italic text-white">Academy Realtors</h1>
+<p class="font-['Manrope'] font-light tracking-wide uppercase text-[10px] text-[#b7c8db] mt-1 opacity-60">Editorial Admin</p>
 </div>
 <nav class="flex-grow">
-<ul class="space-y-1">
-<li>
-<a class="flex items-center gap-4 px-8 py-3 text-[#00e5ff] border-r-2 border-[#00e5ff] bg-[#181c22] font-manrope text-sm font-medium uppercase tracking-widest transition-all translate-x-1" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span>Dashboard</span>
+<ul class="space-y-4">
+<!-- Dashboard is active -->
+<li class="group cursor-pointer active:opacity-70 transition-all ease-in-out duration-200 text-[#47decd] border-l-2 border-[#47decd] pl-4">
+<a class="flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-xs">Dashboard</span>
 </a>
 </li>
-<li>
-<a class="flex items-center gap-4 px-8 py-3 text-[#8e9fb1] hover:bg-[#1c2026] hover:text-[#f0f4f8] font-manrope text-sm font-medium uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined">school</span>
-<span>Courses</span>
+<li class="group cursor-pointer active:opacity-70 transition-all ease-in-out duration-200 text-[#b7c8db] pl-4 opacity-60 hover:opacity-100 hover:text-white">
+<a class="flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="menu_book">menu_book</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-xs">Courses</span>
 </a>
 </li>
-<li>
-<a class="flex items-center gap-4 px-8 py-3 text-[#8e9fb1] hover:bg-[#1c2026] hover:text-[#f0f4f8] font-manrope text-sm font-medium uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined">group</span>
-<span>Users</span>
+<li class="group cursor-pointer active:opacity-70 transition-all ease-in-out duration-200 text-[#b7c8db] pl-4 opacity-60 hover:opacity-100 hover:text-white">
+<a class="flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="group">group</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-xs">Users</span>
 </a>
 </li>
-<li>
-<a class="flex items-center gap-4 px-8 py-3 text-[#8e9fb1] hover:bg-[#1c2026] hover:text-[#f0f4f8] font-manrope text-sm font-medium uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined">assessment</span>
-<span>Reports</span>
+<li class="group cursor-pointer active:opacity-70 transition-all ease-in-out duration-200 text-[#b7c8db] pl-4 opacity-60 hover:opacity-100 hover:text-white">
+<a class="flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="analytics">analytics</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-xs">Reports</span>
 </a>
 </li>
-<li>
-<a class="flex items-center gap-4 px-8 py-3 text-[#8e9fb1] hover:bg-[#1c2026] hover:text-[#f0f4f8] font-manrope text-sm font-medium uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span>Settings</span>
+<li class="group cursor-pointer active:opacity-70 transition-all ease-in-out duration-200 text-[#b7c8db] pl-4 opacity-60 hover:opacity-100 hover:text-white">
+<a class="flex items-center gap-3" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-xs">Settings</span>
 </a>
 </li>
 </ul>
 </nav>
-<div class="mt-auto px-8 space-y-4">
-<a class="flex items-center gap-3 text-[#8e9fb1] hover:text-[#f0f4f8] font-manrope text-[10px] uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined text-sm">help_outline</span>
-<span>Support</span>
+<div class="px-8 mt-auto flex flex-col gap-6">
+<button class="bg-primary-container text-on-primary-container py-3 px-6 text-xs uppercase tracking-widest font-bold rounded-sm hover:opacity-90 transition-opacity">
+                New Entry
+            </button>
+<div class="flex flex-col gap-3">
+<a class="flex items-center gap-3 text-[#b7c8db] opacity-40 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-[10px]">Support</span>
 </a>
-<a class="flex items-center gap-3 text-[#8e9fb1] hover:text-[#f0f4f8] font-manrope text-[10px] uppercase tracking-widest transition-all" href="#">
-<span class="material-symbols-outlined text-sm">logout</span>
-<span>Logout</span>
+<a class="flex items-center gap-3 text-[#b7c8db] opacity-40 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span class="font-['Manrope'] font-light tracking-wide uppercase text-[10px]">Archive</span>
 </a>
+</div>
 </div>
 </aside>
 <!-- Main Content Area -->
-<main class="ml-64 p-12 bg-background">
-<header class="mb-16 max-w-4xl">
-<h1 class="text-display-m font-extrabold text-on-surface tracking-tighter mb-4 text-4xl">Обзор системы</h1>
-<p class="text-on-surface-variant font-body leading-relaxed max-w-2xl">
-                    Добро пожаловать в панель управления Academy Realtors. Здесь вы можете отслеживать текущую активность, управлять образовательными материалами и контролировать состояние инфраструктуры в режиме реального времени.
-                </p>
-</header>
-<!-- KPI Tiles (Asymmetric Grid) -->
-<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-<div class="bg-surface-container-low p-8 border-l border-primary-container/30 group hover:bg-surface-container transition-all">
-<p class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-6">Курсы</p>
-<div class="flex items-end justify-between">
-<span class="text-4xl font-bold text-on-surface">42</span>
-<span class="text-primary-container material-symbols-outlined text-3xl">auto_stories</span>
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="bg-[#0a0e14] border-b border-white/5 flex justify-between items-center w-full px-12 py-6 sticky top-0 z-40">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-serif text-[#47decd] font-['Newsreader'] italic tracking-tight">Админка</span>
+<nav class="hidden md:flex gap-8">
+<a class="text-[#b7c8db] font-['Newsreader'] italic tracking-tight hover:text-[#47decd] transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Создать курс</a>
+<a class="text-[#b7c8db] font-['Newsreader'] italic tracking-tight hover:text-[#47decd] transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Открыть отчёты</a>
+</nav>
 </div>
-</div>
-<div class="bg-surface-container-low p-8 border-l border-outline-variant/30 group hover:bg-surface-container transition-all">
-<p class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-6">Пользователи</p>
-<div class="flex items-end justify-between">
-<span class="text-4xl font-bold text-on-surface">1,284</span>
-<span class="text-on-surface-variant material-symbols-outlined text-3xl">group</span>
-</div>
-</div>
-<div class="bg-surface-container-low p-8 border-l border-outline-variant/30 group hover:bg-surface-container transition-all">
-<p class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-6">Активные заказы</p>
-<div class="flex items-end justify-between">
-<span class="text-4xl font-bold text-on-surface">18</span>
-<span class="text-on-surface-variant material-symbols-outlined text-3xl">payments</span>
-</div>
-</div>
-<div class="bg-[#1c1414] p-8 border-l border-error/40 group hover:bg-[#261818] transition-all">
-<p class="font-label text-[10px] uppercase tracking-[0.2em] text-error/70 mb-6">Ошибки системы</p>
-<div class="flex items-end justify-between">
-<span class="text-4xl font-bold text-error">3</span>
-<span class="text-error material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">error</span>
-</div>
-</div>
-</section>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-<!-- Operational Feed -->
-<section class="lg:col-span-2">
-<div class="flex items-center justify-between mb-8">
-<h3 class="text-xl font-bold tracking-tight text-on-surface">Последние события</h3>
-<button class="text-xs font-label uppercase tracking-widest text-primary-container border-b border-primary-container/30 pb-1">Показать все</button>
-</div>
-<div class="space-y-4">
-<div class="bg-surface-container-low flex items-center p-6 hover:bg-surface-container-high transition-colors cursor-pointer group">
-<div class="w-12 h-12 rounded bg-primary-container/10 flex items-center justify-center text-primary-container mr-6">
-<span class="material-symbols-outlined">add_task</span>
-</div>
-<div class="flex-grow">
-<p class="text-on-surface font-medium">Создан курс: "Этика в недвижимости 2.0"</p>
-<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Сегодня, 14:20 • Автор: Администратор</p>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</div>
-<div class="bg-surface-container-low flex items-center p-6 hover:bg-surface-container-high transition-colors cursor-pointer group">
-<div class="w-12 h-12 rounded bg-secondary-container/20 flex items-center justify-center text-secondary mr-6">
-<span class="material-symbols-outlined">credit_score</span>
-</div>
-<div class="flex-grow">
-<p class="text-on-surface font-medium">Новая оплата: Пакет "PRO Broker"</p>
-<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Сегодня, 12:45 • ID: #TRX-9902</p>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</div>
-<div class="bg-surface-container-low flex items-center p-6 hover:bg-surface-container-high transition-colors cursor-pointer group">
-<div class="w-12 h-12 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary mr-6">
-<span class="material-symbols-outlined">support_agent</span>
-</div>
-<div class="flex-grow">
-<p class="text-on-surface font-medium">Обращение в поддержку: Проблема с доступом</p>
-<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Сегодня, 09:12 • Пользователь: И. Петров</p>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</div>
-</div>
-</section>
-<!-- System Status Panel -->
-<section>
-<div class="mb-8">
-<h3 class="text-xl font-bold tracking-tight text-on-surface">Статус системы</h3>
-</div>
-<div class="bg-surface-container p-8 space-y-10">
+<div class="flex items-center gap-6">
 <div class="relative">
+<span class="material-symbols-outlined text-[#b7c8db] cursor-pointer hover:text-[#47decd]" data-icon="notifications">notifications</span>
+<div class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<span class="material-symbols-outlined text-[#b7c8db] cursor-pointer hover:text-[#47decd]" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<section class="px-12 py-12 max-w-7xl mx-auto">
+<!-- Hero Heading -->
+<div class="mb-16">
+<h2 class="text-display-lg font-headline italic text-on-surface text-5xl mb-4">Добро пожаловать в систему управления.</h2>
+<p class="text-secondary font-body font-light text-lg max-w-2xl">
+                    Вы вошли как главный редактор Academy Realtors. Просмотрите текущие метрики и последние изменения в инфраструктуре.
+                </p>
+</div>
+<!-- KPI Tiles: Architectural Ledger Pattern -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 mb-24 overflow-hidden rounded-sm">
+<div class="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary/60 mb-8 block">Курсы</span>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline italic">124</span>
+<span class="text-primary text-xs font-label">+12%</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary/60 mb-8 block">Пользователи</span>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline italic">8,432</span>
+<span class="text-primary text-xs font-label">+240</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary/60 mb-8 block">Активные заказы</span>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline italic">58</span>
+<span class="text-primary text-xs font-label">Стабильно</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 group hover:bg-surface-container transition-colors">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary/60 mb-8 block">Ошибки</span>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-headline italic">0</span>
+<span class="text-secondary text-xs font-label opacity-40">Критично</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Operational Feed -->
+<div class="lg:col-span-8">
+<div class="flex justify-between items-end mb-10">
+<h3 class="font-headline text-3xl italic">Последние события</h3>
+<a class="font-label text-[10px] uppercase tracking-widest text-primary border-b border-primary/30 pb-1" href="#">Посмотреть всё</a>
+</div>
+<div class="space-y-12">
+<!-- Event Record -->
+<div class="flex gap-8 group">
+<div class="flex-none pt-1">
+<span class="font-label text-[10px] text-secondary/40">14:22:05</span>
+</div>
+<div class="flex-grow pb-12 border-b border-white/5 group-last:border-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-body font-normal text-on-surface">Обновление курса «Пентхаусы Лондона»</h4>
+<span class="font-label text-[9px] text-secondary/30 uppercase tracking-widest">ID #EV-99210</span>
+</div>
+<p class="text-secondary font-light text-sm leading-relaxed">
+                                    Пользователь Александр В. добавил 12 новых медиа-файлов в модуль 4. Система успешно обработала метаданные и создала превью.
+                                </p>
+</div>
+</div>
+<!-- Event Record -->
+<div class="flex gap-8 group">
+<div class="flex-none pt-1">
+<span class="font-label text-[10px] text-secondary/40">12:15:30</span>
+</div>
+<div class="flex-grow pb-12 border-b border-white/5 group-last:border-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-body font-normal text-on-surface">Новая регистрация: VIP Пакет</h4>
+<span class="font-label text-[9px] text-secondary/30 uppercase tracking-widest">ID #EV-99208</span>
+</div>
+<p class="text-secondary font-light text-sm leading-relaxed">
+                                    Анна К. завершила процесс оплаты через Stripe. Доступ к материалам предоставлен автоматически.
+                                </p>
+</div>
+</div>
+<!-- Event Record -->
+<div class="flex gap-8 group">
+<div class="flex-none pt-1">
+<span class="font-label text-[10px] text-secondary/40">09:10:12</span>
+</div>
+<div class="flex-grow pb-12 border-b border-white/5 group-last:border-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-lg font-body font-normal text-on-surface">Автоматический бэкап базы данных</h4>
+<span class="font-label text-[9px] text-secondary/30 uppercase tracking-widest">ID #EV-99195</span>
+</div>
+<p class="text-secondary font-light text-sm leading-relaxed">
+                                    Плановая процедура завершена без ошибок. Размер архива: 4.2GB. Цель: S3 Stockholm.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Status Panel -->
+<div class="lg:col-span-4">
+<div class="bg-surface-container-low p-10 rounded-sm">
+<h3 class="font-headline text-2xl italic mb-10">Статус системы</h3>
+<div class="space-y-10">
+<div>
 <div class="flex justify-between items-center mb-3">
-<span class="text-[10px] uppercase tracking-widest text-on-surface-variant">Server Status</span>
-<span class="text-[10px] uppercase tracking-widest text-primary-container font-bold">Operational</span>
+<span class="font-label text-[11px] uppercase tracking-widest text-secondary/80">Server Status</span>
+<!-- Status Obsidian Chip -->
+<div class="flex items-center gap-2 bg-primary/10 pl-2 pr-3 py-1">
+<div class="w-[2px] h-3 bg-primary"></div>
+<span class="text-[10px] font-label text-primary uppercase font-bold tracking-tighter">Online</span>
 </div>
-<div class="h-[2px] w-full bg-outline-variant/20 overflow-hidden">
-<div class="h-full bg-primary-container w-[99.8%]"></div>
 </div>
+<div class="w-full bg-white/5 h-[1px]">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+<span class="font-label text-[9px] text-secondary/40 mt-2 block">Uptime: 99.99%</span>
 </div>
 <div>
 <div class="flex justify-between items-center mb-3">
-<span class="text-[10px] uppercase tracking-widest text-on-surface-variant">Database Health</span>
-<span class="text-[10px] uppercase tracking-widest text-primary-container font-bold">Stable</span>
-</div>
-<div class="flex gap-1 h-8 items-end">
-<div class="w-2 bg-primary-container h-4 opacity-40"></div>
-<div class="w-2 bg-primary-container h-6 opacity-60"></div>
-<div class="w-2 bg-primary-container h-5 opacity-50"></div>
-<div class="w-2 bg-primary-container h-8 opacity-100"></div>
-<div class="w-2 bg-primary-container h-6 opacity-60"></div>
-<div class="w-2 bg-primary-container h-7 opacity-80"></div>
-<div class="w-2 bg-primary-container h-5 opacity-50"></div>
-<div class="w-2 bg-primary-container h-6 opacity-70"></div>
+<span class="font-label text-[11px] uppercase tracking-widest text-secondary/80">Database Health</span>
+<div class="flex items-center gap-2 bg-primary/10 pl-2 pr-3 py-1">
+<div class="w-[2px] h-3 bg-primary"></div>
+<span class="text-[10px] font-label text-primary uppercase font-bold tracking-tighter">Optimal</span>
 </div>
 </div>
-<div class="pt-6 border-t border-outline-variant/10">
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-[10px] uppercase tracking-widest">API Latency</span>
-<span class="font-label text-sm text-on-surface">42ms</span>
+<div class="w-full bg-white/5 h-[1px]">
+<div class="bg-primary h-full w-[82%]"></div>
 </div>
-<div class="flex justify-between items-center text-on-surface-variant mt-4">
-<span class="text-[10px] uppercase tracking-widest">Uptime</span>
-<span class="font-label text-sm text-on-surface">14d 6h 22m</span>
+<span class="font-label text-[9px] text-secondary/40 mt-2 block">Latency: 14ms</span>
+</div>
+<div>
+<div class="flex justify-between items-center mb-3">
+<span class="font-label text-[11px] uppercase tracking-widest text-secondary/80">API Latency</span>
+<div class="flex items-center gap-2 bg-primary/10 pl-2 pr-3 py-1">
+<div class="w-[2px] h-3 bg-primary"></div>
+<span class="text-[10px] font-label text-primary uppercase font-bold tracking-tighter">Stable</span>
+</div>
+</div>
+<div class="w-full bg-white/5 h-[1px]">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<span class="font-label text-[9px] text-secondary/40 mt-2 block">Avg: 120ms</span>
+</div>
+</div>
+<div class="mt-16 pt-10 border-t border-white/5">
+<div class="relative overflow-hidden aspect-video bg-surface-dim flex items-center justify-center">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale" data-alt="abstract data visualization with glowing teal lines on dark background showing network architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvX_K8D3pHofC3l3UWNmU74U8WzqcxR3egCO1EVBDDKZXo9GalXw935immL1HL3JIvpAXKkUukN6NaNNv0Fsg0n231DzAQCM5Q1xX8lt0PqJnibOo1xwKDPpXxKy1SvQytX3QCtOimGnQRgC_1AdxKHM-O0YhdBsbzOgInpmvMN5hbjF8ZqTtepucQVRR4XFLPq6rd3Gvf6KzHlZUegn_1TEeJPYiMBSB5InY7kHatc0vBLskz7giwHny7D7rt90VZ4guRs-2a_mUK"/>
+<div class="relative z-10 text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-4" data-icon="terminal">terminal</span>
+<p class="font-label text-[10px] uppercase tracking-[0.3em] text-white">Console Logs Active</p>
 </div>
 </div>
 </div>
-<div class="mt-8 bg-surface-container-high/50 p-6 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
-<span class="text-[10px] uppercase tracking-widest text-on-surface-variant">Live Connection</span>
 </div>
-<span class="text-[10px] uppercase tracking-widest text-on-surface">Node Cluster A-9</span>
+</div>
 </div>
 </section>
-</div>
-</main>
-</div>
-<!-- Footer -->
-<footer class="w-full py-6 mt-auto flex justify-between items-center px-12 w-full border-t border-[#3b494c]/10 bg-[#0a0e14] font-manrope text-[10px] uppercase tracking-[0.1em] text-[#8e9fb1]">
+<!-- Footer (Authority Source: JSON) -->
+<footer class="w-full py-12 mt-32 flex justify-between items-center px-12 border-t border-white/5 bg-[#0a0e14]">
+<span class="font-['Inter'] uppercase text-[10px] tracking-[0.2em] text-[#b7c8db] opacity-40">
+                © 2024 Academy Realtors. High-End Editorial Systems.
+            </span>
 <div class="flex gap-8">
-<span class="opacity-80">© 2024 Academy Realtors Admin Terminal</span>
-</div>
-<div class="flex gap-8">
-<a class="hover:text-[#f0f4f8] transition-colors" href="#">Privacy Policy</a>
-<a class="hover:text-[#f0f4f8] transition-colors" href="#">System Status</a>
-<a class="hover:text-[#f0f4f8] transition-colors" href="#">Documentation</a>
+<a class="font-['Inter'] uppercase text-[10px] tracking-[0.2em] text-[#b7c8db] opacity-40 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-['Inter'] uppercase text-[10px] tracking-[0.2em] text-[#b7c8db] opacity-40 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
 </div>
 </footer>
+</main>
 </body></html>
