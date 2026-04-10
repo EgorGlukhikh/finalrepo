@@ -3,9 +3,10 @@ import { defineRecipe } from '@chakra-ui/react';
 export const buttonRecipe = defineRecipe({
   base: {
     fontFamily: 'label',
-    fontWeight: '600',
+    fontWeight: '700',
     borderRadius: 'sm',
-    letterSpacing: '-0.015em',
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
     transitionProperty: 'common',
     transitionDuration: 'normal',
     transitionTimingFunction: 'ease-out',
@@ -24,15 +25,13 @@ export const buttonRecipe = defineRecipe({
       solid: {
         bg: 'accent.primary',
         color: 'fg.onAccent',
-        boxShadow: 'sm',
         _hover: {
-          bg: 'brand.400',
-          transform: 'translateY(-1px)',
-          boxShadow: '0 10px 24px -18px rgba(15, 194, 178, 0.75)',
+          bg: 'accent.primary',
+          filter: 'brightness(1.1)',
         },
         _active: {
           bg: 'accent.primaryActive',
-          transform: 'translateY(0)',
+          filter: 'brightness(0.96)',
         },
       },
       subtle: {
@@ -69,23 +68,22 @@ export const buttonRecipe = defineRecipe({
         borderWidth: '1px',
         borderColor: 'border.default',
         _hover: {
-          bg: 'bg.inset',
-          color: 'accent.primaryHover',
-          borderColor: 'accent.primaryHover',
+          bg: 'transparent',
+          color: 'accent.primary',
+          borderColor: 'accent.primary',
         },
         _active: {
-          bg: 'bg.surfaceMuted',
+          bg: 'transparent',
         },
       },
       ghost: {
         bg: 'transparent',
         color: 'fg.muted',
         _hover: {
-          bg: 'bg.inset',
           color: 'fg.default',
         },
         _active: {
-          bg: 'bg.surfaceMuted',
+          bg: 'transparent',
         },
       },
       plain: {
@@ -100,16 +98,16 @@ export const buttonRecipe = defineRecipe({
       sm: {
         h: '9',
         px: '4',
-        fontSize: 'sm',
+        fontSize: 'xs',
       },
       md: {
         h: '10',
-        px: '5',
-        fontSize: 'sm',
+        px: '6',
+        fontSize: 'xs',
       },
       lg: {
-        h: '11',
-        px: '6',
+        h: '12',
+        px: '10',
         fontSize: 'sm',
       },
     },

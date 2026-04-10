@@ -69,3 +69,40 @@ export function BookOpenIcon(props: IconProps) {
     </IconBase>
   );
 }
+
+export function RestoreIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M4 12a8 8 0 1 0 2.35-5.66" />
+      <path d="M4 4v4h4" />
+    </IconBase>
+  );
+}
+
+export function HandshakeIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M8.5 12.5 11 15a2 2 0 0 0 2.83 0l3.67-3.67a2 2 0 0 0 0-2.83l-1.5-1.5a2 2 0 0 0-2.83 0L11.6 8.57a2 2 0 0 1-2.83 0L7.7 7.5a2 2 0 0 0-2.83 0L3.5 8.87a2 2 0 0 0 0 2.83l3.33 3.33a2 2 0 0 0 2.83 0L12 12.7" />
+      <path d="m14 10 1.5 1.5" />
+    </IconBase>
+  );
+}
+
+export function SupportIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M4 12a8 8 0 1 1 16 0v3a2 2 0 0 1-2 2h-2v-5h4" />
+      <path d="M4 12v5h4v-5H4Z" />
+      <path d="M12 19v1.5a1.5 1.5 0 0 1-1.5 1.5h-1" />
+    </IconBase>
+  );
+}
+
+export function ArrowRightSmallIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M5 12h14" />
+      <path d="m13 6 6 6-6 6" />
+    </IconBase>
+  );
+}

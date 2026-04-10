@@ -2,27 +2,47 @@ import Link from 'next/link';
 
 import { Box, Container, HStack, Link as ChakraLink, Stack, Text } from '@chakra-ui/react';
 
+const footerLinks = [
+  { href: '/#privacy', label: 'Privacy Policy' },
+  { href: '/#terms', label: 'Terms of Service' },
+  { href: '/#contact', label: 'Contact' },
+  { href: '/#faq', label: 'FAQ' },
+];
+
 export function PublicFooter() {
   return (
-    <Box as="footer" borderTopWidth="1px" borderColor="border.subtle" bg="bg.canvas">
-      <Container maxW="wide" py={{ base: 8, md: 10 }}>
-        <Stack gap={{ base: 6, md: 3 }} direction={{ base: 'column', md: 'row' }} justify="space-between">
-          <Stack gap="2" maxW="lg">
-            <Text textStyle="overline" color="fg.subtle">
-              Академия риэлторов
-            </Text>
-            <Text textStyle="bodyMuted" color="fg.muted">
-              Курсы для риэлторов, к которым удобно возвращаться и которыми действительно хочется пользоваться каждый день.
-            </Text>
-          </Stack>
-          <HStack gap="5" align="start" color="fg.muted">
-            <ChakraLink asChild _hover={{ color: 'fg.default', textDecoration: 'none' }}>
-              <Link href="/courses">Каталог</Link>
-            </ChakraLink>
-            <ChakraLink asChild _hover={{ color: 'fg.default', textDecoration: 'none' }}>
-              <Link href="/sign-in">Войти</Link>
-            </ChakraLink>
+    <Box as="footer" borderTopWidth="1px" borderColor="rgba(59, 73, 76, 0.2)" bg="bg.canvas">
+      <Container maxW="wide" px={{ base: '6', md: '12' }} py={{ base: 12, md: 16 }}>
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+          align={{ base: 'flex-start', md: 'center' }}
+          gap="8"
+        >
+          <Text color="fg.default" fontFamily="heading" fontSize="lg" fontWeight="800" letterSpacing="-0.045em">
+            Academy Realtors
+          </Text>
+
+          <HStack gap={{ base: '5', md: '8' }} flexWrap="wrap">
+            {footerLinks.map((item) => (
+              <ChakraLink
+                key={item.label}
+                asChild
+                color="fg.subtle"
+                _hover={{ color: 'accent.primary', textDecoration: 'none' }}
+              >
+                <Link href={item.href}>
+                  <Text fontFamily="body" fontSize="xs" letterSpacing="0.16em" textTransform="uppercase">
+                    {item.label}
+                  </Text>
+                </Link>
+              </ChakraLink>
+            ))}
           </HStack>
+
+          <Text color="fg.subtle" fontFamily="body" fontSize="xs" letterSpacing="0.16em" textTransform="uppercase">
+            © 2024 Academy Realtors. Architecture of Excellence.
+          </Text>
         </Stack>
       </Container>
     </Box>

@@ -1,15 +1,13 @@
 import { HStack } from '@chakra-ui/react';
 
 import { ButtonLink } from '@/components/compositions';
+import { buildCatalogPath } from '@/modules/courses/paths';
 
 export function GuestActions() {
   return (
     <HStack gap="2">
-      <ButtonLink href="/courses" variant="solid" colorPalette="brand">
+      <ButtonLink href={buildCatalogPath()} variant="solid" colorPalette="brand" size="md">
         Выбрать курс
-      </ButtonLink>
-      <ButtonLink href="/sign-in" variant="ghost" color="fg.muted" _hover={{ bg: 'bg.inset', color: 'fg.default' }}>
-        Войти
       </ButtonLink>
     </HStack>
   );

@@ -1,70 +1,50 @@
-import { Box, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Box, Container, Grid, Heading, Stack, Text } from '@chakra-ui/react';
 
-import { PageSection, SectionHeading } from '@/components/compositions';
+import { EyeIcon, HandshakeIcon, RestoreIcon } from '@/components/branding';
 
-import { marketingSteps } from '../content';
+import { marketingBenefits } from '../content';
 
-function progressWidth(index: number) {
-  if (index === 0) return '32%';
-  if (index === 1) return '68%';
-  return '100%';
-}
+const icons = [EyeIcon, RestoreIcon, HandshakeIcon] as const;
 
 export function LandingBenefitsSection() {
   return (
-    <PageSection tone="muted">
-      <Grid gap={{ base: 10, xl: 16 }} templateColumns={{ base: '1fr', xl: 'minmax(0,0.78fr) minmax(0,1.22fr)' }} alignItems="start">
-        <GridItem>
-          <Stack gap="6" maxW="xl">
-          <SectionHeading
-              eyebrow="Путь обучения"
-              title="Как устроен курс"
-              description="Три шага. Без лишних экранов."
-            />
-          </Stack>
-        </GridItem>
+    <Box as="section" bg="bg.surfaceMuted" py={{ base: 20, md: 32 }}>
+      <Container maxW="wide" px={{ base: '6', md: '12' }}>
+        <Grid
+          gridTemplateColumns={{ base: '1fr', md: 'repeat(3, minmax(0, 1fr))' }}
+          gap="1px"
+          bg="rgba(59, 73, 76, 0.1)"
+          borderTopWidth="1px"
+          borderBottomWidth="1px"
+          borderColor="rgba(59, 73, 76, 0.1)"
+        >
+          {marketingBenefits.map((item, index) => {
+            const Icon = icons[index] ?? EyeIcon;
 
-        <GridItem>
-          <Stack gap={{ base: 0, md: 1 }}>
-            {marketingSteps.map((item, index) => (
-              <Box key={item.step} borderTopWidth={index === 0 ? '1px' : '1px'} borderColor="border.subtle">
-                <Grid
-                  templateColumns={{ base: '4.5rem 1fr', md: '5.5rem minmax(0,1fr) 10rem' }}
-                  gap={{ base: 4, md: 6 }}
-                  py={{ base: 6, md: 8 }}
-                  alignItems="center"
-                >
-                  <Text textStyle="overline" color="fg.brand" pt="1">
-                    {item.step} / {index === 0 ? 'Курс' : index === 1 ? 'Модуль' : 'Урок'}
+            return (
+              <Box
+                key={item.title}
+                bg="bg.surfaceMuted"
+                px={{ base: 8, md: 12 }}
+                py={{ base: 10, md: 12 }}
+                transition="background-color 0.3s ease"
+                _hover={{ bg: 'bg.surface' }}
+                role="group"
+              >
+                <Icon size={30} color="var(--chakra-colors-accent-primary)" />
+                <Stack gap="4" mt="8">
+                  <Heading as="h3" textStyle="h4" color="fg.default" transition="transform 0.3s ease" _groupHover={{ transform: 'translateX(8px)' }}>
+                    {item.title}
+                  </Heading>
+                  <Text textStyle="bodyMuted" color="fg.muted" maxW="md">
+                    {item.description}
                   </Text>
-
-                  <GridItem>
-                    <Stack gap="2" maxW="2xl">
-                      <Heading as="h3" textStyle="h4" color="fg.default">
-                        {item.title}
-                      </Heading>
-                      <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                        {item.description}
-                      </Text>
-                    </Stack>
-                  </GridItem>
-
-                  <GridItem display={{ base: 'none', md: 'block' }}>
-                    <Stack gap="2" align="end">
-                      <HStack w="full" h="1px" bg="border.default" align="center">
-                        <Box w={progressWidth(index)} h="1px" bg="accent.primary" />
-                      </HStack>
-                      <Text textStyle="caption" color="fg.subtle">
-                        {index === 0 ? 'Старт' : index === 1 ? 'Структура' : 'Темп'}
-                      </Text>
-                    </Stack>
-                  </GridItem>
-                </Grid>
+                </Stack>
               </Box>
-            ))}
-          </Stack>
-        </GridItem>
-      </Grid>
-    </PageSection>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
   );
 }

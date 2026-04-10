@@ -7,5 +7,6 @@ export { NavLink } from './nav-link';
 export { PlatformNav } from './platform-nav';
 export { PlatformShell } from './platform-shell';
 export { PublicFooter } from './public-footer';
+export { PublicHeader } from './public-header';
 export { PublicNav } from './public-nav';
 export { PublicShell } from './public-shell';

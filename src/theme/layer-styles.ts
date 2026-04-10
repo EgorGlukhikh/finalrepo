@@ -11,16 +11,13 @@ export const layerStyles = defineLayerStyles({
     description: 'Base product surface',
     value: {
       bg: 'bg.surface',
-      borderWidth: '1px',
-      borderColor: 'border.subtle',
+      boxShadow: 'xs',
     },
   },
   panelElevated: {
     description: 'Primary elevated surface for hero, active canvas, and key content',
     value: {
       bg: 'bg.elevated',
-      borderWidth: '1px',
-      borderColor: 'border.default',
       boxShadow: 'sm',
     },
   },
@@ -28,16 +25,13 @@ export const layerStyles = defineLayerStyles({
     description: 'Grouped operational surface',
     value: {
       bg: 'bg.surfaceMuted',
-      borderWidth: '1px',
-      borderColor: 'border.subtle',
+      boxShadow: 'xs',
     },
   },
   panelHighlight: {
     description: 'High-attention but calm product panel',
     value: {
       bg: 'bg.elevated',
-      borderWidth: '1px',
-      borderColor: 'border.strong',
       boxShadow: 'sm',
       backgroundImage:
         'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-elevated) 88%, var(--chakra-colors-accent-primary) 12%) 0%, color-mix(in srgb, var(--chakra-colors-bg-elevated) 96%, #05070b) 100%)',
@@ -47,8 +41,7 @@ export const layerStyles = defineLayerStyles({
     description: 'Inset nested surface for grouped data and sub-content',
     value: {
       bg: 'bg.inset',
-      borderWidth: '1px',
-      borderColor: 'border.subtle',
+      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
     },
   },
 });
