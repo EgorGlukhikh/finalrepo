@@ -23,8 +23,7 @@ const config = defineConfig({
       textRendering: 'optimizeLegibility',
       backgroundColor: 'bg.canvas',
       backgroundImage:
-        'radial-gradient(circle at top, color-mix(in srgb, var(--chakra-colors-accent-primary) 18%, transparent) 0%, transparent 34%), linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-canvas) 94%, #10141d) 0%, var(--chakra-colors-bg-canvas) 24rem, color-mix(in srgb, var(--chakra-colors-bg-canvas) 98%, #05070b) 100%)',
-      backgroundAttachment: 'fixed',
+        'linear-gradient(180deg, color-mix(in srgb, var(--chakra-colors-bg-canvas) 96%, #0f141c) 0%, var(--chakra-colors-bg-canvas) 18rem, #0a0e14 100%)',
     },
     '::selection': {
       bg: 'accent.secondary',
@@ -135,9 +134,9 @@ const config = defineConfig({
         inner: { value: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
       },
       sizes: {
-        container: { value: '72rem' },
-        content: { value: '54rem' },
-        wide: { value: '80rem' },
+        container: { value: '80rem' },
+        content: { value: '56rem' },
+        wide: { value: '90rem' },
       },
     },
     semanticTokens: {
@@ -153,6 +152,7 @@ const config = defineConfig({
         'fg.muted': { value: '#a8b3c7' },
         'fg.subtle': { value: '#7f8aa3' },
         'fg.brand': { value: '{colors.brand.300}' },
+        'fg.onAccent': { value: '#00363d' },
         'border.subtle': { value: 'rgba(148, 163, 184, 0.14)' },
         'border.default': { value: 'rgba(148, 163, 184, 0.22)' },
         'border.strong': { value: 'rgba(15, 194, 178, 0.34)' },

@@ -85,9 +85,9 @@ export const textStyles = defineTextStyles({
     description: 'Uppercase metadata and section eyebrow',
     value: {
       fontFamily: 'label',
-      fontSize: 'xs',
+      fontSize: '2xs',
       lineHeight: '1.4',
-      letterSpacing: '0.1em',
+      letterSpacing: '0.18em',
       textTransform: 'uppercase',
       fontWeight: '600',
     },

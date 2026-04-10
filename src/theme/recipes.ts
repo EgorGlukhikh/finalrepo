@@ -23,7 +23,7 @@ export const buttonRecipe = defineRecipe({
     variant: {
       solid: {
         bg: 'accent.primary',
-        color: 'white',
+        color: 'fg.onAccent',
         boxShadow: 'sm',
         _hover: {
           bg: 'accent.primaryHover',
@@ -145,7 +145,7 @@ export const badgeRecipe = defineRecipe({
       },
       solid: {
         bg: 'accent.primary',
-        color: 'white',
+        color: 'fg.onAccent',
       },
       success: {
         bg: 'status.successBg',

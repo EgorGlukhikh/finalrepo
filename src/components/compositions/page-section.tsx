@@ -17,7 +17,7 @@ export function PageSection({ children, tone = 'default' }: PageSectionProps) {
       borderBottomWidth={tone === 'muted' ? '1px' : undefined}
       borderColor={tone === 'muted' ? 'border.subtle' : undefined}
     >
-      <Container maxW="80rem">{children}</Container>
+      <Container maxW="wide">{children}</Container>
     </Box>
   );
 }
