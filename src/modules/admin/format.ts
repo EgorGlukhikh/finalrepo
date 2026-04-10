@@ -78,7 +78,7 @@ export function getAccessTypeTone(accessType: CourseAccessType): 'success' | 'pr
 export function getEnrollmentSourceLabel(accessSource: EnrollmentAccessSource) {
   switch (accessSource) {
     case 'FREE':
-      return 'Free';
+      return 'Бесплатный доступ';
     case 'PURCHASE':
       return 'Оплата';
     case 'MANUAL':
