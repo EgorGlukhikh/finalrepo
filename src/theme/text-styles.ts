@@ -74,7 +74,7 @@ export const textStyles = defineTextStyles({
   label: {
     description: 'Field labels and short metadata',
     value: {
-      fontFamily: 'body',
+      fontFamily: 'label',
       fontSize: 'sm',
       lineHeight: '1.4',
       letterSpacing: '-0.01em',
@@ -84,7 +84,7 @@ export const textStyles = defineTextStyles({
   overline: {
     description: 'Uppercase metadata and section eyebrow',
     value: {
-      fontFamily: 'body',
+      fontFamily: 'label',
       fontSize: 'xs',
       lineHeight: '1.4',
       letterSpacing: '0.1em',

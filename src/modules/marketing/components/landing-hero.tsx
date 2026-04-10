@@ -1,8 +1,6 @@
-import { Badge, Grid, GridItem, Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Badge, Box, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { ButtonLink, PageSection, SurfacePanel } from '@/components/compositions';
-
-import { marketingSteps } from '../content';
 
 type LandingHeroProps = {
   primaryCtaHref: string;
@@ -10,28 +8,46 @@ type LandingHeroProps = {
   secondaryCtaHref: string;
 };
 
-const keyPoints = [
+const highlights = [
   {
-    label: 'Каталог',
-    value: 'Все программы в одном месте: видно, что можно открыть сейчас, а что доступно после оплаты.',
+    label: 'Видно, что открыто',
+    text: 'Сразу понятно, какой курс доступен сейчас, а к чему нужен следующий шаг.',
   },
   {
-    label: 'Кабинет',
-    value: 'Курс, прогресс и следующий урок всегда под рукой, без лишних переходов и поиска.',
+    label: 'Всегда на своём месте',
+    text: 'Можно вернуться к уроку с того же места, не вспоминая, где остановились.',
   },
   {
-    label: 'Формат',
-    value: 'Каждая программа разбита на модули и уроки, поэтому легко держать темп и не теряться.',
+    label: 'Знания для сделок',
+    text: 'Материал привязан к реальной практике: клиентам, переговорам и документам.',
+  },
+] as const;
+
+const steps = [
+  {
+    step: '01',
+    title: 'Выберите направление',
+    description: 'Стартуйте с программы, которая подходит вашему опыту и текущей задаче.',
+  },
+  {
+    step: '02',
+    title: 'Смотрите структуру курса',
+    description: 'Модули и уроки выстроены в понятный маршрут без лишней навигации.',
+  },
+  {
+    step: '03',
+    title: 'Идите в своём темпе',
+    description: 'Можно пройти курс быстро или возвращаться к нему в удобный момент.',
   },
 ];
 
 export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref }: LandingHeroProps) {
   return (
     <PageSection>
-      <Grid gap={{ base: 10, xl: 12 }} templateColumns={{ base: '1fr', xl: 'minmax(0,1.45fr) 20rem' }} alignItems="start">
+      <Grid gap={{ base: 10, xl: 12 }} templateColumns={{ base: '1fr', xl: 'minmax(0,1.1fr) minmax(0,0.9fr)' }} alignItems="start">
         <GridItem>
-          <Stack gap="10" maxW="5xl">
-            <Stack gap="6" maxW="4xl">
+          <Stack gap="8" maxW="4xl">
+            <Stack gap="6" maxW="3xl">
               <Badge alignSelf="flex-start" variant="outline" borderColor="border.strong">
                 Платформа обучения для риэлторов
               </Badge>
@@ -41,12 +57,13 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
                   Учитесь в спокойном ритме и сразу видите, куда двигаться дальше.
                 </Heading>
                 <Text textStyle="body" color="fg.muted" maxW="2xl">
-                  Выбирайте курс, проходите уроки по шагам и возвращайтесь к материалам без поиска. Платформа помнит прогресс и не перегружает лишним.
+                  Выбирайте курс, проходите уроки по шагам и возвращайтесь к материалам без поиска.
+                  Платформа запоминает прогресс и не перегружает лишним.
                 </Text>
               </Stack>
 
               <HStack gap="3" flexWrap="wrap">
-                <ButtonLink href={primaryCtaHref} colorPalette="brand">
+                <ButtonLink href={primaryCtaHref} colorPalette="brand" variant="solid">
                   {primaryCtaLabel}
                 </ButtonLink>
                 <ButtonLink href={secondaryCtaHref} variant="outline" borderColor="border.strong">
@@ -56,7 +73,7 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
             </Stack>
 
             <SurfacePanel tone="highlight" p={{ base: 6, md: 7 }}>
-              <Grid gap="6" templateColumns={{ base: '1fr', lg: '1.1fr 0.9fr' }}>
+              <Grid gap="6" templateColumns={{ base: '1fr', xl: 'minmax(0,0.95fr) minmax(0,1.05fr)' }} alignItems="start">
                 <GridItem>
                   <Stack gap="4" maxW="2xl">
                     <Text textStyle="overline" color="fg.subtle">
@@ -72,20 +89,23 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
                 </GridItem>
 
                 <GridItem>
-                  <SimpleGrid columns={{ base: 1, md: 3, lg: 1 }} gap="3">
-                    {keyPoints.map((item) => (
-                      <SurfacePanel key={item.label} tone="muted" p="4">
+                  <Stack gap="3">
+                    {highlights.map((item, index) => (
+                      <SurfacePanel key={item.label} tone="inset" p="4">
                         <Stack gap="2">
                           <Text textStyle="overline" color="fg.subtle">
-                            {item.label}
+                            0{index + 1}
                           </Text>
                           <Text textStyle="bodyStrong" color="fg.default">
-                            {item.value}
+                            {item.label}
+                          </Text>
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            {item.text}
                           </Text>
                         </Stack>
                       </SurfacePanel>
                     ))}
-                  </SimpleGrid>
+                  </Stack>
                 </GridItem>
               </Grid>
             </SurfacePanel>
@@ -93,38 +113,82 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
         </GridItem>
 
         <GridItem>
-          <SurfacePanel tone="muted" p={{ base: 5, md: 6 }}>
-            <Stack gap="5">
-              <HStack justify="space-between">
-                <Text textStyle="overline" color="fg.subtle">
-                  Как начать
-                </Text>
-                <Badge variant="outline" borderColor="border.strong">
-                  4 шага
-                </Badge>
-              </HStack>
-
+          <Stack gap="6" align="stretch">
+            <SurfacePanel tone="muted" p="5">
               <Stack gap="4">
-                {marketingSteps.map((item) => (
-                  <SurfacePanel key={item.step} tone="inset" p="4">
-                    <Grid templateColumns="2.5rem minmax(0,1fr)" gap="3">
-                      <Text textStyle="overline" color="fg.brand" pt="1">
-                        {item.step}
-                      </Text>
-                      <Stack gap="1.5">
-                        <Text textStyle="bodyStrong" color="fg.default">
-                          {item.title}
+                <HStack justify="space-between">
+                  <Text textStyle="overline" color="fg.subtle">
+                    Как начать
+                  </Text>
+                  <Badge variant="outline" borderColor="border.strong">
+                    4 шага
+                  </Badge>
+                </HStack>
+
+                <Stack gap="3">
+                  {steps.map((item) => (
+                    <SurfacePanel key={item.step} tone="inset" p="4">
+                      <Grid templateColumns="2.5rem minmax(0,1fr)" gap="3">
+                        <Text textStyle="overline" color="fg.brand" pt="1">
+                          {item.step}
                         </Text>
-                        <Text textStyle="bodyMuted" color="fg.muted">
-                          {item.description}
-                        </Text>
-                      </Stack>
-                    </Grid>
-                  </SurfacePanel>
-                ))}
+                        <Stack gap="1.5">
+                          <Text textStyle="bodyStrong" color="fg.default">
+                            {item.title}
+                          </Text>
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            {item.description}
+                          </Text>
+                        </Stack>
+                      </Grid>
+                    </SurfacePanel>
+                  ))}
+                </Stack>
               </Stack>
-            </Stack>
-          </SurfacePanel>
+            </SurfacePanel>
+
+            <Box position="relative">
+              <Box
+                minH={{ base: '20rem', md: '28rem' }}
+                borderRadius="md"
+                borderWidth="1px"
+                borderColor="border.subtle"
+                bg="linear-gradient(145deg, rgba(12,17,28,1) 0%, rgba(18,24,38,1) 35%, rgba(15,21,34,1) 100%)"
+                overflow="hidden"
+                position="relative"
+                boxShadow="lg"
+              >
+                <Box position="absolute" inset="0" bg="linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 30%, rgba(255,255,255,0.08) 68%, transparent 100%)" />
+                <Box position="absolute" top="0" left="0" right="0" h="20" bg="rgba(255,255,255,0.03)" />
+                <Box
+                  position="absolute"
+                  inset="0"
+                  bgImage="linear-gradient(120deg, transparent 0%, transparent 40%, rgba(15, 194, 178, 0.08) 42%, rgba(15, 194, 178, 0.08) 44%, transparent 46%), radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08) 0, transparent 35%), linear-gradient(155deg, rgba(255,255,255,0.06) 0 6%, transparent 6% 100%)"
+                  opacity="0.95"
+                />
+              </Box>
+
+              <Box
+                position="absolute"
+                left={{ base: '4', md: '-4' }}
+                bottom={{ base: '4', md: '-5' }}
+                w={{ base: '40', md: '48' }}
+                p="6"
+                bg="bg.surface"
+                borderWidth="1px"
+                borderColor="border.subtle"
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <Text color="fg.brand" fontSize="3xl" fontWeight="700" letterSpacing="-0.04em" lineHeight="1">
+                  12+
+                </Text>
+                <Text textStyle="overline" color="fg.subtle">
+                  программ и маршрутов
+                </Text>
+              </Box>
+            </Box>
+          </Stack>
         </GridItem>
       </Grid>
     </PageSection>

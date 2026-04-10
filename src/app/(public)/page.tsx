@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicHomePage() {
-  const [session, courses] = await Promise.all([getAuthSession(), listPublishedCourses()]);
+  const [sessionResult, coursesResult] = await Promise.allSettled([getAuthSession(), listPublishedCourses()]);
+  const session = sessionResult.status === 'fulfilled' ? sessionResult.value : null;
+  const courses = coursesResult.status === 'fulfilled' ? coursesResult.value : [];
 
   const primaryCtaHref = session?.user ? '/app' : '/sign-up';
   const primaryCtaLabel = session?.user ? 'Продолжить обучение' : 'Начать обучение';

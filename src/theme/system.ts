@@ -93,6 +93,7 @@ const config = defineConfig({
       fonts: {
         heading: { value: 'var(--font-heading), system-ui, sans-serif' },
         body: { value: 'var(--font-body), system-ui, sans-serif' },
+        label: { value: 'var(--font-label), system-ui, sans-serif' },
       },
       fontSizes: {
         '2xs': { value: '0.6875rem' },

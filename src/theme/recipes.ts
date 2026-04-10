@@ -2,6 +2,7 @@ import { defineRecipe } from '@chakra-ui/react';
 
 export const buttonRecipe = defineRecipe({
   base: {
+    fontFamily: 'label',
     fontWeight: '600',
     borderRadius: 'sm',
     letterSpacing: '-0.015em',
@@ -120,6 +121,7 @@ export const buttonRecipe = defineRecipe({
 
 export const badgeRecipe = defineRecipe({
   base: {
+    fontFamily: 'label',
     borderRadius: 'sm',
     px: '2.5',
     py: '1',
