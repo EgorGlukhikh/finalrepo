@@ -1,4 +1,4 @@
-import { Badge, Box, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { ButtonLink, PageSection, SurfacePanel } from '@/components/compositions';
 
@@ -11,15 +11,15 @@ type LandingHeroProps = {
 const highlights = [
   {
     label: 'Видно, что открыто',
-    text: 'Сразу понятно, какой курс доступен сейчас, а к чему нужен следующий шаг.',
+    text: 'Сразу понятно, что доступно сейчас.',
   },
   {
-    label: 'Всегда на своём месте',
-    text: 'Можно вернуться к уроку с того же места, не вспоминая, где остановились.',
+    label: 'Всегда на своем месте',
+    text: 'Можно вернуться к уроку без поиска.',
   },
   {
-    label: 'Знания для сделок',
-    text: 'Материал привязан к реальной практике: клиентам, переговорам и документам.',
+    label: 'Знания для работы',
+    text: 'Только то, что пригодится в сделках.',
   },
 ] as const;
 
@@ -27,17 +27,17 @@ const steps = [
   {
     step: '01',
     title: 'Выберите направление',
-    description: 'Стартуйте с программы, которая подходит вашему опыту и текущей задаче.',
+    description: 'Начните с программы под вашу задачу.',
   },
   {
     step: '02',
     title: 'Смотрите структуру курса',
-    description: 'Модули и уроки выстроены в понятный маршрут без лишней навигации.',
+    description: 'Модули и уроки собраны в понятный маршрут.',
   },
   {
     step: '03',
     title: 'Идите в своём темпе',
-    description: 'Можно пройти курс быстро или возвращаться к нему в удобный момент.',
+    description: 'Можно идти быстро или возвращаться позже.',
   },
 ];
 
@@ -48,17 +48,19 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
         <GridItem>
           <Stack gap="8" maxW="4xl">
             <Stack gap="6" maxW="3xl">
-              <Badge alignSelf="flex-start" variant="outline" borderColor="border.strong">
+              <Text textStyle="overline" color="fg.brand">
                 Платформа обучения для риэлторов
-              </Badge>
+              </Text>
 
               <Stack gap="5">
                 <Heading textStyle="display" maxW="4xl">
-                  Учитесь в спокойном ритме и сразу видите, куда двигаться дальше.
+                  Ваше мастерство
                 </Heading>
+                <Text textStyle="display" maxW="4xl" fontSize={{ base: '4xl', md: '5xl' }} lineHeight="1.05" color="fg.subtle">
+                  в каждой сделке.
+                </Text>
                 <Text textStyle="body" color="fg.muted" maxW="2xl">
-                  Выбирайте курс, проходите уроки по шагам и возвращайтесь к материалам без поиска.
-                  Платформа запоминает прогресс и не перегружает лишним.
+                  Курс, кабинет и прогресс собраны в одном месте. Открываете нужный шаг и продолжаете без лишних переходов.
                 </Text>
               </Stack>
 
@@ -76,14 +78,14 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
               <Grid gap="6" templateColumns={{ base: '1fr', xl: 'minmax(0,0.95fr) minmax(0,1.05fr)' }} alignItems="start">
                 <GridItem>
                   <Stack gap="4" maxW="2xl">
-                    <Text textStyle="overline" color="fg.subtle">
+                    <Text textStyle="overline" color="fg.brand">
                       Что здесь удобно
                     </Text>
                     <Heading textStyle="sectionTitle" maxW="2xl">
-                      Курсы, кабинет и прогресс собраны так, чтобы можно было просто учиться, а не разбираться в интерфейсе.
+                      Курсы, кабинет и прогресс собраны в один рабочий экран.
                     </Heading>
                     <Text textStyle="bodyMuted" color="fg.muted" maxW="xl">
-                      На первом экране видно, что открыть сейчас, где вы остановились и какой шаг идет следующим.
+                      На первом экране видно, что открыть сейчас и куда идти дальше.
                     </Text>
                   </Stack>
                 </GridItem>
@@ -117,12 +119,12 @@ export function LandingHero({ primaryCtaHref, primaryCtaLabel, secondaryCtaHref 
             <SurfacePanel tone="muted" p="5">
               <Stack gap="4">
                 <HStack justify="space-between">
-                  <Text textStyle="overline" color="fg.subtle">
+                  <Text textStyle="overline" color="fg.brand">
                     Как начать
                   </Text>
-                  <Badge variant="outline" borderColor="border.strong">
+                  <Text textStyle="overline" color="fg.subtle">
                     4 шага
-                  </Badge>
+                  </Text>
                 </HStack>
 
                 <Stack gap="3">

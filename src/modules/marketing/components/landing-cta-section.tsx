@@ -15,14 +15,14 @@ export function LandingCtaSection({ primaryCtaHref, primaryCtaLabel }: LandingCt
         <Grid gap="6" templateColumns={{ base: '1fr', lg: 'minmax(0,1fr) auto' }} alignItems={{ base: 'start', lg: 'end' }}>
           <GridItem>
             <Stack gap="3" maxW="2xl">
-              <Text textStyle="overline" color="fg.subtle">
+              <Text textStyle="overline" color="fg.brand">
                 Начать
               </Text>
               <Heading textStyle="pageTitle" fontSize={{ base: '3xl', md: '4xl' }}>
-                Выберите курс и начните в своем темпе.
+                Начните с курса
               </Heading>
               <Text textStyle="bodyMuted" color="fg.muted">
-                Зарегистрируйтесь, откройте каталог и переходите к той программе, которая нужна вам сейчас.
+                Выберите программу и продолжайте в своем темпе.
               </Text>
             </Stack>
           </GridItem>

@@ -12,8 +12,8 @@ export function LandingTrustSection() {
           <Stack gap="8">
             <SectionHeading
               eyebrow="После регистрации"
-              title="Вы сразу понимаете, что открыто, где вы остановились и куда идти дальше."
-              description="Никаких служебных экранов и лишней путаницы. Только каталог, курсы и понятный следующий шаг."
+              title="Что будет после входа"
+              description="Каталог, курсы и прогресс уже на месте."
             />
 
             <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">

@@ -26,9 +26,9 @@ export const buttonRecipe = defineRecipe({
         color: 'fg.onAccent',
         boxShadow: 'sm',
         _hover: {
-          bg: 'accent.primaryHover',
+          bg: 'brand.400',
           transform: 'translateY(-1px)',
-          boxShadow: 'md',
+          boxShadow: '0 10px 24px -18px rgba(15, 194, 178, 0.75)',
         },
         _active: {
           bg: 'accent.primaryActive',
@@ -69,8 +69,9 @@ export const buttonRecipe = defineRecipe({
         borderWidth: '1px',
         borderColor: 'border.default',
         _hover: {
-          bg: 'bg.surface',
-          borderColor: 'border.strong',
+          bg: 'bg.inset',
+          color: 'accent.primaryHover',
+          borderColor: 'accent.primaryHover',
         },
         _active: {
           bg: 'bg.surfaceMuted',

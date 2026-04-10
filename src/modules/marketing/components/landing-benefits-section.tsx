@@ -16,10 +16,10 @@ export function LandingBenefitsSection() {
       <Grid gap={{ base: 10, xl: 16 }} templateColumns={{ base: '1fr', xl: 'minmax(0,0.78fr) minmax(0,1.22fr)' }} alignItems="start">
         <GridItem>
           <Stack gap="6" maxW="xl">
-            <SectionHeading
+          <SectionHeading
               eyebrow="Путь обучения"
-              title="Архитектура вашего пути"
-              description="Последовательный процесс погружения в профессию. Вы видите направление, тему и следующий шаг без лишних экранов и шума."
+              title="Как устроен курс"
+              description="Три шага. Без лишних экранов."
             />
           </Stack>
         </GridItem>
