@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academy Realtors | Public Courses Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#262a31",
+                        "outline": "#849396",
+                        "surface-bright": "#353940",
+                        "tertiary": "#e3edff",
+                        "surface-dim": "#10141a",
+                        "on-error": "#690005",
+                        "on-surface": "#dfe2eb",
+                        "on-secondary": "#223241",
+                        "surface-container-highest": "#31353c",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#b7c8db",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#00626e",
+                        "on-primary-fixed-variant": "#004f58",
+                        "tertiary-fixed-dim": "#bac7dd",
+                        "on-tertiary-fixed-variant": "#3b485a",
+                        "on-tertiary": "#243142",
+                        "surface-container-low": "#181c22",
+                        "inverse-primary": "#006875",
+                        "secondary-fixed-dim": "#b7c8db",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#001f24",
+                        "inverse-surface": "#dfe2eb",
+                        "tertiary-fixed": "#d6e3fa",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-secondary-fixed": "#0c1d2b",
+                        "on-secondary-container": "#a6b7ca",
+                        "on-background": "#dfe2eb",
+                        "surface": "#10141a",
+                        "primary": "#c3f5ff",
+                        "secondary-container": "#384858",
+                        "surface-container": "#1c2026",
+                        "on-surface-variant": "#bac9cc",
+                        "surface-variant": "#31353c",
+                        "primary-fixed": "#9cf0ff",
+                        "background": "#10141a",
+                        "tertiary-container": "#c4d1e7",
+                        "primary-container": "#00e5ff",
+                        "surface-container-lowest": "#0a0e14",
+                        "surface-tint": "#00daf3",
+                        "on-secondary-fixed-variant": "#384858",
+                        "on-primary": "#00363d",
+                        "secondary-fixed": "#d3e4f8",
+                        "inverse-on-surface": "#2d3137",
+                        "on-tertiary-container": "#4d5a6c",
+                        "on-tertiary-fixed": "#0f1c2c",
+                        "outline-variant": "#3b494c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0a0e14;
+            color: #f0f4f8;
+            font-family: 'Manrope', sans-serif;
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-none bg-[#181c22]/40 bg-[#0a0e14]/80 backdrop-blur-md">
+<div class="flex justify-between items-center h-20 px-12 w-full max-w-[1440px] mx-auto font-manrope antialiased tracking-tight">
+<div class="text-xl font-bold tracking-tighter text-cyan-400">Academy Realtors</div>
+<div class="hidden md:flex items-center space-x-10">
+<a class="text-cyan-400 border-b-2 border-cyan-400 pb-1" href="#">Courses</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors hover:text-cyan-300 transition-all duration-300" href="#">Programs</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors hover:text-cyan-300 transition-all duration-300" href="#">About</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors hover:text-cyan-300 transition-all duration-300" href="#">Support</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-label text-xs uppercase tracking-widest font-semibold hover:scale-95 duration-200 ease-in-out transition-all">
+                Sign In
+            </button>
+</div>
+</nav>
+<main class="pt-32 pb-24">
+<!-- Hero Section -->
+<header class="max-w-[1440px] mx-auto px-12 mb-24">
+<div class="max-w-4xl">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-cyan-400 mb-6 block">Curated Excellence</span>
+<h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-8 text-on-surface">
+                    Architectural <br/>Authority
+                </h1>
+<p class="text-xl text-on-surface-variant leading-relaxed max-w-2xl">
+                    Master the built environment through our specialized curriculum. Designed for professionals who demand technical precision and strategic depth in global real estate.
+                </p>
+</div>
+</header>
+<!-- Search & Filter Row -->
+<section class="max-w-[1440px] mx-auto px-12 mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-4 border-b border-outline-variant/20">
+<div class="w-full md:max-w-md">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-0 bottom-3 text-outline-variant group-focus-within:text-cyan-400 transition-colors">search</span>
+<input class="w-full bg-transparent border-none border-b-2 border-outline-variant/30 focus:border-primary-container focus:ring-0 text-lg py-3 pl-10 font-body placeholder:text-outline-variant/50 transition-all" placeholder="Search catalog..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-8 overflow-x-auto no-scrollbar pb-1">
+<button class="font-label text-xs uppercase tracking-widest text-cyan-400 border-b border-cyan-400 pb-2 whitespace-nowrap">All</button>
+<button class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors pb-2 whitespace-nowrap">Residential</button>
+<button class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors pb-2 whitespace-nowrap">Commercial</button>
+<button class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors pb-2 whitespace-nowrap">Finance</button>
+<button class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors pb-2 whitespace-nowrap">Legal</button>
+</div>
+</div>
+</section>
+<!-- Course Grid -->
+<section class="max-w-[1440px] mx-auto px-12">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+<!-- Card 1 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Modern architectural house with clean lines and large glass windows at twilight with soft interior glowing lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKqVNdcyTHeEJlYK3q7BK2Ov1byzAHi76sDjK0tt_3nXvzG70H_rKHNzqeaUlU5GJBfFbU8y7xFj9GIU2ds26Wij5-Yr3HWv6stubYPOZ__82JUfA7kh6uDaiScxaJ4nqToznJAkR3sOTMomDpuxwHman-X3uUATh5e8K0vbd6XmGmnrz7ijewcyJEqqWeA3X3GS3ZDM1dK8fpZLJ0boClZrHobwWYsILeA0g_iFXPB0FYJKpsu1QwO2ZfK9M7thtKLdrduHTAOsjS"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Paid</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">The Fundamentals of Residential Valuation</h3>
+<span class="text-xl font-light text-on-surface-variant">$299</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Gain accreditation in 12 weeks with master-level insights into high-value asset assessment.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Sleek skyscraper exterior with reflective glass panels reflecting a clear blue sky and sharp geometric shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7hkLA1yeynEm7ZRd2TjjzV8RzNGOM40TpsB25ytIcDu_jVvcZfNRR11wqSWYVe3x5HhzlYPmz4QrkTp_aM4ZvepuHMFKwRQ2P4NYTtyM8jKb7Yhj_VHPLlb27LuOp1hg7lX4hCsJwxbPSV1-LqGNR2RCgv8cTsTQDBt3MDRdGyPNPUjrpdP7HQvHW8DLltOCWocUeBank-FUHDunNJf3kwzlPjTZqqsqO6Wm_IZ_2Z5J8O9LUsQEKCefI4Yjdbvo8JnQGBr_pXlis"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Free</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">Navigating Global Property Law</h3>
+<span class="text-xl font-light text-cyan-400">—</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Master the cross-border legal frameworks governing elite commercial transactions.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Interior of a modern luxury library with dark wood shelving and minimalist brass lighting fixtures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0V5M9FETLfI2v0VhopKFib-V0hmFzi-ebq7BAt6fj8fRKqz5kzzLKXHxDdmhqHEvAZyWg3wYtRdb5Ch5Y4fZeD6HsyAltjrqZD6Ko10ZBuYNB1CykEe4MSB3_BQVFmEfOq0nGTdilfBW9aEbdpt7-GdOTSeWIJTBnF5vOs86Or3PgKWZSU1qDXkCB87MWvKWqWe7QiXhez4_7OKTelkIxkGQ7DMiYzZ1UpFUG1HSNk66CS9aZ6mjVa8bQbtMD8UPNINPCuYzWbXSg"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Paid</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">Capital Markets for Real Estate</h3>
+<span class="text-xl font-light text-on-surface-variant">$450</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Strategic depth in leveraging debt and equity for massive urban development projects.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Minimalist corporate boardroom with high-end furniture and panoramic city views through floor-to-ceiling windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKyRgDYlnZLVvcIEHhL8bHtW9DEAg1Q0FKDYhuZMNtR37lmrG0nwQ4pBZ13Ii7O4hmDUSHqIdPo0hwdURa7tEv5Cl3sO156l5NNKx2Fwof1dXgfkICBylapYlItN2GYujNKzlcsRE0b6MPMrgAqfsBkiZSADlqyKJ44Roaz5-s0IeGS7K3jaU2LiSSztcn0W2iUjJXr1RjWBXrLjszw7Q2UQ8wuNZy5q2kg_n-ZBAXx3x8KOfN4-7JDlRZS4rINg34uerFQz_LjWTO"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Paid</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">Sustainable Urban Planning</h3>
+<span class="text-xl font-light text-on-surface-variant">$320</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">The future of metropolitan living: eco-conscious design and smart infrastructure.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract architectural detail of a brutalist concrete building with dramatic shadows and sharp angles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL2tqq6Q0zDXoTnQPreDuEw8A9G2d62LO-zCEXTQiaInT7lQceV_TUhtMXVg7kQf3DUq5a8qzIz5os6fJwdDA31dHrLw_HQa1dR48zDr0CGnJPVibkbXYeNPkuS7Dau44tWRlyMu4iBQKQCb-5VdI8GMEQE-HNOEg8i1xfHssuAdaylR0-xmgXwmOXUWQ6YQUqOoJHEc9Ys3lzSH_zEoKlJEXlTYYZrxY9loH3RMHdQMq4tUDgXPRFt4KZNwUmquRyIK3p-4VJ0bFP"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Paid</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">Portfolio Diversification Tactics</h3>
+<span class="text-xl font-light text-on-surface-variant">$550</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Sophisticated risk management strategies for institutional property portfolios.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden bg-surface-container-low mb-6 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Bright and airy contemporary office lobby with white marble and vertical wood slats architectural features" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6VNM5wp-zjQJJp5CeU_ZyP7bhNay4pJXV_kASKGrllmdghWKoev2u21a9cKtxdxwOBDEblLrQIr1C7c46qVvN-I4QG5WYBv6K3dNU1WMinoMrJNPRclbCdGMfsC8BPdH_iUz8BHX_v2RNcMoRxYfS0uvovIGze2O5XTfC4oCCsc1YVO_S8Tg8qifPaqfN-uMJVKtrgiJpIDeDGVISHz_qmBRZNrGRX-Miny91e9jjLNGAKwJdSqGMPn2G3G7pqQKU5mUt2fBcfL1q"/>
+<div class="absolute top-4 right-4">
+<span class="bg-surface-container-highest/80 backdrop-blur-md px-3 py-1 font-label text-[10px] uppercase tracking-widest text-cyan-400 border border-cyan-400/20">Free</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-bold tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">Ethics in Elite Brokerage</h3>
+<span class="text-xl font-light text-cyan-400">—</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Preserving professional integrity in high-stakes negotiation environments.</p>
+<div class="pt-4">
+<button class="text-xs font-label uppercase tracking-widest text-cyan-400 inline-flex items-center gap-2 group/btn">
+                                View Module <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-16 bg-[#0a0e14] border-t border-[#1c2026] mt-24">
+<div class="max-w-7xl mx-auto px-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 font-manrope text-sm leading-relaxed">
+<div class="text-[#8e9fb1]">
+                © 2024 Academy Realtors. Designed for Professional Authority.
+            </div>
+<div class="flex flex-wrap gap-x-8 gap-y-4">
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] hover:text-cyan-400 underline-offset-8 transition-all opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] hover:text-cyan-400 underline-offset-8 transition-all opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] hover:text-cyan-400 underline-offset-8 transition-all opacity-80 hover:opacity-100 transition-opacity" href="#">Contact Support</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] hover:text-cyan-400 underline-offset-8 transition-all opacity-80 hover:opacity-100 transition-opacity" href="#">Global Licensing</a>
+</div>
+</div>
+</footer>
+</body></html>

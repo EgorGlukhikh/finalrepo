@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academy Realtors | Learner Lesson View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#262a31",
+                        "tertiary": "#e3edff",
+                        "surface-container-highest": "#31353c",
+                        "secondary": "#b7c8db",
+                        "tertiary-fixed-dim": "#bac7dd",
+                        "surface-container-lowest": "#0a0e14",
+                        "surface-variant": "#31353c",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#d6e3fa",
+                        "surface-tint": "#00daf3",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-tertiary-fixed-variant": "#3b485a",
+                        "on-background": "#dfe2eb",
+                        "tertiary-container": "#c4d1e7",
+                        "surface-container": "#1c2026",
+                        "on-secondary-fixed": "#0c1d2b",
+                        "primary-container": "#00e5ff",
+                        "error-container": "#93000a",
+                        "surface": "#10141a",
+                        "inverse-surface": "#dfe2eb",
+                        "secondary-container": "#384858",
+                        "on-surface-variant": "#bac9cc",
+                        "surface-bright": "#353940",
+                        "on-tertiary-fixed": "#0f1c2c",
+                        "secondary-fixed-dim": "#b7c8db",
+                        "inverse-primary": "#006875",
+                        "on-tertiary-container": "#4d5a6c",
+                        "on-tertiary": "#243142",
+                        "primary-fixed": "#9cf0ff",
+                        "error": "#ffb4ab",
+                        "primary": "#c3f5ff",
+                        "on-primary-fixed-variant": "#004f58",
+                        "outline-variant": "#3b494c",
+                        "on-primary": "#00363d",
+                        "inverse-on-surface": "#2d3137",
+                        "on-secondary-fixed-variant": "#384858",
+                        "on-secondary-container": "#a6b7ca",
+                        "on-primary-container": "#00626e",
+                        "surface-dim": "#10141a",
+                        "on-surface": "#dfe2eb",
+                        "on-primary-fixed": "#001f24",
+                        "secondary-fixed": "#d3e4f8",
+                        "background": "#10141a",
+                        "outline": "#849396",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#181c22",
+                        "on-secondary": "#223241"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-stacking {
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Anchor -->
+<aside class="bg-[#0a0e14] h-full w-64 fixed left-0 top-0 flex flex-col py-8 px-6 font-manrope tracking-tight transition-all duration-300 ease-in-out z-50">
+<div class="mb-12">
+<h1 class="text-xl font-bold text-[#f0f4f8] tracking-widest uppercase">Academy</h1>
+<p class="text-[10px] text-secondary tracking-[0.2em] uppercase mt-1">Real Estate Excellence</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 py-3 px-4 transition-colors text-[#00e5ff] font-bold border-r-2 border-[#00e5ff] bg-[#181c22]" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Learning</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 transition-colors text-[#8e9fb1] hover:text-[#f0f4f8] hover:bg-[#181c22]" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Courses</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 transition-colors text-[#8e9fb1] hover:text-[#f0f4f8] hover:bg-[#181c22]" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span>Profile</span>
+</a>
+</nav>
+<div class="mt-auto pt-8">
+<div class="flex items-center gap-3">
+<img alt="Academy Realtors Logo" class="w-10 h-10 rounded-lg object-cover grayscale brightness-110" data-alt="professional headshot of a successful real estate mentor in a sharp suit against a blurred architectural backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS5qwM6JsXlsmKEF8jDazIa2XPd9rg0gueJG8ejxAWKM5VcOMKLh3cs4xBttFw5XzliRrvFeLYPbTIztSPmGJBFpePa8eobRKWA2wBFOv6ipTWNyDXTA436jV2nFoEhJgmy_OEuw9yahU0ePXlOD1ti9e9wRikL_CJaIous9K80GabtE5xFJ1Af42WgSvkoB8tB3MevQIhU6YPm9V44MINvSEMJU2wut-8K-DuIEvly2gE4cgEEW9d7gt2MFVTE3SBMclqns-4eZQ_"/>
+<div>
+<p class="text-xs font-bold text-on-background">Вы: Эксперт</p>
+<p class="text-[10px] text-on-surface-variant">Уровень профи</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Anchor -->
+<header class="bg-[#0a0e14]/80 backdrop-blur-md sticky top-0 z-40 ml-64 flex justify-between items-center px-12 py-6 font-manrope text-sm tracking-wide uppercase">
+<div class="flex items-center gap-8">
+<span class="text-lg font-black text-[#f0f4f8]">Academy Realtors</span>
+<div class="flex gap-6">
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] transition-opacity scale-95 active:opacity-80" href="#">Home</a>
+<a class="text-[#00e5ff] border-b border-[#00e5ff] scale-95 active:opacity-80" href="#">My Path</a>
+<a class="text-[#8e9fb1] hover:text-[#f0f4f8] transition-opacity scale-95 active:opacity-80" href="#">Resources</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-[#8e9fb1] cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-[#8e9fb1] cursor-pointer hover:text-primary">settings</span>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="close-up portrait of a professional man looking directly at the camera with a confident and approachable expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACLVCYVEtZmPqAiEjWISY6vyCfHAqy3MeYUlQuK_cWBCZbVZ1ZbjxUojjorYBqg_0G8Wr5vfgArB-q9BLe32jdwFol7oXpoHU0jMAMT3-1N1ELvE7X6JUGExcU04tbrIV7EZTqZxLSN1Qmu7IyT-6kL68MUyZ1ON5Rztzl2w7oLSJG-AxzBMi5Gg4zxCoU7XAq2XxMUen7PKDrJS559MzGK5t61QVr39x8dmxrcTISwsS1TYPCXHkvPW0d6A9iSiGKdmiIKg1C79aB"/>
+</div>
+</header>
+<main class="ml-64 p-12 max-w-[1600px]">
+<!-- Breadcrumbs Editorial Style -->
+<nav class="mb-8 flex items-center gap-2 font-label text-[10px] tracking-[0.1em] uppercase text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Курсы</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Основы жилой недвижимости</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-background font-semibold">Модуль 3: Оценка объектов</span>
+</nav>
+<div class="grid grid-cols-12 gap-12">
+<!-- Left/Main Column -->
+<div class="col-span-12 lg:col-span-8">
+<h2 class="text-4xl md:text-5xl font-headline font-extrabold tracking-tight text-on-background mb-8 leading-[1.1]">
+                    Сравнительный подход в оценке элитного жилья.
+                </h2>
+<!-- Video Player Section -->
+<div class="relative aspect-video bg-surface-container overflow-hidden rounded-lg group">
+<img alt="Architectural Luxury Interior" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="ultra-modern luxury apartment interior with floor-to-ceiling windows overlooking a city skyline at dusk with sharp architectural lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpriY1wRi7vi2_7bKixl2LEpddxzJH8nqyU6OLwWOgy8bXgW4ZJ2I8IACvzuygW5IDvImMxOb6hGiA9N5xD9RN53t5WA1M74KXqSdDYjoHHxyXsKoXfFOdm3Yqe6zyRqaC5DCKzczzVK56hmX2IYIa8Ld3QPN5R9x6I9fUVuBvShfqPmBqo0HZWL8ny3UtSpTOTuHjra4Y75RrrQWE5k1cZTQ6bCGQlqcLhG4EctmFJP2o3T35vrr762NNNjGhzbqFAQf7XN2n3fXY"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<button class="w-20 h-20 bg-primary-container/90 text-on-primary-container rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Player Controls Overlay -->
+<div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#0a0e14] to-transparent">
+<div class="flex items-center justify-between mb-4">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 text-xs font-bold rounded uppercase tracking-wider flex items-center gap-2 hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+                                Продолжить просмотр
+                            </button>
+<span class="font-label text-xs text-on-background">12:45 / 45:00</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[65%]"></div>
+</div>
+</div>
+</div>
+<!-- Notes and Key Takeaways -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-12">
+<div>
+<h3 class="font-headline text-xl font-bold mb-6 border-b-2 border-primary-container/20 pb-2 inline-block">Заметки</h3>
+<div class="bg-surface-container-low p-6 rounded border-b-2 border-outline-variant/20 focus-within:border-primary-container transition-colors">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-on-background font-body leading-relaxed min-h-[150px] resize-none" placeholder="Ваши мысли по текущему уроку..."></textarea>
+</div>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold mb-6 border-b-2 border-primary-container/20 pb-2 inline-block">Ключевые выводы</h3>
+<ul class="space-y-4 font-body text-on-surface-variant">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span>Локация — главный мультипликатор для объектов "Elite" класса.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span>Корректировка на "архитектурную ценность" может достигать 25%.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span>Важность приватности и уровня сервиса в сравнительной базе.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="col-span-12 lg:col-span-4 space-y-12">
+<!-- Progress Indicator -->
+<div class="bg-surface-container-low p-8 rounded-lg">
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6 text-center">Прогресс урока</h3>
+<div class="relative w-32 h-32 mx-auto">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-container" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="127.5" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-on-background leading-none">65%</span>
+<span class="text-[10px] uppercase text-on-surface-variant">вы тут</span>
+</div>
+</div>
+</div>
+<!-- Lesson Plan -->
+<div class="bg-surface-container-low p-8 rounded-lg">
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">План урока</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-4 p-4 rounded bg-surface-container-high border-l-2 border-primary-container">
+<span class="material-symbols-outlined text-primary-container">videocam</span>
+<div>
+<p class="text-sm font-bold">Видео: Теория</p>
+<p class="text-[10px] text-on-surface-variant">В процессе</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-background">article</span>
+<div>
+<p class="text-sm font-medium">Case Study: Москва-Сити</p>
+<p class="text-[10px] text-on-surface-variant">5 минут чтения</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-background">quiz</span>
+<div>
+<p class="text-sm font-medium">Тест по модулю</p>
+<p class="text-[10px] text-on-surface-variant">10 вопросов</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Next Lesson Card -->
+<div class="relative overflow-hidden rounded-lg group cursor-pointer bg-surface-container-low p-6">
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-4">Следующий урок</h3>
+<div class="relative h-32 mb-4 overflow-hidden rounded">
+<img alt="Commercial Building" class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" data-alt="glass skyscraper reflecting a clear blue sky with sharp geometric forms and clean corporate aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7nEQz3DOPeGuSN_dRKC2kD4H9IkgkgmIpWv2agkoXbMYVyybwYjwdespM-Tuw2kVYfkjKc_XF7lG27hHIQPGZNKIJvktpvKv_TaDEncZvNeENesg99U0E_hqrOB9DkCxIoFLoDhWEr5P3yM1ZXXs4PcJ-FeEMGjmNn3gK_Xc3JrgQtn5QXUjjm7D-yuafaoFPv_XaQZHrkvjkyKW6sPUIcCRy0UQpHeEap8i2e7SWqWI1uaHNyLQZYC9zygpzRzvZsmK-9Gx13iwv"/>
+</div>
+<p class="font-headline text-lg font-bold text-on-background group-hover:text-primary-container transition-colors">Метод капитализации доходов</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-[10px] uppercase font-label text-on-surface-variant">32 минуты</span>
+<span class="material-symbols-outlined text-primary-container transform group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Materials -->
+<div>
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Материалы</h3>
+<div class="space-y-4">
+<a class="flex items-center justify-between p-4 border-b border-outline-variant/30 hover:border-primary-container transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">picture_as_pdf</span>
+<span class="text-sm">Гайд по оценке (PDF)</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-on-background">download</span>
+</a>
+<a class="flex items-center justify-between p-4 border-b border-outline-variant/30 hover:border-primary-container transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">table_chart</span>
+<span class="text-sm">Excel шаблон расчета</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-on-background">download</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for quick notes or help, suppressed based on task-focused nature but shown for "Ask Expert" context -->
+<button class="fixed bottom-12 right-12 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group z-50">
+<span class="material-symbols-outlined">support_agent</span>
+<span class="absolute right-full mr-4 bg-surface-container-high text-on-background px-4 py-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Задать вопрос эксперту</span>
+</button>
+</body></html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#00daf3",
+                        "secondary-container": "#384858",
+                        "surface-dim": "#10141a",
+                        "secondary": "#b7c8db",
+                        "on-secondary-fixed": "#0c1d2b",
+                        "surface-container-high": "#262a31",
+                        "surface-container-highest": "#31353c",
+                        "tertiary-container": "#c4d1e7",
+                        "surface-container": "#1c2026",
+                        "surface-variant": "#31353c",
+                        "on-primary-container": "#00626e",
+                        "outline": "#849396",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#b7c8db",
+                        "tertiary-fixed-dim": "#bac7dd",
+                        "primary-container": "#00e5ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-tertiary-fixed": "#0f1c2c",
+                        "on-background": "#dfe2eb",
+                        "surface": "#10141a",
+                        "background": "#10141a",
+                        "on-tertiary-container": "#4d5a6c",
+                        "on-secondary": "#223241",
+                        "inverse-on-surface": "#2d3137",
+                        "tertiary-fixed": "#d6e3fa",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#a6b7ca",
+                        "inverse-surface": "#dfe2eb",
+                        "on-tertiary-fixed-variant": "#3b485a",
+                        "surface-tint": "#00daf3",
+                        "outline-variant": "#3b494c",
+                        "surface-container-lowest": "#0a0e14",
+                        "primary": "#c3f5ff",
+                        "on-primary": "#00363d",
+                        "surface-container-low": "#181c22",
+                        "secondary-fixed": "#d3e4f8",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary-fixed-variant": "#384858",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-primary-fixed": "#001f24",
+                        "surface-bright": "#353940",
+                        "inverse-primary": "#006875",
+                        "on-tertiary": "#243142",
+                        "on-surface": "#dfe2eb",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#e3edff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #0a0e14;
+            color: #f0f4f8;
+            font-family: 'Manrope', sans-serif;
+        }
+        .editorial-mask {
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="bg-[#181c22] sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-8 py-6 max-w-[1440px] mx-auto">
+<div class="text-xl font-bold text-[#f0f4f8] tracking-tight">Academy Realtors</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-[#00e5ff] font-bold border-b-2 border-[#00e5ff] pb-1 font-['Manrope'] tracking-tight leading-relaxed uppercase tracking-[0.05em] text-[0.75rem]" href="#">Courses</a>
+<a class="text-[#8e9fb1] font-medium font-['Manrope'] tracking-tight leading-relaxed uppercase tracking-[0.05em] text-[0.75rem] hover:text-[#00e5ff] transition-colors duration-300" href="#">Library</a>
+<a class="text-[#8e9fb1] font-medium font-['Manrope'] tracking-tight leading-relaxed uppercase tracking-[0.05em] text-[0.75rem] hover:text-[#00e5ff] transition-colors duration-300" href="#">Insights</a>
+<a class="text-[#8e9fb1] font-medium font-['Manrope'] tracking-tight leading-relaxed uppercase tracking-[0.05em] text-[0.75rem] hover:text-[#00e5ff] transition-colors duration-300" href="#">Community</a>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-[#8e9fb1] hover:text-[#00e5ff] cursor-pointer">notifications</span>
+<button class="bg-primary-container text-on-primary px-6 py-2 text-[0.75rem] font-['Inter'] uppercase tracking-[0.05em] font-bold rounded-lg active:scale-95 transition-all duration-200">Begin Journey</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex flex-col justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Architectural structure" class="w-full h-full object-cover opacity-40 editorial-mask" data-alt="Cinematic wide shot of a brutalist concrete villa with large glass windows overlooking a calm misty lake at dusk, architectural elegance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6aVKkR4c34NByohZL5Wq7f3v3SRg6oNIMKoz85phMffsP_oyUT93-HFwMqOHorpWE9jrdmWf5u4G_WvDzP5UmC9fa3W0HiEVlcMGTZyNIdy8CBfFAuEabF2YqnSJSpQeqnuWe8jG-dmT5mbSggOn7yerTqFzZGFB9iDNz9SMr5OwPEejN_uKRqeZFmFx1FnXzhA8BSWo8AmMr3RjC5LS3qQoKxSvN8IE6lww0rh6hWMnblXqnyNIBgu-G93qIieWmn1B7ShRu9-aB"/>
+<div class="absolute inset-0 bg-gradient-to-r from-[#0a0e14] via-[#0a0e14]/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-[1440px] mx-auto px-8 w-full grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8">
+<span class="font-['Inter'] text-primary-container text-[0.75rem] uppercase tracking-[0.2em] mb-6 block">Masterclass Series</span>
+<h1 class="text-5xl md:text-7xl font-bold tracking-tight text-on-background mb-8 leading-[1.1]">The Architecture of <br/><span class="text-primary-container">Market Domination</span></h1>
+<p class="text-xl text-on-surface-variant max-w-xl mb-12 font-light leading-relaxed">A definitive guide to high-stakes real estate negotiation and premium client acquisition in the modern era.</p>
+<div class="flex items-center gap-8">
+<div class="flex flex-col">
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest text-outline mb-1">Investment</span>
+<span class="text-3xl font-bold text-on-background">$1,450 <span class="text-sm font-normal text-outline">USD</span></span>
+</div>
+<button class="bg-primary-container text-on-primary px-10 py-5 text-[0.875rem] font-['Inter'] uppercase tracking-[0.1em] font-bold rounded-lg hover:bg-primary-fixed-dim transition-all shadow-xl shadow-primary-container/10">Enroll Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- What Opens Now -->
+<section class="py-24 bg-[#0a0e14]">
+<div class="max-w-[1440px] mx-auto px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-1px bg-outline-variant/20">
+<div class="bg-surface-container-low p-12 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-container">key</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 tracking-tight">Instant Vault Access</h3>
+<p class="text-on-surface-variant leading-relaxed">Gain immediate entry to our proprietary database of high-net-worth psychological profiles and scripts.</p>
+</div>
+<div class="bg-surface-container-low p-12 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-container">groups</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 tracking-tight">The Inner Circle</h3>
+<p class="text-on-surface-variant leading-relaxed">One-click integration into the Academy Private Community, connecting you with 500+ elite industry mentors.</p>
+</div>
+<div class="bg-surface-container-low p-12 hover:bg-surface-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-container">architecture</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 tracking-tight">Blueprint Library</h3>
+<p class="text-on-surface-variant leading-relaxed">Downloadable architectural templates for premium listings and luxury portfolio presentations.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Curriculum Preview -->
+<section class="py-32 bg-[#181c22]">
+<div class="max-w-[1440px] mx-auto px-8">
+<div class="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="max-w-2xl">
+<h2 class="text-4xl font-bold tracking-tight mb-6">Curriculum Architecture</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed">Structured to take you from foundational market theory to advanced psychological leverage in 12 intensive modules.</p>
+</div>
+<div class="flex items-center gap-4 text-primary-container font-['Inter'] uppercase tracking-widest text-[0.75rem]">
+<span>64 Lessons</span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span>18 Total Hours</span>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Module 1 -->
+<div class="group">
+<div class="flex items-center justify-between p-8 bg-surface-container-low rounded-lg group-hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center gap-8">
+<span class="text-outline font-['Inter'] text-sm tracking-tighter">01</span>
+<h4 class="text-xl font-bold">The Premium Mindset shift</h4>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">expand_more</span>
+</div>
+<div class="px-24 py-8 grid grid-cols-1 md:grid-cols-2 gap-y-4 text-on-surface-variant">
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container/40"></span>
+<span class="text-sm">Deconstructing the Commodity Trap</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container/40"></span>
+<span class="text-sm">The Psychology of the Luxury Buyer</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container/40"></span>
+<span class="text-sm">Value Anchoring Techniques</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container/40"></span>
+<span class="text-sm">Case Study: The $50M Approach</span>
+</div>
+</div>
+</div>
+<!-- Module 2 -->
+<div class="group">
+<div class="flex items-center justify-between p-8 bg-surface-container-low rounded-lg group-hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center gap-8">
+<span class="text-outline font-['Inter'] text-sm tracking-tighter">02</span>
+<h4 class="text-xl font-bold">Visual Authority &amp; Brand Framing</h4>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">expand_more</span>
+</div>
+</div>
+<!-- Module 3 -->
+<div class="group">
+<div class="flex items-center justify-between p-8 bg-surface-container-low rounded-lg group-hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center gap-8">
+<span class="text-outline font-['Inter'] text-sm tracking-tighter">03</span>
+<h4 class="text-xl font-bold">The Art of High-Stakes Negotiation</h4>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Instructor Snippet -->
+<section class="py-32 bg-[#0a0e14] overflow-hidden">
+<div class="max-w-[1440px] mx-auto px-8 grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<div class="md:col-span-5 relative">
+<div class="aspect-[4/5] bg-surface-container-high rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+<img alt="Instructor Portrait" class="w-full h-full object-cover" data-alt="Sharp portrait of a mature man in a tailored navy suit standing against a dark architectural concrete wall, minimalist and professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10LowOmxQkaiEd3-EE7hypNC0r4y713UVM3nxM2cz1J0NSUV9QLuOUWZnC9CPrv88gme0sSX51OYEtF3N-VPDl7Bw25GPW5iEbdKxjmVFL1HKu1FPMUUJ284bwnQcUI8XJ7KV84TFFOtvMdfEr1RtgEZSRy1V78aHFXC9uVWLOUX4XD884ZJrQokOVF4nUtvCruBn5Y7E-xr9W4slb-Mjk9ryS2Tx2MAjOY5LRqZRrqGWn37iIjYIglTl6wnMTFBltFnW9bXJaqxc"/>
+</div>
+<div class="absolute -bottom-6 -right-6 p-8 bg-primary-container text-on-primary rounded-lg max-w-[200px]">
+<span class="text-4xl font-extrabold tracking-tight">25+</span>
+<p class="text-[0.6875rem] font-['Inter'] uppercase tracking-widest mt-2 font-bold">Years of Industry Excellence</p>
+</div>
+</div>
+<div class="md:col-span-7">
+<span class="font-['Inter'] text-primary-container text-[0.75rem] uppercase tracking-[0.2em] mb-6 block">Your Instructor</span>
+<h2 class="text-5xl font-bold tracking-tight mb-8">Marcus Thorne</h2>
+<p class="text-xl text-on-surface-variant leading-[1.8] mb-10 italic">"Real estate is not about properties; it is about the mastery of human intention. We build the stage where high-value decisions are made."</p>
+<p class="text-on-surface-variant leading-relaxed max-w-xl mb-12">Marcus has facilitated over $4.2B in residential transactions across three continents. As the founder of Academy Realtors, he distills decades of boardroom-level strategy into a technical framework for modern agents.</p>
+<div class="flex gap-4">
+<a class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full hover:border-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline hover:text-primary-container">share</span>
+</a>
+<a class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full hover:border-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-outline hover:text-primary-container">mail</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Support Line -->
+<section class="py-24 bg-[#181c22]">
+<div class="max-w-[1440px] mx-auto px-8 text-center">
+<div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-surface-container-high mb-8">
+<span class="material-symbols-outlined text-primary-container text-4xl">contact_support</span>
+</div>
+<h2 class="text-3xl font-bold mb-4">We're here to help</h2>
+<p class="text-on-surface-variant mb-12 max-w-lg mx-auto">Have questions about the curriculum or enrollment process? Our academic advisors are standing by to guide your journey.</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+<button class="bg-primary-container text-on-primary px-10 py-4 font-['Inter'] uppercase tracking-widest font-bold rounded-lg hover:brightness-110 transition-all">Speak to Advisor</button>
+<button class="border border-outline/30 text-on-background px-10 py-4 font-['Inter'] uppercase tracking-widest font-bold rounded-lg hover:border-primary-container transition-all">Browse FAQ</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#0a0e14] py-12 border-t border-outline-variant/10">
+<div class="max-w-7xl mx-auto px-8 flex flex-col items-center gap-6 text-center">
+<div class="flex items-center gap-8 mb-4">
+<a class="font-['Manrope'] text-[0.875rem] text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors duration-300" href="#">Terms</a>
+<a class="font-['Manrope'] text-[0.875rem] text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors duration-300" href="#">Privacy</a>
+<a class="font-['Manrope'] text-[0.875rem] text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors duration-300" href="#">Support</a>
+<a class="font-['Manrope'] text-[0.875rem] text-[#8e9fb1] hover:text-[#f0f4f8] transition-colors duration-300" href="#">Contact</a>
+</div>
+<p class="font-['Manrope'] text-[0.875rem] text-[#8e9fb1] leading-[1.6]">© 2024 Academy Realtors. Architectural Professionalism.</p>
+</div>
+</footer>
+</body></html>
