@@ -1,4 +1,4 @@
-import { Accordion, Grid, GridItem, Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Accordion, Grid, GridItem, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { PageSection, SectionHeading, SurfacePanel } from '@/components/compositions';
 
@@ -16,20 +16,25 @@ export function LandingTrustSection() {
               description="Никаких служебных экранов и лишней путаницы. Только каталог, курсы и понятный следующий шаг."
             />
 
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
+            <Stack gap="0" borderTopWidth="1px" borderColor="border.subtle">
               {marketingTrustPoints.map((item, index) => (
-                <SurfacePanel key={item} tone={index === 0 ? 'highlight' : 'muted'} p={{ base: 5, md: 6 }} h="full">
-                  <Stack gap="3">
-                    <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
-                      0{index + 1}
-                    </Text>
-                    <Text textStyle={index === 0 ? 'body' : 'bodyMuted'} color={index === 0 ? 'fg.default' : 'fg.muted'}>
-                      {item}
-                    </Text>
-                  </Stack>
-                </SurfacePanel>
+                <Stack
+                  key={item}
+                  gap="3"
+                  py={{ base: 5, md: 6 }}
+                  borderBottomWidth="1px"
+                  borderColor="border.subtle"
+                  align="start"
+                >
+                  <Text textStyle="overline" color={index === 0 ? 'fg.brand' : 'fg.subtle'}>
+                    0{index + 1}
+                  </Text>
+                  <Text textStyle={index === 0 ? 'body' : 'bodyMuted'} color={index === 0 ? 'fg.default' : 'fg.muted'} maxW="xl">
+                    {item}
+                  </Text>
+                </Stack>
               ))}
-            </SimpleGrid>
+            </Stack>
           </Stack>
         </GridItem>
 
