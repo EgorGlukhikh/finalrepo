@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 
 import { Heading, HStack, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
-import { BookOpenIcon, CourseCard, IconChip, SearchIcon } from '@/components/branding';
+import { BookOpenIcon, CourseCard, IconChip } from '@/components/branding';
 import { ActionLink } from '@/components/layout';
-import { ContentArea, HeaderBar, PageLayout, Panel, Sidebar, SplitPageLayout } from '@/components/product';
+import { ContentArea, HeaderBar, PageLayout, Panel } from '@/components/product';
 import { Badge, EmptyState } from '@/components/ui';
 import { getAuthSession } from '@/modules/auth/session';
 import { listPublishedCourses } from '@/modules/courses';
@@ -13,7 +13,7 @@ import { getUserEnrollments } from '@/modules/enrollments';
 
 export const metadata: Metadata = {
   title: 'Каталог курсов',
-  description: 'Каталог курсов Академии риэлторов: бесплатные и платные программы для обучения.',
+  description: 'Каталог Академии риэлторов: выберите программу, посмотрите, что внутри, и начните с того формата, который подходит вам сейчас.',
 };
 
 function accessLabel(accessType: string) {
@@ -29,7 +29,15 @@ function accessLabel(accessType: string) {
   }
 }
 
-function buildCourseCta({
+function priceLabel(accessType: string, priceAmount: number | null) {
+  if (accessType === 'FREE' || priceAmount === null) {
+    return 'Без оплаты';
+  }
+
+  return `${priceAmount} ₽`;
+}
+
+function buildCourseAction({
   courseId,
   slug,
   accessType,
@@ -47,13 +55,12 @@ function buildCourseCta({
 
   return {
     isEnrolled,
-    isFree,
     href: isEnrolled
       ? buildAppCoursePath(slug)
       : isFree && sessionUserId
         ? buildAppCoursePath(slug)
         : buildPublicCoursePath(slug),
-    label: isEnrolled ? 'Продолжить обучение' : isFree ? 'Начать обучение' : 'Открыть страницу курса',
+    label: isEnrolled ? 'Вернуться к курсу' : 'Посмотреть программу',
   };
 }
 
@@ -65,22 +72,19 @@ export default async function CoursesCatalogPage() {
     enrollments.filter((enrollment) => enrollment.status === 'ACTIVE').map((enrollment) => enrollment.course.id),
   );
   const featuredCourse = courses[0] ?? null;
-  const remainingCourses = courses.slice(1);
+  const listCourses = courses.slice(featuredCourse ? 1 : 0);
 
   return (
     <PageLayout>
       <HeaderBar
         eyebrow="Каталог"
-        title="Курсы для риэлторов"
-        description="Открывайте бесплатные курсы сразу, а платные — через страницу курса."
+        title="Выберите курс, который подходит вам по задаче и темпу"
+        description="Здесь можно спокойно посмотреть программы, понять формат и открыть ту, с которой удобно начать прямо сейчас."
       />
 
       {courses.length === 0 ? (
         <Stack gap="4">
-          <EmptyState
-            title="Каталог пока пуст"
-            description="Опубликованные курсы появятся здесь."
-          />
+          <EmptyState title="Каталог пока пуст" description="Как только появятся опубликованные курсы, они будут показаны здесь." />
           <HStack justify="center">
             <ActionLink href="/">Вернуться на главную</ActionLink>
           </HStack>
@@ -88,174 +92,109 @@ export default async function CoursesCatalogPage() {
       ) : (
         <Stack gap="8">
           {featuredCourse ? (
-            <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6">
-              <Panel tone="highlight" minH={{ base: 'auto', xl: '22rem' }}>
-                {(() => {
-                  const cta = buildCourseCta({
-                    courseId: featuredCourse.id,
-                    slug: featuredCourse.slug,
-                    accessType: featuredCourse.accessType,
-                    sessionUserId: session?.user?.id,
-                    enrolledCourseIds,
-                  });
+            <Panel tone="highlight" minH={{ base: 'auto', xl: '22rem' }}>
+              {(() => {
+                const action = buildCourseAction({
+                  courseId: featuredCourse.id,
+                  slug: featuredCourse.slug,
+                  accessType: featuredCourse.accessType,
+                  sessionUserId: session?.user?.id,
+                  enrolledCourseIds,
+                });
 
-                  return (
-                    <Stack gap="6" h="full">
-                      <HStack align="start" justify="space-between" gap="4">
-                        <Stack gap="4" maxW="2xl">
+                return (
+                  <SimpleGrid columns={{ base: 1, xl: 2 }} gap="6" alignItems="stretch">
+                    <Stack gap="6" h="full" justify="space-between">
+                      <Stack gap="5" maxW="3xl">
+                        <HStack justify="space-between" align="start" gap="4">
                           <HStack gap="2" flexWrap="wrap">
                             <Badge tone={featuredCourse.accessType === 'FREE' ? 'success' : 'secondary'}>
                               {accessLabel(featuredCourse.accessType)}
                             </Badge>
-                            <Badge tone="outline">{featuredCourse.modulesCount} модулей</Badge>
+                            <Badge tone="outline">{priceLabel(featuredCourse.accessType, featuredCourse.priceAmount)}</Badge>
                           </HStack>
-                          <Heading as="h2" textStyle="pageTitle" maxW="2xl">
+                          <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
+                        </HStack>
+
+                        <Stack gap="3">
+                          <Heading as="h2" textStyle="pageTitle" maxW="3xl">
                             {featuredCourse.title}
                           </Heading>
                           <Text textStyle="body" color="fg.muted" maxW="2xl">
-                            {featuredCourse.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
+                            {featuredCourse.shortDescription ??
+                              'На странице курса можно посмотреть программу, понять, что внутри, и решить, подходит ли вам этот формат.'}
                           </Text>
                         </Stack>
-                        <IconChip icon={<BookOpenIcon size={18} />} tone="primary" />
-                      </HStack>
+                      </Stack>
 
-                      <HStack gap="2.5" flexWrap="wrap">
-                        <Badge tone="outline">{featuredCourse.lessonsCount} уроков</Badge>
-                        <Badge tone="outline">
-                          {cta.isFree
-                            ? 'Без оплаты'
-                            : featuredCourse.priceAmount !== null
-                              ? `${featuredCourse.priceAmount} ₽`
-                              : 'Цена уточняется'}
-                        </Badge>
-                      </HStack>
-
-                      <HStack gap="3" flexWrap="wrap" mt="auto">
-                        <ActionLink href={cta.href}>{cta.label}</ActionLink>
-                        <ActionLink href={buildPublicCoursePath(featuredCourse.slug)} variant="secondary">
-                          Открыть страницу курса
-                        </ActionLink>
+                      <HStack gap="3" flexWrap="wrap">
+                        <ActionLink href={action.href}>{action.label}</ActionLink>
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          {featuredCourse.modulesCount} модулей и {featuredCourse.lessonsCount} уроков
+                        </Text>
                       </HStack>
                     </Stack>
-                  );
-                })()}
-              </Panel>
 
-              <Panel tone="muted">
-                <Stack gap="5">
-                  <HStack align="start" gap="3">
-                    <IconChip icon={<SearchIcon size={17} />} tone="muted" />
-                    <Stack gap="1">
-                      <Text textStyle="overline" color="fg.subtle">
-                        Доступ
-                      </Text>
-                      <Heading as="h2" textStyle="h4">
-                        Бесплатные курсы открываются сразу
-                      </Heading>
-                    </Stack>
-                  </HStack>
-                  <Text textStyle="bodyMuted" color="fg.muted">
-                    Для платных программ сначала откройте страницу курса и подтвердите покупку.
-                  </Text>
-                </Stack>
-              </Panel>
-            </SimpleGrid>
+                    <Panel tone="inset" h="full">
+                      <Stack gap="4">
+                        <Text textStyle="overline" color="fg.subtle">
+                          Что важно знать
+                        </Text>
+                        <Stack gap="3">
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            Бесплатный курс можно открыть сразу после входа в аккаунт.
+                          </Text>
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            На платной программе сначала доступна страница курса с программой, а полный доступ открывается после оплаты.
+                          </Text>
+                          <Text textStyle="bodyMuted" color="fg.muted">
+                            Если вы уже начали учиться, курс откроется прямо в личном кабинете.
+                          </Text>
+                        </Stack>
+                      </Stack>
+                    </Panel>
+                  </SimpleGrid>
+                );
+              })()}
+            </Panel>
           ) : null}
 
-          <SplitPageLayout
-            sidebar={
-              <Sidebar>
-                <Stack gap="4">
-                  {courses.slice(0, 2).map((course) => {
-                    const cta = buildCourseCta({
-                      courseId: course.id,
-                      slug: course.slug,
-                      accessType: course.accessType,
-                      sessionUserId: session?.user?.id,
-                      enrolledCourseIds,
-                    });
+          <ContentArea>
+            <SimpleGrid columns={{ base: 1, xl: 2 }} gap="5">
+              {listCourses.map((course) => {
+                const action = buildCourseAction({
+                  courseId: course.id,
+                  slug: course.slug,
+                  accessType: course.accessType,
+                  sessionUserId: session?.user?.id,
+                  enrolledCourseIds,
+                });
 
-                    return (
-                      <CourseCard
-                        key={course.id}
-                        featured={course.id === featuredCourse?.id}
-                        title={course.title}
-                        description={
-                          course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'
-                        }
-                        status={accessLabel(course.accessType)}
-                        meta={[`${course.modulesCount} модулей`, `${course.lessonsCount} уроков`]}
-                        footer={
-                          <HStack justify="space-between" gap="3" flexWrap="wrap">
-                            <Text textStyle="bodyMuted" color="fg.muted">
-                              {cta.isFree
-                                ? 'Без оплаты'
-                                : course.priceAmount !== null
-                                  ? `${course.priceAmount} ₽`
-                                  : 'Цена уточняется'}
-                            </Text>
-                            <ActionLink href={cta.href} variant="secondary">
-                              {cta.label}
-                            </ActionLink>
-                          </HStack>
-                        }
-                      />
-                    );
-                  })}
-                </Stack>
-              </Sidebar>
-            }
-            content={
-              <ContentArea>
-                <Stack gap="4">
-                  {remainingCourses.map((course) => {
-                    const cta = buildCourseCta({
-                      courseId: course.id,
-                      slug: course.slug,
-                      accessType: course.accessType,
-                      sessionUserId: session?.user?.id,
-                      enrolledCourseIds,
-                    });
-
-                    return (
-                      <Panel key={course.id}>
-                        <SimpleGrid columns={{ base: 1, lg: 2 }} gap="5" alignItems="center">
-                          <Stack gap="3" minW="0">
-                            <HStack gap="2" flexWrap="wrap">
-                              <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>
-                                {accessLabel(course.accessType)}
-                              </Badge>
-                              <Badge tone="outline">{course.modulesCount} модулей</Badge>
-                              <Badge tone="outline">{course.lessonsCount} уроков</Badge>
-                            </HStack>
-                            <Heading as="h3" textStyle="h4">
-                              {course.title}
-                            </Heading>
-                            <Text textStyle="bodyMuted" color="fg.muted" maxW="2xl">
-                              {course.shortDescription ?? 'Откройте курс, чтобы посмотреть программу и условия доступа.'}
-                            </Text>
-                          </Stack>
-
-                          <Stack gap="3" align={{ base: 'start', lg: 'end' }}>
-                            <Text textStyle="bodyStrong" color="fg.default">
-                              {cta.isFree
-                                ? 'Без оплаты'
-                                : course.priceAmount !== null
-                                  ? `${course.priceAmount} ₽`
-                                  : 'Цена уточняется'}
-                            </Text>
-                            <ActionLink href={cta.href} variant="secondary">
-                              {cta.label}
-                            </ActionLink>
-                          </Stack>
-                        </SimpleGrid>
-                      </Panel>
-                    );
-                  })}
-                </Stack>
-              </ContentArea>
-            }
-          />
+                return (
+                  <CourseCard
+                    key={course.id}
+                    title={course.title}
+                    description={
+                      course.shortDescription ??
+                      'Откройте курс и посмотрите программу, чтобы быстро понять, подходит ли вам эта тема.'
+                    }
+                    status={accessLabel(course.accessType)}
+                    meta={[priceLabel(course.accessType, course.priceAmount)]}
+                    footer={
+                      <HStack justify="space-between" gap="3" flexWrap="wrap">
+                        <Text textStyle="bodyMuted" color="fg.muted">
+                          {course.modulesCount} модулей и {course.lessonsCount} уроков
+                        </Text>
+                        <ActionLink href={action.href} variant="secondary">
+                          {action.label}
+                        </ActionLink>
+                      </HStack>
+                    }
+                  />
+                );
+              })}
+            </SimpleGrid>
+          </ContentArea>
         </Stack>
       )}
     </PageLayout>

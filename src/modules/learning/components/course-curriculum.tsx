@@ -54,25 +54,23 @@ export function CourseCurriculum({
                 value={courseModule.id}
                 borderWidth="1px"
                 borderColor="border.subtle"
-                borderRadius="2xl"
+                borderRadius="xl"
                 bg="bg.surface"
                 overflow="hidden"
               >
                 <Accordion.ItemTrigger px="4" py="3.5">
                   <HStack justify="space-between" align="start" gap="3" w="full">
                     <Stack gap="1" minW="0" textAlign="left">
-                      <HStack gap="2" flexWrap="wrap">
-                        <Text textStyle="bodyStrong" color="fg.default">
-                          {courseModule.title}
-                        </Text>
-                        {courseModule.published ? <Badge tone="secondary">Опубликован</Badge> : <Badge tone="outline">Черновик</Badge>}
-                      </HStack>
+                      <Text textStyle="bodyStrong" color="fg.default">
+                        {courseModule.title}
+                      </Text>
                       <Text textStyle="caption" color="fg.muted">
-                        {courseModule.lessons.length} уроков · {courseModule.completedLessonsCount} завершено
+                        {courseModule.lessons.length} уроков
+                        {mode === 'learning' ? ` · ${courseModule.completedLessonsCount} завершено` : ''}
                       </Text>
                     </Stack>
                     <HStack gap="3">
-                      <ProgressPill value={courseModule.progressPercent} />
+                      {mode === 'learning' ? <ProgressPill value={courseModule.progressPercent} /> : null}
                       <Accordion.ItemIndicator color="fg.subtle" />
                     </HStack>
                   </HStack>
@@ -91,12 +89,12 @@ export function CourseCurriculum({
                           completed={lesson.isCompleted}
                           disabled={mode === 'preview' || !lesson.canAccess || lesson.isLocked}
                           status={
-                            lesson.isLocked ? (
-                              <Badge tone="outline">Закрыт</Badge>
-                            ) : lesson.preview && mode === 'preview' ? (
-                              <Badge tone="secondary">Превью</Badge>
+                            mode === 'preview' && lesson.preview ? (
+                              <Badge tone="secondary">Можно посмотреть</Badge>
                             ) : lesson.isCurrent ? (
                               <Badge tone="primary">Сейчас</Badge>
+                            ) : lesson.isLocked ? (
+                              <Badge tone="outline">Откроется после доступа</Badge>
                             ) : null
                           }
                         />

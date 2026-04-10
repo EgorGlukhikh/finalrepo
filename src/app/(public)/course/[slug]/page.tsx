@@ -80,30 +80,26 @@ export default async function CoursePage({ params }: CoursePageProps) {
             <Panel tone="muted">
               <Stack gap="4">
                 <Text textStyle="overline" color="fg.subtle">
-                  О курсе
+                  Коротко о курсе
                 </Text>
 
                 <Stack gap="3">
-                  <SummaryRow label="Модулей" value={tree.modules.length} />
-                  <SummaryRow label="Уроков" value={tree.totalLessonsCount} />
-                  <SummaryRow label="Статус" value={course.status === 'PUBLISHED' ? 'Готов к обучению' : 'Черновик'} />
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    {tree.modules.length} модулей и {tree.totalLessonsCount} уроков в понятной последовательности.
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    {course.accessType === 'FREE'
+                      ? 'Этот курс можно открыть сразу после входа в аккаунт.'
+                      : 'Сейчас можно посмотреть программу, а полный доступ откроется после оплаты.'}
+                  </Text>
+                  <Text textStyle="bodyMuted" color="fg.muted">
+                    Если вы уже начинали обучение, курс откроется с вашего обычного маршрута в личном кабинете.
+                  </Text>
                 </Stack>
 
                 <ActionLink href={buildCatalogPath()} variant="outline" w="full">
                   Вернуться в каталог
                 </ActionLink>
-              </Stack>
-            </Panel>
-
-            <Panel>
-              <Stack gap="3">
-                <Text textStyle="overline" color="fg.subtle">
-                  Доступ
-                </Text>
-                <Text textStyle="bodyMuted" color="fg.muted">
-                  Бесплатный курс можно открыть сразу после зачисления. Платный курс становится доступен только после
-                  подтвержденной оплаты.
-                </Text>
               </Stack>
             </Panel>
           </Sidebar>
@@ -116,8 +112,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   <Stack gap="4" maxW="3xl">
                     <HStack gap="2" flexWrap="wrap">
                       <Badge tone={course.accessType === 'FREE' ? 'success' : 'secondary'}>{accessLabel(course.accessType)}</Badge>
-                      <Badge tone="outline">{tree.totalLessonsCount} уроков</Badge>
-                      <Badge tone="outline">{course.status === 'PUBLISHED' ? 'Опубликован' : 'Черновик'}</Badge>
+                      <Badge tone="outline">{moneyLabel(course.priceAmount)}</Badge>
                     </HStack>
 
                     <Stack gap="3">
@@ -128,7 +123,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         {course.title}
                       </Heading>
                       <Text textStyle="body" color="fg.muted" maxW="3xl">
-                        {course.description ?? course.shortDescription ?? 'Программа курса и условия доступа.'}
+                        {course.description ?? course.shortDescription ?? 'Здесь собрана программа курса и весь маршрут обучения по шагам.'}
                       </Text>
                     </Stack>
                   </Stack>
@@ -137,23 +132,23 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </HStack>
 
                 <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
-                  <Panel tone="muted" p="4">
+                  <Panel tone="inset" p="4">
                     <Stack gap="2">
                       <Text textStyle="caption" color="fg.muted">
-                        Формат доступа
+                        Что внутри
                       </Text>
                       <Text textStyle="bodyStrong" color="fg.default">
-                        {accessLabel(course.accessType)}
+                        {tree.modules.length} модулей и {tree.totalLessonsCount} уроков
                       </Text>
                     </Stack>
                   </Panel>
-                  <Panel tone="muted" p="4">
+                  <Panel tone="inset" p="4">
                     <Stack gap="2">
                       <Text textStyle="caption" color="fg.muted">
-                        Стоимость
+                        Как открывается доступ
                       </Text>
                       <Text textStyle="bodyStrong" color="fg.default">
-                        {moneyLabel(course.priceAmount)}
+                        {course.accessType === 'FREE' ? 'Сразу после входа' : 'После подтвержденной оплаты'}
                       </Text>
                     </Stack>
                   </Panel>
@@ -161,9 +156,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
                 {isEnrolled ? (
                   <ActionBar>
-                    <ActionLink href={buildAppCoursePath(course.slug)}>Продолжить обучение</ActionLink>
+                    <ActionLink href={buildAppCoursePath(course.slug)}>Вернуться к курсу</ActionLink>
                     <Text textStyle="bodyMuted" color="fg.muted">
-                      У вас уже есть доступ к этому курсу.
+                      У вас уже открыт доступ. Можно сразу продолжить с того места, где вы остановились.
                     </Text>
                   </ActionBar>
                 ) : session?.user ? (
@@ -172,9 +167,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
                       <Stack gap="3" align="start">
                         <input type="hidden" name="courseId" value={course.id} />
                         <input type="hidden" name="courseSlug" value={course.slug} />
-                        <Button type="submit">Начать обучение</Button>
+                        <Button type="submit">Открыть курс</Button>
                         <Text textStyle="bodyMuted" color="fg.muted">
-                          После зачисления откроется личный кабинет и первый урок курса.
+                          После этого курс появится в личном кабинете и можно будет сразу перейти к первому уроку.
                         </Text>
                       </Stack>
                     </form>
@@ -188,7 +183,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         </Button>
                         <Text textStyle="bodyMuted" color="fg.muted">
                           {billingAvailable
-                            ? 'После подтвержденной оплаты доступ к курсу откроется автоматически.'
+                            ? 'После оплаты доступ к курсу откроется автоматически.'
                             : 'Оплата временно недоступна. Проверьте настройку Robokassa перед запуском платного доступа.'}
                         </Text>
                       </Stack>
@@ -196,9 +191,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   )
                 ) : (
                   <HStack gap="3" flexWrap="wrap">
-                    <ActionLink href={signInHref}>Войти и продолжить</ActionLink>
+                    <ActionLink href={signInHref}>Войти и открыть курс</ActionLink>
                     <Text textStyle="bodyMuted" color="fg.muted">
-                      После входа можно начать бесплатный курс или перейти к оплате платной программы.
+                      После входа можно сразу начать бесплатный курс или перейти к оплате платной программы.
                     </Text>
                   </HStack>
                 )}
@@ -207,7 +202,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
             <CourseCurriculum
               title="Программа курса"
-              description="На публичной странице видны модули и уроки, но содержимое защищенных материалов остается доступным только после получения доступа."
+              description="Здесь видно, как устроен курс по шагам. Полное содержимое откроется после получения доступа."
               modules={tree.modules}
               mode="preview"
             />
@@ -215,18 +210,5 @@ export default async function CoursePage({ params }: CoursePageProps) {
         }
       />
     </PageLayout>
-  );
-}
-
-function SummaryRow({ label, value }: { label: string; value: number | string }) {
-  return (
-    <HStack justify="space-between" gap="4">
-      <Text textStyle="bodyMuted" color="fg.muted">
-        {label}
-      </Text>
-      <Text textStyle="bodyStrong" color="fg.default">
-        {value}
-      </Text>
-    </HStack>
   );
 }

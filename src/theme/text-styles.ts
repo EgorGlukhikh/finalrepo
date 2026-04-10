@@ -6,8 +6,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: { base: '5xl', md: '6xl' },
-      lineHeight: '1.02',
-      letterSpacing: '-0.05em',
+      lineHeight: '1.06',
+      letterSpacing: '-0.045em',
       fontWeight: '700',
     },
   },
@@ -16,8 +16,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'heading',
       fontSize: { base: '3xl', md: '4xl' },
-      lineHeight: '1.08',
-      letterSpacing: '-0.04em',
+      lineHeight: '1.12',
+      letterSpacing: '-0.035em',
       fontWeight: '700',
     },
   },
@@ -86,8 +86,8 @@ export const textStyles = defineTextStyles({
     value: {
       fontFamily: 'body',
       fontSize: 'xs',
-      lineHeight: '1.35',
-      letterSpacing: '0.14em',
+      lineHeight: '1.4',
+      letterSpacing: '0.1em',
       textTransform: 'uppercase',
       fontWeight: '600',
     },

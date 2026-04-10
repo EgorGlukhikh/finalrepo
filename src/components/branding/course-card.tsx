@@ -42,8 +42,8 @@ export function CourseCard({
             <Heading
               as="h3"
               fontSize={featured ? 'xl' : 'lg'}
-              lineHeight="1.2"
-              letterSpacing="-0.03em"
+              lineHeight="1.28"
+              letterSpacing="-0.025em"
               color="fg.default"
             >
               {title}
@@ -59,9 +59,9 @@ export function CourseCard({
         {meta.length > 0 ? (
           <HStack gap="2.5" flexWrap="wrap">
             {meta.map((item) => (
-              <Badge key={item} tone="outline">
+              <Text key={item} textStyle="caption" color="fg.muted">
                 {item}
-              </Badge>
+              </Text>
             ))}
           </HStack>
         ) : null}
